@@ -26,7 +26,6 @@ import java.util.List;
  * @Description: 测试controller
  */
 //@Api(value = "测试接口",tags = "用户管理接口",description = "用户测试接口")
-    //测试
 @Api(tags = "测试接口")
 @RestController
 @RequestMapping("/test")
