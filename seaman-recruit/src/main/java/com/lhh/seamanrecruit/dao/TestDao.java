@@ -1,7 +1,7 @@
 package com.lhh.seamanrecruit.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.lhh.seamanrecruit.entity.User;
+import com.lhh.seamanrecruit.entity.Test;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
  * @Description:
  */
 @Repository
-public interface TestDao extends BaseMapper<User> {
+public interface TestDao extends BaseMapper<Test> {
 }

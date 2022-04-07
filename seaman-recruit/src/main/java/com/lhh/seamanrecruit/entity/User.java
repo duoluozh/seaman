@@ -1,33 +1,64 @@
 package com.lhh.seamanrecruit.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
+import lombok.Data;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import com.baomidou.mybatisplus.annotation.TableName;
+import org.springframework.data.annotation.Id;
 
 /**
- * @Author: yslong
- * @Date: 2022/3/14 13:59
- * @Description: 测试实体类
+ * <p>用户实体类</p>
+ * @author yslong
+ * @date 2022-04-07 20:50:10
  */
-
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@TableName("user")
+@ApiModel("用户")
+@TableName(value = "user")
 public class User {
+private static final long serialVersionUID = 1L;
 
-    @TableId
-    private Long id;
-    private String userName;
-    private String password;
-    private String email;
-    private Integer userType;
-    private LocalDateTime createdTime;
-    private LocalDateTime updatedTime;
+	/**
+	 * 主键ID
+	 */
+	@Id
+	private Long id;
+
+	/**
+	 * 用户名
+	 */
+	@ApiModelProperty("用户名")
+	private String userName;
+
+	/**
+	 * 密码
+	 */
+	@ApiModelProperty("密码")
+	private String password;
+
+	/**
+	 * 电子邮箱
+	 */
+	@ApiModelProperty("电子邮箱")
+	private String email;
+
+	/**
+	 * 用户类型(0-船员,1-企业用户,2-超管用户)
+	 */
+	@ApiModelProperty("用户类型(0-船员,1-企业用户,2-超管用户)")
+	private Integer userType;
+
+	/**
+	 * 创建时间
+	 */
+	@ApiModelProperty("创建时间")
+	private LocalDateTime createdTime;
+
+	/**
+	 * 更新时间
+	 */
+	@ApiModelProperty("更新时间")
+	private LocalDateTime updatedTime;
 
 }

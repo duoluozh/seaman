@@ -1,6 +1,6 @@
 package com.lhh.seamanrecruit.controller.test;
 
-import com.lhh.seamanrecruit.entity.User;
+import com.lhh.seamanrecruit.entity.Test;
 import com.lhh.seamanrecruit.service.tset.TestService;
 import com.lhh.seamanrecruit.utils.QiNiuUtil;
 import com.lhh.seamanrecruit.utils.RedisUtils;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -50,7 +49,7 @@ public class TestController {
         redisUtils.set("789789", "6666");
         String cacheObject = (String) redisUtils.get("789789");
 //        log.info(cacheObject);
-        List<User> res = testService.queryAll();
+        List<Test> res = testService.queryAll();
         return ResultUtils.ok().data(res);
     }
 

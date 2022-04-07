@@ -1,6 +1,6 @@
 package com.lhh.seamanrecruit.service.tset;
 
-import com.lhh.seamanrecruit.entity.User;
+import com.lhh.seamanrecruit.entity.Test;
 
 import java.util.List;
 
@@ -11,5 +11,5 @@ import java.util.List;
  */
 public interface TestService {
 
-    List<User> queryAll();
+    List<Test> queryAll();
 }
