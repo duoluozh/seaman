@@ -1,4 +1,3 @@
-
 package com.lhh.seamanrecruit.service.user;
 
 import com.lhh.seamanrecruit.entity.User;
@@ -9,9 +8,33 @@ import java.util.List;
  * 用户服务接口
  *
  * @author yslong
- * @date 2022-04-08 09:59:02
+ * @date 2022-04-08 10:50:08
  */
 public interface UserService {
+
+        /**
+         * 新增数据
+         *
+         * @param entity 实例对象
+         * @return 实例对象
+         */
+        User insert(User entity);
+
+        /**
+         * 通过主键删除数据
+         *
+         * @param ids 主键
+         * @return 是否成功
+         */
+        boolean deleteById(List<Long> ids);
+
+        /**
+         * 根据id修改数据
+         *
+         * @param entity 实例对象
+         * @return 实例对象
+         */
+        User updateById(User  entity);
 
         /**
          * 通过ID查询单条数据
@@ -30,27 +53,4 @@ public interface UserService {
          */
         Page<User> queryByPage(User entity, BaseQueryDto pageRequest);
 
-        /**
-         * 新增数据
-         *
-         * @param entity 实例对象
-         * @return 实例对象
-         */
-        User insert(User entity);
-
-        /**
-         * 根据id修改数据
-         *
-         * @param entity 实例对象
-         * @return 实例对象
-         */
-        User updateById(User  entity);
-
-        /**
-         * 通过主键删除数据
-         *
-         * @param ids 主键
-         * @return 是否成功
-         */
-        boolean deleteById(List<Long> ids);
 }

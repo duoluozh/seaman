@@ -1,4 +1,3 @@
-
 package com.lhh.seamanrecruit.service.user.impl;
 
 import com.lhh.seamanrecruit.entity.User;
@@ -16,7 +15,7 @@ import java.util.List;
  * 用户服务实现类
  *
  * @author yslong
- * @date 2022-04-08 09:59:02
+ * @date 2022-04-08 10:50:08
  */
 @Slf4j
 @Service
@@ -24,6 +23,41 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserDao userDao;
+
+	/**
+	 * 新增数据
+	 *
+	 * @param entity 实例对象
+	 * @return 实例对象
+	 */
+	@Override
+	public User insert(User entity) {
+		userDao.insert(entity);
+		return entity;
+	}
+
+	/**
+	 * 通过主键删除数据
+	 *
+	 * @param ids 主键
+	 * @return 是否成功
+	 */
+	@Override
+	public boolean deleteById(List<Long> ids) {
+		return userDao.deleteBatchIds(ids) > 0;
+	}
+
+	/**
+	 * 修改数据
+	 *
+	 * @param entity 实例对象
+	 * @return 实例对象
+	 */
+	@Override
+	public User updateById(User entity) {
+		userDao.updateById(entity);
+		return queryById(entity.getId());
+	}
 
 	/**
 	 * 通过ID查询单条数据
@@ -46,44 +80,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Page<User> queryByPage(User entity, BaseQueryDto pageRequest) {
 		QueryWrapper<User> queryWrapper =  new QueryWrapper<>();
-		queryWrapper.orderByDesc("id");
+		queryWrapper.orderByAsc("id");
 		Page<User> page = new Page<>(pageRequest.getPageNum(),pageRequest.getPageSize());
 		page = (Page)userDao.selectPage(page, queryWrapper);
 		return page;
 	}
 
-	/**
-	 * 新增数据
-	 *
-	 * @param entity 实例对象
-	 * @return 实例对象
-	 */
-	@Override
-	public User insert(User entity) {
-		userDao.insert(entity);
-		return entity;
-	}
-
-	/**
-	 * 修改数据
-	 *
-	 * @param entity 实例对象
-	 * @return 实例对象
-	 */
-	@Override
-	public User updateById(User entity) {
-		userDao.updateById(entity);
-		return queryById(entity.getId());
-	}
-
-	/**
-	 * 通过主键删除数据
-	 *
-	 * @param ids 主键
-	 * @return 是否成功
-	 */
-	@Override
-	public boolean deleteById(List<Long> ids) {
-		return userDao.deleteBatchIds(ids) > 0;
-	}
 }

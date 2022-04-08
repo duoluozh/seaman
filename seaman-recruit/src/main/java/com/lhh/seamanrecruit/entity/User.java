@@ -11,7 +11,7 @@ import org.springframework.data.annotation.Id;
 /**
  * <p>用户实体类</p>
  * @author yslong
- * @date 2022-04-08 09:59:02
+ * @date 2022-04-08 10:50:08
  */
 @Data
 @ApiModel("用户")
