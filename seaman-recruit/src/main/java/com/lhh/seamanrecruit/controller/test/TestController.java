@@ -50,7 +50,7 @@ public class TestController {
         String cacheObject = (String) redisUtils.get("789789");
 //        log.info(cacheObject);
         List<Test> res = testService.queryAll();
-        return ResultUtils.ok().data(res);
+        return ResultUtils.success(res);
     }
 
 
@@ -58,7 +58,7 @@ public class TestController {
     @PostMapping("/pictureTest")
     public Result pictureTest(MultipartFile file) {
         qiNiuUtil.uploadMultipartFile(file, file.getOriginalFilename(), true);
-        return ResultUtils.ok().data(null);
+        return ResultUtils.success();
     }
 
     @ApiOperation("获取文件地址-测试")
@@ -70,8 +70,7 @@ public class TestController {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
-        return ResultUtils.ok().data(s);
+        return ResultUtils.success(s);
     }
 
 

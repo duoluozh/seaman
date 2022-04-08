@@ -22,7 +22,7 @@ public class BaseExceptionHandler{
     @ResponseBody
     public Result exceptionHandler(Exception e){
         log.error(e.getMessage(),e);
-        return ResultUtils.error().data(e.getMessage());
+        return ResultUtils.error(e.getMessage());
     }
 
 }

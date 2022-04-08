@@ -1,7 +1,6 @@
 package com.lhh.seamanrecruit.utils;
 
 import lombok.Data;
-import java.util.Map;
 
 /**
  * @Author: yslong
@@ -11,11 +10,29 @@ import java.util.Map;
 @Data
 public class ResultUtils extends Result {
 
-    public static ResultUtils ok(){
+    public static ResultUtils success(Object data){
+        ResultUtils res = new ResultUtils();
+        res.setSuccess(true);
+        res.setData(data);
+        res.setCode(ResultCode.SUCCESS);
+        res.setMessage("操作成功");
+        return res;
+    }
+
+    public static ResultUtils success(){
         ResultUtils res = new ResultUtils();
         res.setSuccess(true);
         res.setCode(ResultCode.SUCCESS);
         res.setMessage("操作成功");
+        return res;
+    }
+
+    public static ResultUtils error(Object data){
+        ResultUtils res = new ResultUtils();
+        res.setSuccess(false);
+        res.setData(data);
+        res.setCode(ResultCode.ERROR);
+        res.setMessage("操作失败");
         return res;
     }
 
@@ -27,38 +44,4 @@ public class ResultUtils extends Result {
         return res;
     }
 
-    public ResultUtils success(Boolean success){
-        this.setSuccess(success);
-        return this;
-    }
-
-    public ResultUtils message(String message){
-        this.setMessage(message);
-        return this;
-    }
-
-    public ResultUtils code(Integer code){
-        this.setCode(code);
-        return this;
-    }
-
-    public ResultUtils data( Object value){
-        setData(value);
-        return this;
-    }
-
-    public ResultUtils data(Map<String, Object> map){
-        this.setData(map);
-        return this;
-    }
-
-    @Override
-    public String toString() {
-        return "ResultUtils{" +
-                "success=" + success +
-                ", code=" + code +
-                ", message='" + message + '\'' +
-                ", data=" + data +
-                '}';
-    }
 }

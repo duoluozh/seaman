@@ -1,5 +1,6 @@
 package com.lhh.seamanrecruit.controller.user;
 
+import com.lhh.seamanrecruit.dto.user.UserDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import com.lhh.seamanrecruit.entity.User;
@@ -11,10 +12,10 @@ import com.lhh.seamanrecruit.utils.ResultUtils;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 /**
- * 用户表控制层
+ * 用户控制层
  *
  * @author  yslong
- * @date 2022-04-08 10:50:08
+ * @date 2022-04-08 13:40:42
  */
 @Api(tags = "用户")
 @RestController
@@ -27,13 +28,13 @@ public class UserController {
     /**
      * 新增数据
      *
-     * @param user 用户实体
+     * @param userDto 用户实体
      * @return 新增结果
      */
-    @PostMapping("/add")
-    @ApiOperation("新增用户")
-    public Result add(@RequestBody User user) {
-        return ResultUtils.ok().data(userService.insert(user));
+    @PostMapping("/register")
+    @ApiOperation("用户注册")
+    public Result register(@RequestBody UserDto userDto) {
+        return userService.register(userDto);
     }
 
     /**
@@ -45,7 +46,7 @@ public class UserController {
     @PostMapping("/delete")
     @ApiOperation("根据ids删除")
     public Result deleteById(@RequestBody List<Long> ids) {
-        return ResultUtils.ok().data(userService.deleteById(ids));
+        return ResultUtils.success(userService.deleteById(ids));
     }
 
     /**
@@ -57,7 +58,7 @@ public class UserController {
     @PostMapping("/updateById")
     @ApiOperation("根据id修改")
     public Result updateById(@RequestBody User user) {
-        return ResultUtils.ok().data(userService.updateById(user));
+        return ResultUtils.success(userService.updateById(user));
     }
 
     /**
@@ -69,7 +70,7 @@ public class UserController {
     @GetMapping("/{id}")
     @ApiOperation("通过id查询用户")
     public Result queryById(@PathVariable("id") Long id) {
-        return ResultUtils.ok().data(userService.queryById(id));
+        return ResultUtils.success(userService.queryById(id));
     }
 
     /**
@@ -82,7 +83,7 @@ public class UserController {
     @GetMapping("/queryByPage")
     @ApiOperation("分页查询用户")
     public Result queryByPage(User user, BaseQueryDto pageRequest) {
-        return ResultUtils.ok().data(userService.queryByPage(user, pageRequest));
+        return ResultUtils.success(userService.queryByPage(user, pageRequest));
     }
 
 }

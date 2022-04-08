@@ -8,10 +8,18 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * 用户Dao
  *
  * @author yslong
- * @date 2022-04-08 10:50:08
+ * @date 2022-04-08 13:40:42
  */
 @Repository
 public interface UserDao extends BaseMapper<User> {
+
+
+    /**
+     * 查询用户名是否存在
+     * @param userName
+     * @return
+     */
+    User selectByName(String userName);
 
 
 }

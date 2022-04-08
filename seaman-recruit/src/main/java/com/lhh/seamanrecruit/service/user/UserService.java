@@ -1,24 +1,27 @@
 package com.lhh.seamanrecruit.service.user;
 
+import com.lhh.seamanrecruit.dto.user.UserDto;
 import com.lhh.seamanrecruit.entity.User;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
+import com.lhh.seamanrecruit.utils.Result;
+
 import java.util.List;
 /**
  * 用户服务接口
  *
  * @author yslong
- * @date 2022-04-08 10:50:08
+ * @date 2022-04-08 13:40:42
  */
 public interface UserService {
 
         /**
          * 新增数据
          *
-         * @param entity 实例对象
+         * @param userDto 实例对象
          * @return 实例对象
          */
-        User insert(User entity);
+        Result register(UserDto userDto);
 
         /**
          * 通过主键删除数据
