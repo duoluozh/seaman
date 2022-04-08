@@ -23,7 +23,7 @@ public class SeamanRecruitApplication {
         log.info("Access URLs:\n----------------------------------------------------------\n\t"
                         + "Local: \t\thttp://127.0.0.1:{}\n\t"
                         + "External: \thttp://{}:{}\n\t"
-                        + "Swagger: \thttp://{}:{}/swagger-ui.html"
+                        + "Swagger: \thttp://{}:{}/doc.html"
                         + "\n----------------------------------------------------------",
                 port,
                 InetAddress.getLocalHost().getHostAddress(),

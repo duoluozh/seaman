@@ -3,13 +3,13 @@ package com.lhh.seamanrecruit.service.user;
 
 import com.lhh.seamanrecruit.entity.User;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.springframework.data.domain.PageRequest;
+import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import java.util.List;
 /**
- * 用户表服务接口
+ * 用户服务接口
  *
  * @author yslong
- * @date 2022-04-07 20:50:10
+ * @date 2022-04-08 09:59:02
  */
 public interface UserService {
 
@@ -28,7 +28,7 @@ public interface UserService {
          * @param pageRequest      分页对象
          * @return 查询结果
          */
-        Page<User> queryByPage(User entity, PageRequest pageRequest);
+        Page<User> queryByPage(User entity, BaseQueryDto pageRequest);
 
         /**
          * 新增数据

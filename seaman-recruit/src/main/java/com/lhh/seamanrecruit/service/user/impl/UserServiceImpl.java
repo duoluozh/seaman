@@ -9,18 +9,19 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.springframework.data.domain.PageRequest;
+import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import java.util.List;
 
 /**
- * 用户表服务实现类
+ * 用户服务实现类
  *
  * @author yslong
- * @date 2022-04-07 20:50:10
+ * @date 2022-04-08 09:59:02
  */
-@Service
 @Slf4j
+@Service
 public class UserServiceImpl implements UserService {
+
 	@Autowired
 	private UserDao userDao;
 
@@ -43,10 +44,10 @@ public class UserServiceImpl implements UserService {
 	 * @return 查询结果
 	 */
 	@Override
-	public Page<User> queryByPage(User entity, PageRequest pageRequest) {
+	public Page<User> queryByPage(User entity, BaseQueryDto pageRequest) {
 		QueryWrapper<User> queryWrapper =  new QueryWrapper<>();
 		queryWrapper.orderByDesc("id");
-		Page<User> page = new Page<>(pageRequest.getPageNumber(),pageRequest.getPageSize());
+		Page<User> page = new Page<>(pageRequest.getPageNum(),pageRequest.getPageSize());
 		page = (Page)userDao.selectPage(page, queryWrapper);
 		return page;
 	}

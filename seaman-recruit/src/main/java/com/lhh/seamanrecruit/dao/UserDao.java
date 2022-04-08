@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * 用户Dao
  *
  * @author yslong
- * @date 2022-04-07 20:50:10
+ * @date 2022-04-08 09:59:02
  */
 @Repository
 public interface UserDao extends BaseMapper<User> {
