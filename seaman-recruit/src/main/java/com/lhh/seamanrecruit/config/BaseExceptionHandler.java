@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * @Author: yslong
@@ -22,7 +25,7 @@ public class BaseExceptionHandler{
     @ResponseBody
     public Result exceptionHandler(Exception e){
         log.error(e.getMessage(),e);
-        return ResultUtils.error(e.getMessage());
+        return ResultUtils.error("服务器内部异常！");
     }
 
 }

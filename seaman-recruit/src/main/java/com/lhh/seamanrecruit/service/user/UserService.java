@@ -1,5 +1,6 @@
 package com.lhh.seamanrecruit.service.user;
 
+import com.lhh.seamanrecruit.dto.user.LoginReqDto;
 import com.lhh.seamanrecruit.dto.user.UserDto;
 import com.lhh.seamanrecruit.entity.User;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -16,12 +17,21 @@ import java.util.List;
 public interface UserService {
 
         /**
-         * 新增数据
+         * 用户注册
          *
          * @param userDto 实例对象
          * @return 实例对象
          */
         Result register(UserDto userDto);
+
+
+        /**
+         * 用户登录
+         * @param loginReqDto
+         * @return
+         */
+        Result login(LoginReqDto loginReqDto);
+
 
         /**
          * 通过主键删除数据

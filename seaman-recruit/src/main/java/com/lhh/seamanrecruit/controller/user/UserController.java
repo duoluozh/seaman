@@ -1,5 +1,6 @@
 package com.lhh.seamanrecruit.controller.user;
 
+import com.lhh.seamanrecruit.dto.user.LoginReqDto;
 import com.lhh.seamanrecruit.dto.user.UserDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,7 +27,7 @@ public class UserController {
     private UserService userService;
 
     /**
-     * 新增数据
+     * 用户注册
      *
      * @param userDto 用户实体
      * @return 新增结果
@@ -35,6 +36,18 @@ public class UserController {
     @ApiOperation("用户注册")
     public Result register(@RequestBody UserDto userDto) {
         return userService.register(userDto);
+    }
+
+    /**
+     * 用户登录
+     *
+     * @param loginReqDto 用户实体
+     * @return 新增结果
+     */
+    @PostMapping("/login")
+    @ApiOperation("用户登录")
+    public Result login(@RequestBody LoginReqDto loginReqDto) {
+        return userService.login(loginReqDto);
     }
 
     /**

@@ -1,18 +1,24 @@
 package com.lhh.seamanrecruit.config;
 
+import com.google.common.collect.Lists;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
+import springfox.documentation.schema.ModelRef;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,19 +30,55 @@ import java.util.List;
 @EnableSwagger2
 public class SwaggerConfig {
 
+    public static final String AUTHORIZATION_HEADER = "Access-Token";
+
     @Bean
     public Docket createRestApi() {
+//        ParameterBuilder ticketPar = new ParameterBuilder();
+//        List<Parameter> pars = new ArrayList<Parameter>();
+//        ticketPar.name(AUTHORIZATION_HEADER).description("user ticket")//Token 以及Authorization 为自定义的参数，session保存的名字是哪个就可以写成那个
+//                .modelRef(new ModelRef("string")).parameterType("header")
+//                .required(false).build(); //header中的ticket参数非必填，传空也可以
+//        pars.add(ticketPar.build());    //根据每个方法名也知道当前方法在设置什么参数
+
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
-                //是否开启swagger (true 开启  false隐藏。生产环境建议隐藏)
+                //是否开启swagger (true 开启  false隐藏.生产环境建议隐藏)
 //                .enable(false)
                 .select()
                 //扫描的路径包,设置basePackage会将包下的所有被@Api标记类的所有方法作为api
                 .apis(RequestHandlerSelectors.basePackage("com.lhh.seamanrecruit.controller"))
                 //指定路径处理PathSelectors.any()代表所有的路径
                 .paths(PathSelectors.any())
+                .build()
+                .securityContexts(Lists.newArrayList(securityContext()))
+                .securitySchemes(Lists.newArrayList(apiKey()));
+    }
+
+//=================================全局token========================================
+
+    private ApiKey apiKey() {
+        return new ApiKey(AUTHORIZATION_HEADER , AUTHORIZATION_HEADER, "header");
+    }
+
+    private SecurityContext securityContext() {
+        return SecurityContext.builder()
+                .securityReferences(defaultAuth())
+                //.forPaths(PathSelectors.regex(DEFAULT_INCLUDE_PATTERN))
+                .forPaths(PathSelectors.regex("^(?!auth).*$"))
                 .build();
     }
+    List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope
+                = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return Lists.newArrayList(
+                new SecurityReference(AUTHORIZATION_HEADER, authorizationScopes));
+    }
+
+//==================================================================================
+
     //swagger访问地址：http://localhost:8090/swagger-ui.html
     //swagger文档页面访问地址：http://localhost:8090/doc.html
 

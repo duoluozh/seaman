@@ -2,11 +2,15 @@ package com.lhh.seamanrecruit.entity;
 
 import java.time.LocalDateTime;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import java.io.Serializable;
+import java.util.Date;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
 /**
@@ -17,6 +21,8 @@ import org.springframework.data.annotation.Id;
 @Data
 @ApiModel("用户")
 @TableName(value = "user")
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;

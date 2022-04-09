@@ -44,4 +44,13 @@ public class ResultUtils extends Result {
         return res;
     }
 
+    @Override
+    public String toString() {
+        return "ResultUtils{" +
+                "success=" + success +
+                ", code=" + code +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }
