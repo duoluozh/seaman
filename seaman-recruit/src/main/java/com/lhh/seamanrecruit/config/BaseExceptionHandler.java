@@ -25,6 +25,15 @@ public class BaseExceptionHandler{
     @ResponseBody
     public Result exceptionHandler(Exception e){
         log.error(e.getMessage(),e);
+        if ("toke-isNull".equals(e.getMessage())){
+            return ResultUtils.error("请先进行登录！");
+        }
+        if ("user-isNull".equals(e.getMessage())){
+            return ResultUtils.error("用户不存在请重新登陆！");
+        }
+        if ("token-error".equals(e.getMessage())){
+            return ResultUtils.error("无效token！");
+        }
         return ResultUtils.error("服务器内部异常！");
     }
 

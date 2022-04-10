@@ -40,9 +40,6 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Autowired
-    private JwtUtils jwtUtils;
-
-    @Autowired
     private RedisUtils redisUtils;
 
     /**
@@ -111,11 +108,11 @@ public class UserServiceImpl implements UserService {
         }
         Map<String,Object> claims = new HashMap<>();
         claims.put("username",userName);
-        String token = jwtUtils.getToken(userName,TOKEN_EXPIRE_TIME, claims);
+        String token = JwtUtils.getToken(userName,TOKEN_EXPIRE_TIME, claims);
         // 将token存入cookie和redis中
 //        Cookie tokenCookie = new Cookie("token", token);
-        redisUtils.set(userName, token,TOKEN_EXPIRE_TIME);
-        user.setPassword(null);
+//        redisUtils.set(userName, token,TOKEN_EXPIRE_TIME);
+        user.setPassword(token);
         return ResultUtils.success(user);
     }
 

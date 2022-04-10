@@ -1,10 +1,9 @@
 package com.lhh.seamanrecruit.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -13,31 +12,31 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @Description:
  */
 @Configuration
-public class WebMvcConfiguration extends WebMvcConfigurationSupport {
+public class WebMvcConfiguration implements WebMvcConfigurer {
 
 //    @Bean
-//    public AuthInterceptor getAuthInterceptor() {
-//        return new AuthInterceptor();
+//    public LoginInterceptor getLoginInterceptor(){
+//        return new LoginInterceptor();
 //    }
+
+    @Autowired
+    private LoginInterceptor loginInterceptor;
+
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        LoginInterceptor loginInterceptor = new LoginInterceptor();
-        // 需要拦截的请求
-        // 不拦截的请求
         registry.addInterceptor(loginInterceptor)
+                // 需要拦截的请求
                 .addPathPatterns("/**")
+                // 不拦截的请求
                 .excludePathPatterns("/user/login")
-                .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**");
+                .excludePathPatterns("/doc.html") //不需要拦截的地
+                .excludePathPatterns("/swagger-resources/**")
+                .excludePathPatterns("/webjars/**")
+                .excludePathPatterns("/v2/**")
+                .excludePathPatterns("/favicon.ico")
+                .excludePathPatterns("/swagger-ui.html/**");
     }
 
-    @Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-        super.addResourceHandlers(registry);
-    }
 
 }

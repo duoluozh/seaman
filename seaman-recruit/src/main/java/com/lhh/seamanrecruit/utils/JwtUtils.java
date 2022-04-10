@@ -13,11 +13,9 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.MessageDigest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @Author: yslong
@@ -27,6 +25,8 @@ import java.util.UUID;
 @Slf4j
 @Component
 public class JwtUtils {
+
+
     // 创建默认的秘钥和算法，供无参的构造方法使用
     /**
      * 默认的秘钥
@@ -35,31 +35,32 @@ public class JwtUtils {
     /**
      * 算法
      */
-    private static final SignatureAlgorithm DEFAULT_SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
+//    private static final SignatureAlgorithm DEFAULT_SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
 
-    public JwtUtils() {
-        // 调用本类的构造方法
-        this(DEFAULT_BASE64_ENCODED_SECRET_KEY, DEFAULT_SIGNATURE_ALGORITHM);
-    }
+//    public JwtUtils() {
+//        // 调用本类的构造方法
+//        this(DEFAULT_BASE64_ENCODED_SECRET_KEY, DEFAULT_SIGNATURE_ALGORITHM);
+//    }
 
-    private final String base64EncodedSecretKey;
-    private final SignatureAlgorithm signatureAlgorithm;
+    private static final String base64EncodedSecretKey= Base64.encodeBase64String(DEFAULT_BASE64_ENCODED_SECRET_KEY.getBytes());
+    private static final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
-    public JwtUtils(String secretKey, SignatureAlgorithm signatureAlgorithm) {
-        // 这样给成员变量赋值是为了让成员方法也能使用
-        this.base64EncodedSecretKey = Base64.encodeBase64String(secretKey.getBytes());
-        this.signatureAlgorithm = signatureAlgorithm;
-    }
+//    public JwtUtils(String secretKey, SignatureAlgorithm signatureAlgorithm) {
+//        // 这样给成员变量赋值是为了让成员方法也能使用
+//        this.base64EncodedSecretKey = Base64.encodeBase64String(secretKey.getBytes());
+//        this.signatureAlgorithm = signatureAlgorithm;
+//    }
 
 
     /**
      * 生成jwt令牌(token)
-     * @param issuer 签发人，一般都是username或者userId
+     *
+     * @param issuer    签发人，一般都是username或者userId
      * @param ttlMillis 过期时间
-     * @param claims 想要在jwt中存储的一些非隐私信息
+     * @param claims    想要在jwt中存储的一些非隐私信息
      * @return
      */
-    public String getToken(String issuer, long ttlMillis, Map<String, Object> claims) {
+    public static String getToken(String issuer, long ttlMillis, Map<String, Object> claims) {
         if (claims == null) {
             claims = new HashMap<>();
         }
@@ -90,7 +91,7 @@ public class JwtUtils {
      * @param jwtToken
      * @return
      */
-    public Claims decode(String jwtToken) {
+    public static Claims decode(String jwtToken) {
 
         // 得到 DefaultJwtParser
         return Jwts.parser()
@@ -101,11 +102,10 @@ public class JwtUtils {
     }
 
 
-
     /**
      * 判断jwtToken是否合法
      */
-    public boolean isVerify(String jwtToken) {
+    public static boolean isVerify(String jwtToken) {
         // 这个是官方的校验规则，这里只写了一个”校验算法“，可以自己加
         Algorithm algorithm = null;
         switch (signatureAlgorithm) {
@@ -127,7 +127,7 @@ public class JwtUtils {
     }
 
     public static void main(String[] args) {
-        JwtUtils jwtUtils = new JwtUtils("tom", SignatureAlgorithm.HS256);
+        JwtUtils jwtUtils = new JwtUtils();
         // 以tom作为秘钥，以HS256加密
         Map<String, Object> map = new HashMap<>();
         map.put("username", "tom");
