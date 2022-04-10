@@ -1,19 +1,14 @@
 package com.lhh.seamanrecruit.controller.test;
 
+import com.lhh.seamanrecruit.dto.eamil.Email;
 import com.lhh.seamanrecruit.entity.Test;
 import com.lhh.seamanrecruit.service.tset.TestService;
-import com.lhh.seamanrecruit.utils.QiNiuUtil;
-import com.lhh.seamanrecruit.utils.RedisUtils;
-import com.lhh.seamanrecruit.utils.Result;
-import com.lhh.seamanrecruit.utils.ResultUtils;
+import com.lhh.seamanrecruit.utils.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.UnsupportedEncodingException;
@@ -73,5 +68,16 @@ public class TestController {
         return ResultUtils.success(s);
     }
 
+    @ApiOperation("发送邮件-测试")
+    @PostMapping("/sendEamil")
+    public Result sendEamil(@RequestBody Email email) {
+        String s = null;
+        try {
+            s = SendMail.sendMails(email, email.getEmail());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResultUtils.success(s);
+    }
 
 }
