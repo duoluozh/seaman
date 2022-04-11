@@ -38,4 +38,9 @@ public interface UserDao extends BaseMapper<User> {
     User login(LoginReqDto loginReqDto);
 
 
+    /**
+     * 根据用户忙修改密码
+     * @param user
+     */
+    void updatePasswordByUserName(@Param("param") User user);
 }

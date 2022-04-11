@@ -1,6 +1,7 @@
 package com.lhh.seamanrecruit.controller.user;
 
 import com.lhh.seamanrecruit.constant.Constant;
+import com.lhh.seamanrecruit.constant.Regulars;
 import com.lhh.seamanrecruit.dto.user.LoginReqDto;
 import com.lhh.seamanrecruit.dto.user.LoginResDto;
 import com.lhh.seamanrecruit.dto.user.UserDto;
@@ -123,6 +124,51 @@ public class UserController {
     @ApiOperation("分页查询用户")
     public Result queryByPage(User user, BaseQueryDto pageRequest) {
         return Result.success(userService.queryByPage(user, pageRequest));
+    }
+
+    /**
+     * 忘记密码
+     *
+     * @param dto 用户名
+     * @return 查询结果
+     */
+    @PostMapping("/forgetPassword")
+    @ApiOperation("忘记密码")
+    public Result forgetPassword(@RequestBody LoginReqDto dto ) {
+        if (StringUtils.isBlank(dto.getUserName()) ){
+            throw new RuntimeException(Constant.USERNAME_NULL);
+        }
+        if (StringUtils.isBlank(dto.getPassword())){
+            throw new RuntimeException(Constant.PASSWORD_NULL);
+        }
+        if (StringUtils.isBlank(dto.getVerificationCode())){
+            throw new RuntimeException(Constant.VERIFICATIONCODE_NULL);
+        }
+        if (!dto.getPassword().matches(Regulars.PASSWORD_REGULAR)){
+            //正则校验
+            throw new RuntimeException(Constant.PASSWORD_NOT_RULE);
+        }
+        return userService.forgetPassword(dto);
+    }
+
+    /**
+     * 发送邮箱验证码
+     *
+     * @param userName 用户名
+     * @return 发送结果
+     */
+    @GetMapping("/sendVerificationCode")
+    @ApiOperation("发送邮箱验证码")
+    public Result sendVerificationCode(@RequestParam("userName") String userName) {
+        if (StringUtils.isBlank(userName)){
+            throw new RuntimeException(Constant.USERNAME_NULL);
+        }
+        try {
+            userService.verificationCode(userName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.success(userName);
     }
 
 }

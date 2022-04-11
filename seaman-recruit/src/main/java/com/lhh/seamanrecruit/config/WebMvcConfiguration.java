@@ -23,6 +23,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 //需要进行拦截的请求
                 .addPathPatterns("/**")
                 .excludePathPatterns("/user/login")
+                .excludePathPatterns("/user/forgetPassword")
+                .excludePathPatterns("/user/sendVerificationCode")
                 .excludePathPatterns("/swagger-resources/**")
                 .excludePathPatterns("/webjars/**")
                 .excludePathPatterns("/v2/**")

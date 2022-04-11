@@ -6,6 +6,7 @@ import com.lhh.seamanrecruit.dto.user.UserDto;
 import com.lhh.seamanrecruit.entity.User;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
+import com.lhh.seamanrecruit.utils.Result;
 
 import java.util.List;
 /**
@@ -66,4 +67,17 @@ public interface UserService {
          */
         Page<User> queryByPage(User entity, BaseQueryDto pageRequest);
 
+        /**
+         * 发送邮箱验证码
+         * @param userName
+         * @return
+         */
+        String verificationCode(String userName);
+
+        /**
+         * 忘记密码-修改密码
+         * @param dto
+         * @return
+         */
+        Result forgetPassword(LoginReqDto dto);
 }
