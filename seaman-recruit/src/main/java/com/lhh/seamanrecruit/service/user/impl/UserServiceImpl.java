@@ -1,34 +1,31 @@
 package com.lhh.seamanrecruit.service.user.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.constant.Constant;
+import com.lhh.seamanrecruit.dao.UserDao;
+import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import com.lhh.seamanrecruit.dto.eamil.Email;
 import com.lhh.seamanrecruit.dto.user.LoginReqDto;
 import com.lhh.seamanrecruit.dto.user.LoginResDto;
 import com.lhh.seamanrecruit.dto.user.UpdatePasswordReqDto;
 import com.lhh.seamanrecruit.dto.user.UserDto;
 import com.lhh.seamanrecruit.entity.User;
-import com.lhh.seamanrecruit.dao.UserDao;
 import com.lhh.seamanrecruit.service.user.UserService;
 import com.lhh.seamanrecruit.utils.*;
-import com.qiniu.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.lhh.seamanrecruit.constant.Constant.TOKEN_EXPIRE_TIME;
-import static com.lhh.seamanrecruit.constant.Constant.VERIFICATIONCODE_ERROR;
 
 /**
  * 用户服务实现类
