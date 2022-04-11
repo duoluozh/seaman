@@ -63,10 +63,10 @@ public class UserController {
     @ApiOperation("用户登录")
     public Result login(@RequestBody LoginReqDto loginReqDto, HttpServletResponse response) {
         if (StringUtils.isBlank(loginReqDto.getUserName())) {
-            throw new RuntimeException(Constant.USERNAME_NULL);
+            return Result.error(Constant.USERNAME_NULL);
         }
         if (StringUtils.isBlank(loginReqDto.getPassword())) {
-            throw new RuntimeException(Constant.PASSWORD_NULL);
+            return Result.error(Constant.PASSWORD_NULL);
         }
         LoginResDto res = userService.login(loginReqDto);
         // 将token存入cookies
