@@ -1,5 +1,6 @@
 package com.lhh.seamanrecruit.service.user.impl;
 
+import com.lhh.seamanrecruit.constant.Constant;
 import com.lhh.seamanrecruit.dto.user.LoginReqDto;
 import com.lhh.seamanrecruit.dto.user.LoginResDto;
 import com.lhh.seamanrecruit.dto.user.UserDto;
@@ -7,7 +8,6 @@ import com.lhh.seamanrecruit.entity.User;
 import com.lhh.seamanrecruit.dao.UserDao;
 import com.lhh.seamanrecruit.service.user.UserService;
 import com.lhh.seamanrecruit.utils.*;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -48,31 +48,17 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result register(UserDto userDto) {
+    public User register(UserDto userDto) {
         String userName = userDto.getUserName();
         String password = userDto.getPassword();
         String email = userDto.getEmail();
-        Integer userType = userDto.getUserType();
-        if (StringUtils.isBlank(userName)) {
-            return Result.error("用户名不能为空！");
-        }
-        if (StringUtils.isBlank(password)) {
-            return Result.error("密码不能为空！");
-        }
-        if (StringUtils.isBlank(email)) {
-            return Result.error("邮箱不能为空！");
-        }
-        if (userType == null) {
-            return Result.error("用户类型不能为空！");
-        }
         if (userDao.selectByName(userName)!=null){
-            return Result.error("用户名已被占用！");
+            throw new RuntimeException(Constant.USERNAME_OCCUPY);
         }
 
         if (userDao.selectByEmail(email)!=null){
-            return Result.error("该邮箱已经绑定其他用户！");
+            throw new RuntimeException(Constant.EMAIL_OCCUPY);
         }
-        // todo 后期需要将密码进行加密
         User user = new User();
         BeanUtils.copyProperties(userDto,user);
         // 将用户密码进行加密后存储
@@ -81,7 +67,7 @@ public class UserServiceImpl implements UserService {
         user.setUpdatedTime(LocalDateTime.now());
         userDao.insert(user);
         user.setPassword(null);
-        return Result.success(user);
+        return user;
     }
 
 
@@ -90,25 +76,18 @@ public class UserServiceImpl implements UserService {
         String userName = loginReqDto.getUserName();
         // 用户输入的密码
         String loginPassword = loginReqDto.getPassword();
-        if (StringUtils.isBlank(userName)) {
-            throw new RuntimeException("请先输入用户名！");
-        }
-        if (StringUtils.isBlank(loginPassword)) {
-            throw new RuntimeException("密码不能为空！");
-        }
         User user = userDao.selectByName(userName);
         if (user==null){
-            throw new RuntimeException("用户名不存在！");
+            throw new RuntimeException(Constant.USERNAME_NOT_EXIST);
         }
         // 校验用户输入的密码和注册的密码是否正确
         if (!Md5Util.verify(loginPassword,user.getPassword())){
-            throw new RuntimeException("密码错误！");
+            throw new RuntimeException(Constant.PASSWORD_ERROR);
         }
         Map<String,Object> claims = new HashMap<>();
         claims.put("username",userName);
         String token = JwtUtils.getToken(userName,TOKEN_EXPIRE_TIME, claims);
-        // 将token存入cookie和redis中
-//        Cookie tokenCookie = new Cookie("token", token);
+        // 将token存入redis中
         redisUtils.set(userName, token,TOKEN_EXPIRE_TIME);
         LoginResDto res = new LoginResDto();
         res.setCreatedTime(user.getCreatedTime());

@@ -23,7 +23,7 @@ public interface UserService {
          * @param userDto 实例对象
          * @return 实例对象
          */
-        Result register(UserDto userDto);
+        User register(UserDto userDto);
 
 
         /**

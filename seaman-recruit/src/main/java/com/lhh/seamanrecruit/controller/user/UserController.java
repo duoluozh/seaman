@@ -1,5 +1,6 @@
 package com.lhh.seamanrecruit.controller.user;
 
+import com.lhh.seamanrecruit.constant.Constant;
 import com.lhh.seamanrecruit.dto.user.LoginReqDto;
 import com.lhh.seamanrecruit.dto.user.LoginResDto;
 import com.lhh.seamanrecruit.dto.user.UserDto;
@@ -7,14 +8,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import com.lhh.seamanrecruit.entity.User;
 import com.lhh.seamanrecruit.service.user.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
-import com.lhh.seamanrecruit.utils.Result;
 import com.lhh.seamanrecruit.utils.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -41,7 +41,16 @@ public class UserController {
     @PostMapping("/register")
     @ApiOperation("用户注册")
     public Result register(@RequestBody UserDto userDto) {
-        return userService.register(userDto);
+        if (StringUtils.isBlank(userDto.getUserName())) {
+            return Result.error(Constant.USERNAME_NULL);
+        }
+        if (StringUtils.isBlank(userDto.getPassword())) {
+            return Result.error(Constant.PASSWORD_NULL);
+        }
+        if (StringUtils.isBlank(userDto.getEmail())) {
+            return Result.error(Constant.EMAIL_NULL);
+        }
+        return Result.success(userService.register(userDto));
     }
 
     /**
@@ -53,6 +62,12 @@ public class UserController {
     @PostMapping("/login")
     @ApiOperation("用户登录")
     public Result login(@RequestBody LoginReqDto loginReqDto, HttpServletResponse response) {
+        if (StringUtils.isBlank(loginReqDto.getUserName())) {
+            throw new RuntimeException(Constant.USERNAME_NULL);
+        }
+        if (StringUtils.isBlank(loginReqDto.getPassword())) {
+            throw new RuntimeException(Constant.PASSWORD_NULL);
+        }
         LoginResDto res = userService.login(loginReqDto);
         // 将token存入cookies
         Cookie tokenCookie = new Cookie("token", res.getToken());
