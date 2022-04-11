@@ -18,10 +18,10 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        // 不拦截的请求
         registry.addInterceptor(loginInterceptor)
                 //需要进行拦截的请求
                 .addPathPatterns("/**")
+                // 不拦截的请求
                 .excludePathPatterns("/user/login")
                 .excludePathPatterns("/user/forgetPassword")
                 .excludePathPatterns("/user/sendVerificationCode")
