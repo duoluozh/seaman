@@ -6,7 +6,6 @@ import com.lhh.seamanrecruit.dto.user.UserDto;
 import com.lhh.seamanrecruit.entity.User;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
-import com.lhh.seamanrecruit.utils.Result;
 
 import java.util.List;
 /**
