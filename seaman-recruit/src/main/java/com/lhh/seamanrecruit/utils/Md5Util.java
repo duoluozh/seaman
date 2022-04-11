@@ -2,12 +2,8 @@ package com.lhh.seamanrecruit.utils;
 
 import org.apache.commons.codec.binary.Hex;
 
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Random;
-import java.util.UUID;
 
 /**
  * @Author: yslong

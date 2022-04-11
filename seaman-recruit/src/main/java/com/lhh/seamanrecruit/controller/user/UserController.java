@@ -3,7 +3,9 @@ package com.lhh.seamanrecruit.controller.user;
 import com.lhh.seamanrecruit.constant.Constant;
 import com.lhh.seamanrecruit.dto.user.LoginReqDto;
 import com.lhh.seamanrecruit.dto.user.LoginResDto;
+import com.lhh.seamanrecruit.dto.user.UpdatePasswordReqDto;
 import com.lhh.seamanrecruit.dto.user.UserDto;
+import com.lhh.seamanrecruit.utils.UserUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import com.lhh.seamanrecruit.entity.User;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -61,7 +64,7 @@ public class UserController {
      */
     @PostMapping("/login")
     @ApiOperation("用户登录")
-    public Result login(@RequestBody LoginReqDto loginReqDto, HttpServletResponse response) {
+    public Result login(@RequestBody @Valid LoginReqDto loginReqDto, HttpServletResponse response) {
         if (StringUtils.isBlank(loginReqDto.getUserName())) {
             return Result.error(Constant.USERNAME_NULL);
         }
@@ -78,6 +81,32 @@ public class UserController {
     }
 
     /**
+     * 修改密码
+     *
+     * @param reqDto
+     * @return 修改结果
+     */
+    @PostMapping("/updatePassword")
+    @ApiOperation("修改密码")
+    public Result updatePassword(@RequestBody @Valid UpdatePasswordReqDto reqDto) {
+        String userName = reqDto.getUserName();
+        if (StringUtils.isNotBlank(userName) && !userName.equals(UserUtils.getLoginUser())) {
+            return Result.error(Constant.USER_ERROR);
+        }
+        if (StringUtils.isBlank(reqDto.getOldPassword())) {
+            return Result.error(Constant.OLD_PASSWORD_NULL);
+        }
+        if (StringUtils.isBlank(reqDto.getNewPassword())) {
+            return Result.error(Constant.NEW_PASSWORD_NULL);
+        }
+        if (userService.updatePassword(reqDto)) {
+            return Result.success();
+        } else {
+            return Result.error();
+        }
+    }
+
+    /**
      * 删除数据
      *
      * @param ids 主键集合
@@ -87,18 +116,6 @@ public class UserController {
     @ApiOperation("根据ids删除")
     public Result deleteById(@RequestBody List<Long> ids) {
         return Result.success(userService.deleteById(ids));
-    }
-
-    /**
-     * 根据id修改数据
-     *
-     * @param user 用户实体
-     * @return 编辑结果
-     */
-    @PostMapping("/updateById")
-    @ApiOperation("根据id修改")
-    public Result updateById(@RequestBody User user) {
-        return Result.success(userService.updateById(user));
     }
 
     /**

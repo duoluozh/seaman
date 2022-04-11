@@ -2,10 +2,12 @@ package com.lhh.seamanrecruit.service.user;
 
 import com.lhh.seamanrecruit.dto.user.LoginReqDto;
 import com.lhh.seamanrecruit.dto.user.LoginResDto;
+import com.lhh.seamanrecruit.dto.user.UpdatePasswordReqDto;
 import com.lhh.seamanrecruit.dto.user.UserDto;
 import com.lhh.seamanrecruit.entity.User;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
+import com.lhh.seamanrecruit.utils.Result;
 
 import java.util.List;
 /**
@@ -34,20 +36,19 @@ public interface UserService {
 
 
         /**
+         * 修改密码
+         * @param reqDto
+         * @return
+         */
+        Boolean updatePassword(UpdatePasswordReqDto reqDto);
+
+        /**
          * 通过主键删除数据
          *
          * @param ids 主键
          * @return 是否成功
          */
         boolean deleteById(List<Long> ids);
-
-        /**
-         * 根据id修改数据
-         *
-         * @param entity 实例对象
-         * @return 实例对象
-         */
-        User updateById(User  entity);
 
         /**
          * 通过ID查询单条数据

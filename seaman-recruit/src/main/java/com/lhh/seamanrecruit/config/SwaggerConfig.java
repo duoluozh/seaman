@@ -34,12 +34,6 @@ public class SwaggerConfig {
 
     @Bean
     public Docket createRestApi() {
-//        ParameterBuilder ticketPar = new ParameterBuilder();
-//        List<Parameter> pars = new ArrayList<Parameter>();
-//        ticketPar.name(AUTHORIZATION_HEADER).description("user ticket")//Token 以及Authorization 为自定义的参数，session保存的名字是哪个就可以写成那个
-//                .modelRef(new ModelRef("string")).parameterType("header")
-//                .required(false).build(); //header中的ticket参数非必填，传空也可以
-//        pars.add(ticketPar.build());    //根据每个方法名也知道当前方法在设置什么参数
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
@@ -64,7 +58,6 @@ public class SwaggerConfig {
     private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(defaultAuth())
-                //.forPaths(PathSelectors.regex(DEFAULT_INCLUDE_PATTERN))
                 .forPaths(PathSelectors.regex("^(?!auth).*$"))
                 .build();
     }

@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -27,13 +26,8 @@ public class LoginReqDto implements Serializable {
 	 * 用户名
 	 */
 	@ApiModelProperty(value = "用户名",required = true)
+	@NotBlank(message = "用户名不能为空")
 	private String userName;
-
-	/**
-	 * 电子邮箱
-	 */
-	@ApiModelProperty(value = "电子邮箱",required = true)
-	private String email;
 
 	/**
 	 * 密码
