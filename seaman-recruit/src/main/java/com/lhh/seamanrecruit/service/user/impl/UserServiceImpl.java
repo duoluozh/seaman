@@ -1,13 +1,12 @@
 package com.lhh.seamanrecruit.service.user.impl;
 
-import com.lhh.seamanrecruit.constant.Constant;
 import com.lhh.seamanrecruit.dto.user.LoginReqDto;
+import com.lhh.seamanrecruit.dto.user.LoginResDto;
 import com.lhh.seamanrecruit.dto.user.UserDto;
 import com.lhh.seamanrecruit.entity.User;
 import com.lhh.seamanrecruit.dao.UserDao;
 import com.lhh.seamanrecruit.service.user.UserService;
 import com.lhh.seamanrecruit.utils.*;
-import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.Cookie;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -40,9 +38,6 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Autowired
-    private JwtUtils jwtUtils;
-
-    @Autowired
     private RedisUtils redisUtils;
 
     /**
@@ -59,23 +54,23 @@ public class UserServiceImpl implements UserService {
         String email = userDto.getEmail();
         Integer userType = userDto.getUserType();
         if (StringUtils.isBlank(userName)) {
-            return ResultUtils.error("用户名不能为空！");
+            return Result.error("用户名不能为空！");
         }
         if (StringUtils.isBlank(password)) {
-            return ResultUtils.error("密码不能为空！");
+            return Result.error("密码不能为空！");
         }
         if (StringUtils.isBlank(email)) {
-            return ResultUtils.error("邮箱不能为空！");
+            return Result.error("邮箱不能为空！");
         }
         if (userType == null) {
-            return ResultUtils.error("用户类型不能为空！");
+            return Result.error("用户类型不能为空！");
         }
         if (userDao.selectByName(userName)!=null){
-            return ResultUtils.error("用户名已被占用！");
+            return Result.error("用户名已被占用！");
         }
 
         if (userDao.selectByEmail(email)!=null){
-            return ResultUtils.error("该邮箱已经绑定其他用户！");
+            return Result.error("该邮箱已经绑定其他用户！");
         }
         // todo 后期需要将密码进行加密
         User user = new User();
@@ -86,37 +81,42 @@ public class UserServiceImpl implements UserService {
         user.setUpdatedTime(LocalDateTime.now());
         userDao.insert(user);
         user.setPassword(null);
-        return ResultUtils.success(user);
+        return Result.success(user);
     }
 
 
     @Override
-    public Result login(LoginReqDto loginReqDto) {
+    public LoginResDto login(LoginReqDto loginReqDto) {
         String userName = loginReqDto.getUserName();
         // 用户输入的密码
         String loginPassword = loginReqDto.getPassword();
         if (StringUtils.isBlank(userName)) {
-            return ResultUtils.error("请先输入用户名！");
+            throw new RuntimeException("请先输入用户名！");
         }
         if (StringUtils.isBlank(loginPassword)) {
-            return ResultUtils.error("密码不能为空！");
+            throw new RuntimeException("密码不能为空！");
         }
         User user = userDao.selectByName(userName);
         if (user==null){
-            return ResultUtils.error("用户名不存在！");
+            throw new RuntimeException("用户名不存在！");
         }
         // 校验用户输入的密码和注册的密码是否正确
         if (!Md5Util.verify(loginPassword,user.getPassword())){
-            return ResultUtils.error("密码错误！");
+            throw new RuntimeException("密码错误！");
         }
         Map<String,Object> claims = new HashMap<>();
         claims.put("username",userName);
-        String token = jwtUtils.getToken(userName,TOKEN_EXPIRE_TIME, claims);
+        String token = JwtUtils.getToken(userName,TOKEN_EXPIRE_TIME, claims);
         // 将token存入cookie和redis中
 //        Cookie tokenCookie = new Cookie("token", token);
         redisUtils.set(userName, token,TOKEN_EXPIRE_TIME);
-        user.setPassword(null);
-        return ResultUtils.success(user);
+        LoginResDto res = new LoginResDto();
+        res.setCreatedTime(user.getCreatedTime());
+        res.setUpdatedTime(user.getUpdatedTime());
+        res.setUserName(user.getUserName());
+        res.setUserType(user.getUserType());
+        res.setToken(token);
+        return res;
     }
 
 

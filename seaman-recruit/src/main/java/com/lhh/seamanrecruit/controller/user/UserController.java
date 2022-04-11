@@ -1,6 +1,7 @@
 package com.lhh.seamanrecruit.controller.user;
 
 import com.lhh.seamanrecruit.dto.user.LoginReqDto;
+import com.lhh.seamanrecruit.dto.user.LoginResDto;
 import com.lhh.seamanrecruit.dto.user.UserDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -9,13 +10,18 @@ import com.lhh.seamanrecruit.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import com.lhh.seamanrecruit.utils.Result;
-import com.lhh.seamanrecruit.utils.ResultUtils;
+import com.lhh.seamanrecruit.utils.Result;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+
 /**
  * 用户控制层
  *
- * @author  yslong
+ * @author yslong
  * @date 2022-04-08 13:40:42
  */
 @Api(tags = "用户")
@@ -46,8 +52,14 @@ public class UserController {
      */
     @PostMapping("/login")
     @ApiOperation("用户登录")
-    public Result login(@RequestBody LoginReqDto loginReqDto) {
-        return userService.login(loginReqDto);
+    public Result login(@RequestBody LoginReqDto loginReqDto, HttpServletResponse response) {
+        LoginResDto res = userService.login(loginReqDto);
+        // 将token存入cookies
+        Cookie tokenCookie = new Cookie("token", res.getToken());
+        // 关闭浏览器就失效
+        tokenCookie.setMaxAge(-1);
+        response.addCookie(tokenCookie);
+        return Result.success(res);
     }
 
     /**
@@ -59,7 +71,7 @@ public class UserController {
     @PostMapping("/delete")
     @ApiOperation("根据ids删除")
     public Result deleteById(@RequestBody List<Long> ids) {
-        return ResultUtils.success(userService.deleteById(ids));
+        return Result.success(userService.deleteById(ids));
     }
 
     /**
@@ -71,7 +83,7 @@ public class UserController {
     @PostMapping("/updateById")
     @ApiOperation("根据id修改")
     public Result updateById(@RequestBody User user) {
-        return ResultUtils.success(userService.updateById(user));
+        return Result.success(userService.updateById(user));
     }
 
     /**
@@ -83,7 +95,7 @@ public class UserController {
     @GetMapping("/{id}")
     @ApiOperation("通过id查询用户")
     public Result queryById(@PathVariable("id") Long id) {
-        return ResultUtils.success(userService.queryById(id));
+        return Result.success(userService.queryById(id));
     }
 
     /**
@@ -91,12 +103,11 @@ public class UserController {
      *
      * @param pageRequest 分页对象
      * @return 查询结果
-     *
      */
     @GetMapping("/queryByPage")
     @ApiOperation("分页查询用户")
     public Result queryByPage(User user, BaseQueryDto pageRequest) {
-        return ResultUtils.success(userService.queryByPage(user, pageRequest));
+        return Result.success(userService.queryByPage(user, pageRequest));
     }
 
 }

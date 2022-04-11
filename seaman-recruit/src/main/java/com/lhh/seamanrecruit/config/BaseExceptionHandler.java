@@ -1,7 +1,7 @@
 package com.lhh.seamanrecruit.config;
 
 import com.lhh.seamanrecruit.utils.Result;
-import com.lhh.seamanrecruit.utils.ResultUtils;
+import com.lhh.seamanrecruit.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,7 +25,16 @@ public class BaseExceptionHandler{
     @ResponseBody
     public Result exceptionHandler(Exception e){
         log.error(e.getMessage(),e);
-        return ResultUtils.error("服务器内部异常！");
+        if ("token-isNull".equals(e.getMessage())){
+            return Result.error("请先进行登录！",401);
+        }
+        if ("user-isNull".equals(e.getMessage())){
+            return Result.error("用户不存在，请重新登录！",401);
+        }
+        if ("error-token".equals(e.getMessage())){
+            return Result.error("无效登录，请重新登录！",401);
+        }
+        return Result.error(e.getMessage());
     }
 
 }

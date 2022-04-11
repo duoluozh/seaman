@@ -13,5 +13,9 @@ public interface ResultCode {
     /**
      * 操作失败
      */
-    Integer ERROR = 500;
+    Integer ERROR = 400;
+    /**
+     * 未进行登录
+     */
+    Integer AUTHORIZE = 401;
 }

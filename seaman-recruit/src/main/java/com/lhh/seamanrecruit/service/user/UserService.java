@@ -1,6 +1,7 @@
 package com.lhh.seamanrecruit.service.user;
 
 import com.lhh.seamanrecruit.dto.user.LoginReqDto;
+import com.lhh.seamanrecruit.dto.user.LoginResDto;
 import com.lhh.seamanrecruit.dto.user.UserDto;
 import com.lhh.seamanrecruit.entity.User;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -30,7 +31,7 @@ public interface UserService {
          * @param loginReqDto
          * @return
          */
-        Result login(LoginReqDto loginReqDto);
+        LoginResDto login(LoginReqDto loginReqDto);
 
 
         /**
