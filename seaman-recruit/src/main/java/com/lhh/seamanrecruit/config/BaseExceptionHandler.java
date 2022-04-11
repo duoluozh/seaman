@@ -1,7 +1,9 @@
 package com.lhh.seamanrecruit.config;
 
+import com.lhh.seamanrecruit.constant.Constant;
 import com.lhh.seamanrecruit.utils.Result;
 import com.lhh.seamanrecruit.utils.Result;
+import com.lhh.seamanrecruit.utils.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,16 +26,16 @@ public class BaseExceptionHandler{
     @ExceptionHandler(value =Exception.class)
     @ResponseBody
     public Result exceptionHandler(Exception e){
-        log.error(e.getMessage(),e);
         if ("token-isNull".equals(e.getMessage())){
-            return Result.error("请先进行登录！",401);
+            return Result.error(Constant.LOGIN_FIRST, ResultCode.AUTHORIZE);
         }
         if ("user-isNull".equals(e.getMessage())){
-            return Result.error("用户不存在，请重新登录！",401);
+            return Result.error(Constant.USERNAME_NOT_EXIST_LOGIN,ResultCode.AUTHORIZE);
         }
         if ("error-token".equals(e.getMessage())){
-            return Result.error("无效登录，请重新登录！",401);
+            return Result.error(Constant.INVALID_LOGIN,ResultCode.AUTHORIZE);
         }
+        log.error(e.getMessage(),e);
         return Result.error(e.getMessage());
     }
 

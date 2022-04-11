@@ -28,6 +28,21 @@ public class Constant {
     public static final String EMAIL_ERROR = "邮件发送失败！";
 
     /**
+     * 请先进行登录
+     */
+    public static final String LOGIN_FIRST = "请先进行登录！";
+
+    /**
+     * 请先进行登录
+     */
+    public static final String USERNAME_NOT_EXIST_LOGIN = "用户不存在，请重新登录！";
+
+    /**
+     * 请先进行登录
+     */
+    public static final String INVALID_LOGIN = "无效登录，请重新登录！";
+
+    /**
      * 密码错误
      */
     public static final String PASSWORD_ERROR = "密码错误！";
@@ -76,6 +91,21 @@ public class Constant {
      * 邮箱绑定其他用户
      */
     public static final String EMAIL_OCCUPY = "邮箱绑定其他用户！";
+
+    /**
+     * 邮箱绑定其他用户
+     */
+    public static final String OLD_PASSWORD_NULL = "原密码不能为空！";
+
+    /**
+     * 邮箱绑定其他用户
+     */
+    public static final String NEW_PASSWORD_NULL = "新密码不能为空！";
+
+    /**
+     * 邮箱绑定其他用户
+     */
+    public static final String USER_ERROR = "用户信息有误！";
 
     /**
      * 验证码
