@@ -73,9 +73,9 @@ public class LogAop {
      */
     @AfterThrowing(pointcut = POINTCUT, throwing = "throwable")
     public void doAfterThrowing(Throwable throwable) {
-        // 保存异常日志记录
-        log.error("----------发生异常时间 : {}", LocalDateTime.now());
-        log.error("----------异常信息 : {}", throwable.getMessage());
+//        // 保存异常日志记录
+//        log.error("----------发生异常时间 : {}", LocalDateTime.now());
+//        log.error("----------异常信息 : {}", throwable.getMessage());
     }
 }
 

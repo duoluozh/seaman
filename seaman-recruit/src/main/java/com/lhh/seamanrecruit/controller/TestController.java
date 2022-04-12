@@ -1,4 +1,4 @@
-package com.lhh.seamanrecruit.controller.test;
+package com.lhh.seamanrecruit.controller;
 
 import com.lhh.seamanrecruit.dto.eamil.Email;
 import com.lhh.seamanrecruit.entity.Test;

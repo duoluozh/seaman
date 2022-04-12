@@ -2,15 +2,11 @@ package com.lhh.seamanrecruit.config;
 
 import com.lhh.seamanrecruit.constant.Constant;
 import com.lhh.seamanrecruit.utils.Result;
-import com.lhh.seamanrecruit.utils.Result;
 import com.lhh.seamanrecruit.utils.ResultCode;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
 /**
@@ -19,12 +15,11 @@ import java.util.Map;
  * @Description: 统一异常处理类
  */
 
-@ControllerAdvice
+@RestControllerAdvice
 @Slf4j
 public class BaseExceptionHandler{
 
     @ExceptionHandler(value =Exception.class)
-    @ResponseBody
     public Result exceptionHandler(Exception e){
         if ("token-isNull".equals(e.getMessage())){
             return Result.error(Constant.LOGIN_FIRST, ResultCode.AUTHORIZE);

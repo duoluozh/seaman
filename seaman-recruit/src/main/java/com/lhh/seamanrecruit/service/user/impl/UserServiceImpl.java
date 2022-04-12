@@ -123,6 +123,7 @@ public class UserServiceImpl implements UserService {
         }
         //密码加密
         user.setPassword(Md5Util.generate(newPassword));
+        user.setUpdatedTime(LocalDateTime.now());
         userDao.updateById(user);
         return true;
     }
