@@ -2,6 +2,7 @@ package com.lhh.seamanrecruit.controller;
 
 import com.lhh.seamanrecruit.dto.eamil.Email;
 import com.lhh.seamanrecruit.entity.Test;
+import com.lhh.seamanrecruit.enums.ShipTypeEnum;
 import com.lhh.seamanrecruit.service.tset.TestService;
 import com.lhh.seamanrecruit.utils.*;
 import io.swagger.annotations.Api;
@@ -44,6 +45,8 @@ public class TestController {
         redisUtils.set("789789", "6666");
         String cacheObject = (String) redisUtils.get("789789");
 //        log.info(cacheObject);
+        ShipTypeEnum bulkCargoShip = ShipTypeEnum.BULK_CARGO_SHIP;
+        System.out.println(bulkCargoShip.getCode());
         List<Test> res = testService.queryAll();
         return Result.success(res);
     }
