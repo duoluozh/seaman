@@ -5,7 +5,6 @@ import com.lhh.seamanrecruit.utils.Result;
 import com.lhh.seamanrecruit.utils.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
