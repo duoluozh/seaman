@@ -55,8 +55,8 @@ public class TestController {
     @ApiOperation("文件上传-测试")
     @PostMapping("/pictureTest")
     public Result pictureTest(MultipartFile file) {
-        qiNiuUtil.uploadMultipartFile(file, file.getOriginalFilename(), true);
-        return Result.success();
+        boolean b = qiNiuUtil.uploadMultipartFile(file, file.getOriginalFilename(), true);
+        return Result.success(b);
     }
 
     @ApiOperation("获取文件地址-测试")

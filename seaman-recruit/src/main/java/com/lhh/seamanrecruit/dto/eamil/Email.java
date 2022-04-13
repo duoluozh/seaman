@@ -1,6 +1,7 @@
 package com.lhh.seamanrecruit.dto.eamil;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,12 +17,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Email {
 
-    //收件人
+    /**
+     * 收件人
+     */
+    @ApiModelProperty("收件人")
     private String email;
-    // 主题
+
+    /**
+     * 主题
+     */
+    @ApiModelProperty("主题")
     private String subject;
-    // 内容
-    private String conetent;
+
+    /**
+     * 内容
+     */
+    @ApiModelProperty("内容")
+    private String content;
 
     public String getSubject() {
         return subject;
@@ -31,12 +43,12 @@ public class Email {
         this.subject = subject;
     }
 
-    public String getConetent() {
-        return conetent;
+    public String getContent() {
+        return content;
     }
 
-    public void setConetent(String conetent) {
-        this.conetent = conetent;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getEmail() {

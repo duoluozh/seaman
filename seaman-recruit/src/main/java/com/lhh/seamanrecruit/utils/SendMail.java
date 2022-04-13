@@ -9,7 +9,6 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
-import java.util.Random;
 
 /**
  * @author zhh
@@ -19,22 +18,35 @@ import java.util.Random;
 @Slf4j
 public class SendMail {
 
-    // 发件人
-    public static final String from = "hyzpxt<2354682205@qq.com>";
-    // 发件主机
-    public static final String host = "smtp.qq.com";
-    // 发件人账号
-    public static final String username = "2354682205@qq.com";
-    // 发件人密码
-    public static final String password = "olxtvksfjklhebdb";
+    /**
+     * 发件人
+     */
+    public static final String EMAIL_SENDER = "hyzpxt<2354682205@qq.com>";
+    /**
+     * 发件主机
+     */
+    public static final String SENDING_HOST = "smtp.qq.com";
+    /**
+     * 发件人账号
+     */
+    public static final String USERNAME = "2354682205@qq.com";
+    /**
+     * 发件人密码
+     */
+    public static final String PASSWORD = "olxtvksfjklhebdb";
 
-    // 发送邮件
+    /**
+     *
+     * @param email 邮箱实体
+     * @param address 收件人
+     * @return 发送结果
+     */
     public static String sendMails(Email email,String address){
 
         // 定义收件人
-        InternetAddress to_address[] = new InternetAddress[1];
+        InternetAddress[] toAddress = new InternetAddress[1];
         try {
-            to_address[0] = new InternetAddress(address);
+            toAddress[0] = new InternetAddress(address);
         } catch (AddressException e) {
             e.printStackTrace();
         }
@@ -42,7 +54,7 @@ public class SendMail {
         // 获取系统属性
         Properties properties = System.getProperties();
         // 设置邮件服务器
-        properties.setProperty("mail.smtp.host",host);
+        properties.setProperty("mail.smtp.host",SENDING_HOST);
         properties.put("mail.smtp.auth", "true");
 
 
@@ -50,7 +62,7 @@ public class SendMail {
         Session session = Session.getDefaultInstance(properties, new Authenticator() {
             @Override
             public PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username,password);
+                return new PasswordAuthentication(USERNAME,PASSWORD);
             }
         });
 
@@ -59,13 +71,13 @@ public class SendMail {
             // 创建默认的MimeMessage对象
             MimeMessage message = new MimeMessage(session);
             // 设置发件人From 头部字段
-            message.setFrom(new InternetAddress(from));
+            message.setFrom(new InternetAddress(EMAIL_SENDER));
             // 设置收件人To 头部字段
-            message.addRecipients(Message.RecipientType.TO,to_address);
+            message.addRecipients(Message.RecipientType.TO,toAddress);
             // 设置Subject 头部字段
             message.setSubject(email.getSubject());
             // 设置消息体
-            message.setText(email.getConetent());
+            message.setText(email.getContent());
             // 发送邮件
             Transport.send(message);
 

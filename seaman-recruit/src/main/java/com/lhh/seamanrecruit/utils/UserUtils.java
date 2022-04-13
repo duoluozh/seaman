@@ -16,7 +16,7 @@ public class UserUtils {
 
     /**
      * 获取当前登录人
-     * @return
+     * @return 当前登录人
      */
     public static String getLoginUser(){
         // 获取request

@@ -196,7 +196,7 @@ public class UserServiceImpl implements UserService {
             Email email = new Email();
             email.setSubject(Constant.EMAIL_CODE);
             String randomCode = RandomCodeUtils.getRandomCode(6);
-            email.setConetent(Constant.EMAIL_IS_CODE + randomCode);
+            email.setContent(Constant.EMAIL_IS_CODE + randomCode);
             status = SendMail.sendMails(email, user.getEmail());
             redisUtils.set(Constant.EMAIL_CODE_KEY + userName,randomCode,Constant.VERIFICATION_CODE_TIME);
         }

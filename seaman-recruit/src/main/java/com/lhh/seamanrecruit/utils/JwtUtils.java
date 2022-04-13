@@ -25,11 +25,11 @@ import java.util.UUID;
 @Slf4j
 @Component
 public class JwtUtils {
+
     /**
      * 默认秘钥
      */
     private static final String DEFAULT_BASE64_ENCODED_SECRET_KEY = "lhh";
-
     /**
      * 处理后的秘钥
      */
@@ -39,21 +39,19 @@ public class JwtUtils {
      */
     private static final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
 
-
     /**
      * 生成jwt令牌(token)
      *
      * @param issuer    签发人，一般都是username或者userId
      * @param ttlMillis 过期时间
      * @param claims    想要在jwt中存储的一些非隐私信息
-     * @return
+     * @return token
      */
     public static String getToken(String issuer, long ttlMillis, Map<String, Object> claims) {
         if (claims == null) {
             claims = new HashMap<>();
         }
         long nowMillis = System.currentTimeMillis();
-
         JwtBuilder builder = Jwts.builder().setClaims(claims)
                 // 1.这个是JWT的唯一标识，一般设置成唯一的，这个方法可以生成唯一标识
                 .setId(UUID.randomUUID().toString())
@@ -76,11 +74,10 @@ public class JwtUtils {
      * 相当于encode的方向，传入jwtToken生成对应的username和password等字段。Claim就是一个map
      * 也就是拿到荷载部分所有的键值对
      *
-     * @param jwtToken
-     * @return
+     * @param jwtToken token
+     * @return Claims（包含存入token中的数据）
      */
     public static Claims decode(String jwtToken) {
-
         // 得到 DefaultJwtParser
         return Jwts.parser()
                 // 设置签名的秘钥使用成员变量的值
@@ -89,13 +86,14 @@ public class JwtUtils {
                 .parseClaimsJws(jwtToken).getBody();
     }
 
-
     /**
      * 判断jwtToken是否合法
+     * @param jwtToken token
+     * @return 校验结果（true：合法，false：不合法）
      */
     public static boolean isVerify(String jwtToken) {
         // 这个是官方的校验规则，这里只写了一个”校验算法“，可以自己加
-        Algorithm algorithm = null;
+        Algorithm algorithm;
         switch (SIGNATURE_ALGORITHM) {
             case HS256:
                 algorithm = Algorithm.HMAC256(Base64.decodeBase64(BASE64_ENCODED_SECRET_KEY));

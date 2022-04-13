@@ -31,9 +31,6 @@ public class DateTimeUtils {
      * @param date      待格式化的日期
      * @param formatStr 想要格式化的日期格式
      * @return 根据formatStr的格式，转化为指定格式的date类型
-     * @author hey
-     * @Date 2017年9月20日下午5:46:58
-     * @version 1.00
      */
     public static Date date2date(Date date, String formatStr) {
         SimpleDateFormat sdf = new SimpleDateFormat(formatStr);
@@ -52,9 +49,6 @@ public class DateTimeUtils {
      * @param date      待格式化日期
      * @param formatStr 日期格式化格式
      * @return 根据formatStr转换为指定字符串
-     * @author hey
-     * @Date 2017年9月20日下午5:47:14
-     * @version 1.00
      */
     public static String date2string(Date date, String formatStr) {
         String strDate = "";
@@ -69,9 +63,6 @@ public class DateTimeUtils {
      * @param timestamp 待装换的SQL格式日期
      * @param formatStr 格式化格式
      * @return 根据formatStr的格式，转换为指定字符串
-     * @author hey
-     * @Date 2017年9月20日下午5:47:23
-     * @version 1.00
      */
     public static String timestamp2string(Timestamp timestamp, String formatStr) {
         String strDate = "";
@@ -86,9 +77,6 @@ public class DateTimeUtils {
      * @param time      待装换的SQL格式日期,java.sql.time
      * @param formatStr 格式化格式
      * @return 根据formatStr的格式，转换为指定字符串
-     * @author hey
-     * @Date 2017年9月20日下午5:47:23
-     * @version 1.00
      */
     public static String time2string(Time time, String formatStr) {
         String strDate = "";
@@ -103,9 +91,6 @@ public class DateTimeUtils {
      * @param dateString 待装换为date类型的字符串
      * @param formatStr  日期格式化格式
      * @return 根据formatStr的格式，转换为date类型
-     * @author hey
-     * @Date 2017年9月20日下午5:47:32
-     * @version 1.00
      */
     public static Date string2date(String dateString, String formatStr) {
         Date formateDate = null;
@@ -123,9 +108,6 @@ public class DateTimeUtils {
      *
      * @param date 待转换的date类型
      * @return 返回Timestamp
-     * @author hey
-     * @Date 2017年9月20日下午5:47:40
-     * @version 1.00
      */
     public static Timestamp date2timestamp(Date date) {
         if (date == null) {
@@ -138,9 +120,6 @@ public class DateTimeUtils {
      * 获得当前年份
      *
      * @return 返回当前年份：YYYY
-     * @author hey
-     * @Date 2017年9月20日下午5:47:48
-     * @version 1.00
      */
     public static String getNowYear() {
         SimpleDateFormat sdf = new SimpleDateFormat(YYYY);
@@ -151,9 +130,6 @@ public class DateTimeUtils {
      * 获得当前月份
      *
      * @return 返回当前月份：MM
-     * @author hey
-     * @Date 2017年9月20日下午5:47:56
-     * @version 1.00
      */
     public static String getNowMonth() {
         SimpleDateFormat sdf = new SimpleDateFormat(MM);
@@ -164,9 +140,6 @@ public class DateTimeUtils {
      * 获得当前日期中的日
      *
      * @return 返回当前年月日中的日：dd
-     * @author hey
-     * @Date 2017年9月20日下午5:48:26
-     * @version 1.00
      */
     public static String getNowDay() {
         SimpleDateFormat sdf = new SimpleDateFormat(DD);
@@ -178,9 +151,6 @@ public class DateTimeUtils {
      *
      * @param time 格式为：“HH:mm:ss”
      * @return 返回此格式的time类型
-     * @author hey
-     * @Date 2017年9月25日下午7:54:05
-     * @version 1.00
      */
     public static Time getTime(String time) {
         SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss");
@@ -190,20 +160,19 @@ public class DateTimeUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Time timeFormat = new Time(d.getTime());
-        return timeFormat;
+        if (d==null){
+            return null;
+        }
+        return new Time(d.getTime());
     }
 
     /**
      * 指定时间距离当前时间的中文信息
      *
-     * @param time
-     * @return
-     * @author hey
-     * @Date 2017年9月20日下午5:48:46
-     * @version 1.00
+     * @param time 指定时间
+     * @return 指定时间距离当前时间的中文信息
      */
-    public static String getLnow(long time) {
+    public static String getDistanceTime(long time) {
         Calendar cal = Calendar.getInstance();
         long timel = cal.getTimeInMillis() - time;
         if (timel / 1000 < 60) {
@@ -223,11 +192,8 @@ public class DateTimeUtils {
      * @param one 开始时间，要求格式：yyyy-MM-dd HH:mm:ss
      * @param two 结束时间，要求格式：yyyy-MM-dd HH:mm:ss
      * @return 返回的字符串格式：小时：分钟：秒钟
-     * @author hey
-     * @Date 2017年9月25日下午7:44:29
-     * @version 1.00
      */
-    public static String getDistanceTime(Date one, Date two) {
+    public static String betweenTwoTime(Date one, Date two) {
         long day = 0;
         long hour = 0;
         long hour1 = 0;
@@ -256,36 +222,27 @@ public class DateTimeUtils {
      * 获取当前系统时间，返回格式为字符串
      *
      * @return 返回格式：yyyy-MM-dd HH:mm:ss
-     * @author hey
-     * @Date 2017年9月28日下午2:51:50
-     * @version 1.00
      */
     public static String getNowSystemDatetimeString() {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        //设置日期格式
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return df.format(new Date());
     }
 
     /**
      * 生成10位时间戳
      *
-     * @return
-     * @author hey
-     * @Date 2017年10月27日下午3:48:08
-     * @version 1.00
+     * @return 10位时间戳
      */
     public static String getCurrentTimestamp10() {
         long timeStamp = System.currentTimeMillis() / 1000;
-        String timestr = String.valueOf(timeStamp);
-        return timestr;
+        return String.valueOf(timeStamp);
     }
 
     /**
      * 生成10位时间戳
      *
-     * @return
-     * @author hey
-     * @Date 2017年10月27日下午3:48:08
-     * @version 1.00
+     * @return 10位时间戳
      */
     public static String getTimeStamp() {
         int time = (int) (System.currentTimeMillis() / 1000);
@@ -295,9 +252,8 @@ public class DateTimeUtils {
     /**
      * 计算年龄
      *
-     * @param birthDay
-     * @return
-     * @throws Exception
+     * @param birthDay 生日
+     * @return 年龄
      */
     public static int getAgeByBirth(Date birthDay) throws Exception {
         int age = 0;
