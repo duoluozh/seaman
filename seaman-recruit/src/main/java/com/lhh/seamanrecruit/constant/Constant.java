@@ -18,6 +18,21 @@ public class Constant {
     public static final Integer VERIFICATION_CODE_TIME = 300000;
 
     /**
+     * 操作失败
+     */
+    public static final String RESULT_ERROR = "操作失败！";
+
+    /**
+     * 操作成功
+     */
+    public static final String RESULT_SUCCESS = "操作成功！";
+
+    /**
+     * 获取授权失败
+     */
+    public static final String AUTHORITY_ERROR = "获取授权失败！";
+
+    /**
      * 邮件发送成功
      */
     public static final String EMAIL_SUCCESS = "邮件发送成功！";
@@ -40,7 +55,7 @@ public class Constant {
     /**
      * 无效登录，请重新登录！
      */
-    public static final String INVALID_LOGIN = "无效登录，请重新登录！";
+    public static final String INVALID_LOGIN = "登录信息失效，请重新登录！";
 
     /**
      * 密码错误

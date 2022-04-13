@@ -1,5 +1,7 @@
 package com.lhh.seamanrecruit.utils;
 
+import com.lhh.seamanrecruit.constant.Constant;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +19,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ApiModel("统一返回结果集")
 public class Result implements Serializable {
 
     @ApiModelProperty(value = "是否成功")
@@ -37,7 +40,7 @@ public class Result implements Serializable {
         res.setSuccess(true);
         res.setData(data);
         res.setCode(ResultCode.SUCCESS);
-        res.setMessage("操作成功");
+        res.setMessage(Constant.RESULT_SUCCESS);
         return res;
     }
 
@@ -45,7 +48,7 @@ public class Result implements Serializable {
         Result res = new Result();
         res.setSuccess(true);
         res.setCode(ResultCode.SUCCESS);
-        res.setMessage("操作成功");
+        res.setMessage(Constant.RESULT_SUCCESS);
         return res;
     }
 
@@ -54,7 +57,7 @@ public class Result implements Serializable {
         res.setSuccess(false);
         res.setData(data);
         res.setCode(ResultCode.ERROR);
-        res.setMessage("操作失败");
+        res.setMessage(Constant.RESULT_ERROR);
         return res;
     }
 
@@ -64,9 +67,9 @@ public class Result implements Serializable {
         res.setData(data);
         res.setCode(code);
         if (ResultCode.AUTHORIZE.equals(code)) {
-            res.setMessage("获取授权失败");
+            res.setMessage(Constant.AUTHORITY_ERROR);
         } else {
-            res.setMessage("操作失败");
+            res.setMessage(Constant.RESULT_ERROR);
         }
         return res;
     }
@@ -75,7 +78,7 @@ public class Result implements Serializable {
         Result res = new Result();
         res.setSuccess(false);
         res.setCode(ResultCode.ERROR);
-        res.setMessage("操作失败");
+        res.setMessage(Constant.RESULT_ERROR);
         return res;
     }
 

@@ -40,7 +40,7 @@ public class LoginReqDto implements Serializable {
 	/**
 	 * 验证码
 	 */
-	@ApiModelProperty(value = "验证码",required = false)
+	@ApiModelProperty(value = "验证码")
 	private String verificationCode;
 
 }

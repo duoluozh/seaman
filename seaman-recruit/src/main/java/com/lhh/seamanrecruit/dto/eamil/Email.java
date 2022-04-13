@@ -1,11 +1,19 @@
 package com.lhh.seamanrecruit.dto.eamil;
 
+import io.swagger.annotations.ApiModel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * @author zhh
  * @date 2022/4/10 22:26
  * @description 邮件实体类
  */
-
+@Data
+@ApiModel("邮件实体类")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Email {
 
     //收件人

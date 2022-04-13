@@ -45,8 +45,8 @@ public class TestController {
         redisUtils.set("789789", "6666");
         String cacheObject = (String) redisUtils.get("789789");
 //        log.info(cacheObject);
-        ShipTypeEnum bulkCargoShip = ShipTypeEnum.BULK_CARGO_SHIP;
-        System.out.println(bulkCargoShip.getCode());
+        String loginUser = UserUtils.getLoginUser();
+        System.out.println(loginUser);
         List<Test> res = testService.queryAll();
         return Result.success(res);
     }
