@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -48,8 +49,13 @@ public class UserController {
         if (StringUtils.isBlank(userDto.getUserName())) {
             return Result.error(Constant.USERNAME_NULL);
         }
-        if (StringUtils.isBlank(userDto.getPassword())) {
+        String password = userDto.getPassword();
+        if (StringUtils.isBlank(password)) {
             return Result.error(Constant.PASSWORD_NULL);
+        }
+        if (!password.matches(Regulars.PASSWORD_REGULAR)) {
+            //正则校验
+            throw new RuntimeException(Constant.PASSWORD_NOT_RULE);
         }
         if (StringUtils.isBlank(userDto.getEmail())) {
             return Result.error(Constant.EMAIL_NULL);
@@ -97,8 +103,13 @@ public class UserController {
         if (StringUtils.isBlank(reqDto.getOldPassword())) {
             return Result.error(Constant.OLD_PASSWORD_NULL);
         }
-        if (StringUtils.isBlank(reqDto.getNewPassword())) {
+        String newPassword = reqDto.getNewPassword();
+        if (StringUtils.isBlank(newPassword)) {
             return Result.error(Constant.NEW_PASSWORD_NULL);
+        }
+        if (!newPassword.matches(Regulars.PASSWORD_REGULAR)) {
+            //正则校验
+            throw new RuntimeException(Constant.PASSWORD_NOT_RULE);
         }
         if (userService.updatePassword(reqDto)) {
             return Result.success();
@@ -151,17 +162,17 @@ public class UserController {
      */
     @PostMapping("/forgetPassword")
     @ApiOperation("忘记密码")
-    public Result forgetPassword(@RequestBody LoginReqDto dto ) {
-        if (StringUtils.isBlank(dto.getUserName()) ){
+    public Result forgetPassword(@RequestBody LoginReqDto dto) {
+        if (StringUtils.isBlank(dto.getUserName())) {
             throw new RuntimeException(Constant.USERNAME_NULL);
         }
-        if (StringUtils.isBlank(dto.getPassword())){
+        if (StringUtils.isBlank(dto.getPassword())) {
             throw new RuntimeException(Constant.PASSWORD_NULL);
         }
-        if (StringUtils.isBlank(dto.getVerificationCode())){
+        if (StringUtils.isBlank(dto.getVerificationCode())) {
             throw new RuntimeException(Constant.VERIFICATIONCODE_NULL);
         }
-        if (!dto.getPassword().matches(Regulars.PASSWORD_REGULAR)){
+        if (!dto.getPassword().matches(Regulars.PASSWORD_REGULAR)) {
             //正则校验
             throw new RuntimeException(Constant.PASSWORD_NOT_RULE);
         }
@@ -177,7 +188,7 @@ public class UserController {
     @GetMapping("/sendVerificationCode")
     @ApiOperation("发送邮箱验证码")
     public Result sendVerificationCode(@RequestParam("userName") String userName) {
-        if (StringUtils.isBlank(userName)){
+        if (StringUtils.isBlank(userName)) {
             throw new RuntimeException(Constant.USERNAME_NULL);
         }
         try {
