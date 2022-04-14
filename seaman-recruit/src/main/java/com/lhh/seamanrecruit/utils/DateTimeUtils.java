@@ -51,7 +51,7 @@ public class DateTimeUtils {
      * @return 根据formatStr转换为指定字符串
      */
     public static String date2string(Date date, String formatStr) {
-        String strDate = "";
+        String strDate;
         SimpleDateFormat sdf = new SimpleDateFormat(formatStr);
         strDate = sdf.format(date);
         return strDate;
@@ -79,7 +79,7 @@ public class DateTimeUtils {
      * @return 根据formatStr的格式，转换为指定字符串
      */
     public static String time2string(Time time, String formatStr) {
-        String strDate = "";
+        String strDate;
         SimpleDateFormat sdf = new SimpleDateFormat(formatStr);
         strDate = sdf.format(time);
         return strDate;
@@ -93,14 +93,14 @@ public class DateTimeUtils {
      * @return 根据formatStr的格式，转换为date类型
      */
     public static Date string2date(String dateString, String formatStr) {
-        Date formateDate = null;
+        Date formatDate;
         DateFormat format = new SimpleDateFormat(formatStr);
         try {
-            formateDate = format.parse(dateString);
+            formatDate = format.parse(dateString);
         } catch (Exception e) {
             return null;
         }
-        return formateDate;
+        return formatDate;
     }
 
     /**
@@ -153,7 +153,7 @@ public class DateTimeUtils {
      * @return 返回此格式的time类型
      */
     public static Time getTime(String time) {
-        SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat(HH_MM_SS);
         Date d = null;
         try {
             d = format.parse(time);
@@ -225,7 +225,7 @@ public class DateTimeUtils {
      */
     public static String getNowSystemDatetimeString() {
         //设置日期格式
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat df = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
         return df.format(new Date());
     }
 
