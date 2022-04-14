@@ -30,6 +30,9 @@ import java.util.List;
 @EnableSwagger2
 public class SwaggerConfig {
 
+    @Value("${swagger_open}")
+    private Boolean swaggerOpen;
+
     public static final String AUTHORIZATION_HEADER = "Access-Token";
 
     @Bean
@@ -38,7 +41,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 //是否开启swagger (true 开启  false隐藏.生产环境建议隐藏)
-//                .enable(false)
+                .enable(swaggerOpen)
                 .select()
                 //扫描的路径包,设置basePackage会将包下的所有被@Api标记类的所有方法作为api
                 .apis(RequestHandlerSelectors.basePackage("com.lhh.seamanrecruit.controller"))
