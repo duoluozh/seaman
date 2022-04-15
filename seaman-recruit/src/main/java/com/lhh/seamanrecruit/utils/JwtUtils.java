@@ -115,6 +115,7 @@ public class JwtUtils {
     public static void main(String[] args) {
         // 以tom作为秘钥，以HS256加密
         Map<String, Object> map = new HashMap<>();
+        map.put("userId",1);
         map.put("username", "tom");
         map.put("password", "123456");
         map.put("age", 20);

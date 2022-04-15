@@ -85,9 +85,9 @@ public class Md5Util {
 
 
     public static void main(String[] args) {
-        String s = Md5Util.generate("123213");
+        String s = Md5Util.generate("zhouhui19991110");
         System.out.println(s);
-        System.out.println(Md5Util.verify("123213", s));
+        System.out.println(Md5Util.verify("zhouhui19991110", s));
 
     }
 

@@ -88,7 +88,8 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException(Constant.PASSWORD_ERROR);
         }
         Map<String, Object> claims = new HashMap<>();
-        claims.put("username", userName);
+        claims.put("userName", userName);
+        claims.put("userId",user.getId());
         String token = JwtUtils.getToken(userName, TOKEN_EXPIRE_TIME, claims);
         // 将token存入redis中
         redisUtils.set(userName, token, TOKEN_EXPIRE_TIME);

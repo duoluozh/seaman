@@ -44,7 +44,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             throw new RuntimeException("error-token");
         }
         // 根据token携带的同户名查询用户是否存在
-        String username = (String) decode.get("username");
+        String username = (String) decode.get("userName");
         User user = userDao.selectOne(new QueryWrapper<User>().eq("user_name", username));
         if (user == null) {
             throw new RuntimeException("user-isNull");

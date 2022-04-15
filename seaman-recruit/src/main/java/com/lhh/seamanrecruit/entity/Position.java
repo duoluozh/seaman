@@ -110,4 +110,9 @@ public class Position implements Serializable {
 	@ApiModelProperty(value = "公司id")
 	private Long companyId;
 
+	/**
+	 * 职位状态
+	 */
+	@ApiModelProperty(value = "职位状态(0-未发布，1-发布)")
+	private int status_flag;
 }

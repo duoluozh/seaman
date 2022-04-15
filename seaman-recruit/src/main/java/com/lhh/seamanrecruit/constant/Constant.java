@@ -18,6 +18,11 @@ public class Constant {
     public static final Integer VERIFICATION_CODE_TIME = 300000;
 
     /**
+     * token
+     */
+    public static final String TOKEN = "token";
+
+    /**
      * 操作失败
      */
     public static final String RESULT_ERROR = "操作失败！";

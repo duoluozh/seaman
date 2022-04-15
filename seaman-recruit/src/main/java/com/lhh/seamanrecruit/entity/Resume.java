@@ -177,4 +177,16 @@ public class Resume implements Serializable {
 	@ApiModelProperty(value = "要求总吨")
 	private Long requiredGross;
 
+	/**
+	 * 上船地点
+	 */
+	@ApiModelProperty(value = "用户状态(0-在职不考虑机会，1-在职考虑机会，2-离职状态)")
+	private String userStatus;
+
+	/**
+	 * 要求总吨
+	 */
+	@ApiModelProperty(value = "更新时间")
+	private LocalDateTime updateTime;
+
 }

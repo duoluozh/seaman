@@ -2,6 +2,7 @@ package com.lhh.seamanrecruit.controller.user;
 
 import com.lhh.seamanrecruit.constant.Constant;
 import com.lhh.seamanrecruit.constant.Regulars;
+import com.lhh.seamanrecruit.controller.BaseContorller;
 import com.lhh.seamanrecruit.dto.user.LoginReqDto;
 import com.lhh.seamanrecruit.dto.user.LoginResDto;
 import com.lhh.seamanrecruit.dto.user.UpdatePasswordReqDto;
@@ -32,7 +33,7 @@ import java.util.List;
 @Api(tags = "用户")
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UserController extends BaseContorller {
 
     @Autowired
     private UserService userService;

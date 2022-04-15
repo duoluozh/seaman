@@ -1,5 +1,6 @@
 package com.lhh.seamanrecruit.controller.position;
 
+import com.lhh.seamanrecruit.controller.BaseContorller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import com.lhh.seamanrecruit.entity.Position;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import com.lhh.seamanrecruit.utils.Result;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 /**
  * 招聘控制层
@@ -15,10 +18,10 @@ import java.util.List;
  * @author  yslong
  * @date 2022-04-12 14:09:33
  */
-@Api(tags = "招聘")
+@Api(tags = "招聘职位")
 @RestController
 @RequestMapping("/position")
-public class PositionController {
+public class PositionController extends BaseContorller {
 
     @Autowired
     private PositionService positionService;
@@ -32,6 +35,7 @@ public class PositionController {
     @PostMapping("/add")
     @ApiOperation("新增招聘")
     public Result add(@RequestBody Position position) {
+
         return Result.success(positionService.insert(position));
     }
 
@@ -80,7 +84,9 @@ public class PositionController {
      */
     @GetMapping("/queryByPage")
     @ApiOperation("分页查询招聘")
-    public Result queryByPage(Position position, BaseQueryDto pageRequest) {
+    public Result queryByPage(HttpServletRequest request,Position position, BaseQueryDto pageRequest) {
+        Long userId = getUserId(request);
+        System.out.println(userId);
         return Result.success(positionService.queryByPage(position, pageRequest));
     }
 
