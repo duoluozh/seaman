@@ -2,7 +2,6 @@ package com.lhh.seamanrecruit.controller.user;
 
 import com.lhh.seamanrecruit.constant.Constant;
 import com.lhh.seamanrecruit.constant.Regulars;
-import com.lhh.seamanrecruit.controller.BaseContorller;
 import com.lhh.seamanrecruit.dto.user.LoginReqDto;
 import com.lhh.seamanrecruit.dto.user.LoginResDto;
 import com.lhh.seamanrecruit.dto.user.UpdatePasswordReqDto;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -33,7 +31,7 @@ import java.util.List;
 @Api(tags = "用户")
 @RestController
 @RequestMapping("/user")
-public class UserController extends BaseContorller {
+public class UserController {
 
     @Autowired
     private UserService userService;
@@ -98,7 +96,7 @@ public class UserController extends BaseContorller {
     @ApiOperation("修改密码")
     public Result updatePassword(@RequestBody @Valid UpdatePasswordReqDto reqDto) {
         String userName = reqDto.getUserName();
-        if (StringUtils.isNotBlank(userName) && !userName.equals(UserUtils.getLoginUser())) {
+        if (StringUtils.isNotBlank(userName) && !userName.equals(UserUtils.getLoginUserName())) {
             return Result.error(Constant.USER_ERROR);
         }
         if (StringUtils.isBlank(reqDto.getOldPassword())) {

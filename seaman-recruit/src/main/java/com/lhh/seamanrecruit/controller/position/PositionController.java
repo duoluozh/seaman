@@ -1,6 +1,6 @@
 package com.lhh.seamanrecruit.controller.position;
 
-import com.lhh.seamanrecruit.controller.BaseContorller;
+import com.lhh.seamanrecruit.utils.UserUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import com.lhh.seamanrecruit.entity.Position;
@@ -21,7 +21,7 @@ import java.util.List;
 @Api(tags = "招聘职位")
 @RestController
 @RequestMapping("/position")
-public class PositionController extends BaseContorller {
+public class PositionController {
 
     @Autowired
     private PositionService positionService;
@@ -84,8 +84,8 @@ public class PositionController extends BaseContorller {
      */
     @GetMapping("/queryByPage")
     @ApiOperation("分页查询招聘")
-    public Result queryByPage(HttpServletRequest request,Position position, BaseQueryDto pageRequest) {
-        Long userId = getUserId(request);
+    public Result queryByPage(Position position, BaseQueryDto pageRequest) {
+        Long userId = UserUtils.getLoginUserId();
         System.out.println(userId);
         return Result.success(positionService.queryByPage(position, pageRequest));
     }
