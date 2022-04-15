@@ -7,6 +7,4 @@ package com.lhh.seamanrecruit.enums;
  */
 public enum  ResultCodeEnum {
 
-
-
 }

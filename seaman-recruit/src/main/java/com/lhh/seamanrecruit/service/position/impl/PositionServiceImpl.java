@@ -1,8 +1,20 @@
 package com.lhh.seamanrecruit.service.position.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.lhh.seamanrecruit.constant.Constant;
+import com.lhh.seamanrecruit.dao.CompanyDao;
+import com.lhh.seamanrecruit.dao.UserDao;
+import com.lhh.seamanrecruit.dto.position.PositionCompanyDto;
+import com.lhh.seamanrecruit.dto.position.PositionDto;
+import com.lhh.seamanrecruit.entity.Company;
 import com.lhh.seamanrecruit.entity.Position;
 import com.lhh.seamanrecruit.dao.PositionDao;
+import com.lhh.seamanrecruit.entity.User;
 import com.lhh.seamanrecruit.service.position.PositionService;
+import com.lhh.seamanrecruit.utils.Result;
+import com.lhh.seamanrecruit.utils.UserUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -25,6 +39,12 @@ public class PositionServiceImpl implements PositionService {
 	@Autowired
 	private PositionDao positionDao;
 
+	@Autowired
+	private CompanyDao companyDao;
+
+	@Autowired
+	private UserDao userDao;
+
 	/**
 	 * 新增数据
 	 *
@@ -33,9 +53,18 @@ public class PositionServiceImpl implements PositionService {
 	 */
 	@Override
 	@Transactional
-	public Position insert(Position entity) {
+	public Result insert(Position entity, Long userId) {
+		//查询当前用户对应的公司id
+		Company company = companyDao.selectByUserId(userId);
+		if (null == company){
+			return Result.error(Constant.POSITION_USER_NOT_COMPANY_USER);
+		}
+		entity.setCompanyId(company.getId());
+		entity.setCompanyName(company.getCompanyName());
+		entity.setStatusFlag("0");
+		entity.setUpdateTime(LocalDateTime.now());
 		positionDao.insert(entity);
-		return entity;
+		return Result.success(entity);
 	}
 
 	/**
@@ -59,8 +88,18 @@ public class PositionServiceImpl implements PositionService {
 	@Override
 	@Transactional
 	public Position updateById(Position entity) {
+		Long userId = UserUtils.getLoginUserId();
+		Company company = companyDao.selectByUserId(userId);
+		//该用户对应的企业id不一致
+		if (entity.getCompanyId().equals(company.getId())){
+			return null;
+		}
+		//如果更新时更新了发布状态，则更新发布时间
+		if (!StringUtils.isBlank(entity.getStatusFlag()) && entity.getStatusFlag().equals("1")){
+			entity.setReleaseTime(LocalDateTime.now());
+		}
 		positionDao.updateById(entity);
-		return queryById(entity.getId());
+		return positionDao.selectById(entity.getId());
 	}
 
 	/**
@@ -70,8 +109,8 @@ public class PositionServiceImpl implements PositionService {
 	 * @return 实例对象
 	 */
 	@Override
-	public Position queryById(Long id) {
-		return positionDao.selectById(id);
+	public PositionCompanyDto queryById(Long id) {
+		return positionDao.selectByPositionCompany(id);
 	}
 
 	/**
@@ -82,12 +121,22 @@ public class PositionServiceImpl implements PositionService {
 	 * @return 查询结果
 	 */
 	@Override
-	public Page<Position> queryByPage(Position entity, BaseQueryDto pageRequest) {
-		QueryWrapper<Position> queryWrapper =  new QueryWrapper<>();
-		queryWrapper.orderByAsc("id");
-		Page<Position> page = new Page<>(pageRequest.getPageNum(),pageRequest.getPageSize());
-		page = (Page)positionDao.selectPage(page, queryWrapper);
-		return page;
+	public PageInfo<PositionDto> queryByPage(Position entity, BaseQueryDto pageRequest,Long userId) {
+		//查询当前用户
+		User user = userDao.selectById(userId);
+		if (user.getUserType() == 0){
+			//船员
+			entity.setStatusFlag("1");
+		} else if (user.getUserType() == 1){
+			//企业
+			Company company = companyDao.selectByUserId(userId);
+			entity.setCompanyId(company.getId());
+		}
+		PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
+		List<PositionDto> positionDtos = positionDao.selectPageList(entity);
+
+		PageInfo<PositionDto> userInfoPage = new PageInfo<PositionDto>(positionDtos);
+		return userInfoPage;
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.lhh.seamanrecruit.controller.position;
 
+import com.lhh.seamanrecruit.constant.Constant;
+import com.lhh.seamanrecruit.service.user.UserService;
 import com.lhh.seamanrecruit.utils.UserUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +28,9 @@ public class PositionController {
     @Autowired
     private PositionService positionService;
 
+    @Autowired
+    private UserService userService;
+
     /**
      * 新增数据
      *
@@ -35,8 +40,7 @@ public class PositionController {
     @PostMapping("/add")
     @ApiOperation("新增招聘")
     public Result add(@RequestBody Position position) {
-
-        return Result.success(positionService.insert(position));
+        return positionService.insert(position,UserUtils.getLoginUserId());
     }
 
     /**
@@ -60,7 +64,11 @@ public class PositionController {
     @PostMapping("/updateById")
     @ApiOperation("根据id修改招聘")
     public Result updateById(@RequestBody Position position) {
-        return Result.success(positionService.updateById(position));
+        Position posit = positionService.updateById(position);
+        if (null == posit){
+            return Result.error(Constant.NOT_UPDATE_JURISDICTION);
+        }
+        return Result.success(posit);
     }
 
     /**
@@ -69,9 +77,9 @@ public class PositionController {
      * @param id 主键
      * @return 单条数据
      */
-    @GetMapping("/{id}")
-    @ApiOperation("通过id查询招聘")
-    public Result queryById(@PathVariable("id") Long id) {
+    @GetMapping("/queryById")
+    @ApiOperation("通过id查询招聘明细信息")
+    public Result queryById(@RequestParam("id") Long id) {
         return Result.success(positionService.queryById(id));
     }
 
@@ -86,8 +94,7 @@ public class PositionController {
     @ApiOperation("分页查询招聘")
     public Result queryByPage(Position position, BaseQueryDto pageRequest) {
         Long userId = UserUtils.getLoginUserId();
-        System.out.println(userId);
-        return Result.success(positionService.queryByPage(position, pageRequest));
+        return Result.success(positionService.queryByPage(position, pageRequest,userId));
     }
 
 }

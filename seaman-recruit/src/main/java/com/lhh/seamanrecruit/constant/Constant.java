@@ -128,6 +128,16 @@ public class Constant {
     public static final String USER_ERROR = "用户信息有误！";
 
     /**
+     * 用户不为企业用户，无法新建职位
+     */
+    public static final String POSITION_USER_NOT_COMPANY_USER = "用户不为企业用户，无法新建职位";
+
+    /**
+     * 没有修改权限
+     */
+    public static final String NOT_UPDATE_JURISDICTION = "没有修改权限";
+
+    /**
      * 验证码
      */
     public static final String EMAIL_CODE = "邮箱验证";
@@ -136,6 +146,8 @@ public class Constant {
      * 邮箱验证信息
      */
     public static final String EMAIL_IS_CODE = "验证码为:";
+
+
 
     /**
      * 忘记密码邮箱验证码redis key

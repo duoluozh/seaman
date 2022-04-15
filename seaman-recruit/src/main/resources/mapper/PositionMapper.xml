@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lhh.seamanrecruit.dao.PositionDao">
+
+    <select id="selectPageList" resultType="com.lhh.seamanrecruit.dto.position.PositionDto">
+        select * from position
+        where 1=1
+        <if test="param != null and param.statusFlag != null">
+            AND status_flag in (#{param.statusFlag})
+        </if>
+        <if test="param != null and param.companyId != null">
+            AND company_id = #{param.companyId}
+            AND status_flag in ('0','1')
+        </if>
+        order by update_time DESC
+    </select>
+
+    <select id="selectByPositionCompany" resultType="com.lhh.seamanrecruit.dto.position.PositionCompanyDto">
+        SELECT p.id,p.`position_name`,p.`position_num`,p.`ship_type`,p.`gross_ton`,p.`ship_age`,
+               p.`specific_route`,p.`contract_duration`,
+               p.`boarding_place`,p.`monthly_salary`,p.`education`,
+               p.`release_time`,p.`position_code`,p.`company_name`,
+               p.`status_flag`,c.`social_credit_code`,
+               c.`representative`,c.`company_type`,c.`year`,c.`capital`,
+               c.`employees_number`,c.`contacts_name`,c.`phone`,c.`fax`,
+               c.`contacts_phone` FROM position p,company c
+        WHERE p.id = #{id}
+        AND c.id = p.`company_id`
+    </select>
+</mapper>

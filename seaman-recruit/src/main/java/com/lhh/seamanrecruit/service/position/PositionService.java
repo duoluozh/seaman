@@ -1,8 +1,13 @@
 package com.lhh.seamanrecruit.service.position;
 
+import com.github.pagehelper.PageInfo;
+import com.lhh.seamanrecruit.dto.position.PositionCompanyDto;
+import com.lhh.seamanrecruit.dto.position.PositionDto;
 import com.lhh.seamanrecruit.entity.Position;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
+import com.lhh.seamanrecruit.utils.Result;
+
 import java.util.List;
 /**
  * 招聘服务接口
@@ -16,9 +21,10 @@ public interface PositionService {
          * 新增数据
          *
          * @param entity 实例对象
+         * @param userId 用户id
          * @return 实例对象
          */
-        Position insert(Position entity);
+        Result insert(Position entity, Long userId);
 
         /**
          * 通过主键删除数据
@@ -42,7 +48,7 @@ public interface PositionService {
          * @param id 主键
          * @return 实例对象
          */
-        Position queryById(Long id);
+        PositionCompanyDto queryById(Long id);
 
         /**
          * 分页查询
@@ -51,6 +57,6 @@ public interface PositionService {
          * @param pageRequest      分页对象
          * @return 查询结果
          */
-        Page<Position> queryByPage(Position entity, BaseQueryDto pageRequest);
+        PageInfo<PositionDto> queryByPage(Position entity, BaseQueryDto pageRequest, Long userId);
 
 }

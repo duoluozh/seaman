@@ -1,16 +1,15 @@
-package com.lhh.seamanrecruit.entity;
+package com.lhh.seamanrecruit.dto.position;
 
-
-import lombok.Data;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
 import io.swagger.annotations.ApiModel;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import io.swagger.annotations.ApiModelProperty;
-import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>招聘实体类</p>
@@ -18,18 +17,16 @@ import org.springframework.data.annotation.Id;
  * @date 2022-04-12 14:09:33
  */
 @Data
+@ApiModel("职位列表")
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("招聘")
-@TableName(value = "position")
-public class Position implements Serializable {
+public class PositionDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 主键id
 	 */
-
 	@Id
 	@ApiModelProperty(value = "主键id")
 	private Long id;
@@ -122,13 +119,11 @@ public class Position implements Serializable {
 	 * 职位状态
 	 */
 	@ApiModelProperty(value = "职位状态(0-未发布，1-发布)")
-	private String statusFlag;
+	private String status_flag;
 
 	/**
 	 * 更新时间
 	 */
 	@ApiModelProperty(value = "更新时间")
 	private LocalDateTime updateTime;
-
-
 }

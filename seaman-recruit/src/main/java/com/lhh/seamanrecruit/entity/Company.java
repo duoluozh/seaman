@@ -28,7 +28,6 @@ public class Company implements Serializable {
 	/**
 	 * 主键id
 	 */
-
 	@Id
 	@ApiModelProperty(value = "主键id")
 	private Long id;
