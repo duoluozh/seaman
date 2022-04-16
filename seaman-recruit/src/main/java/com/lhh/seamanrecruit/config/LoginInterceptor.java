@@ -1,6 +1,7 @@
 package com.lhh.seamanrecruit.config;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.lhh.seamanrecruit.constant.Constant;
 import com.lhh.seamanrecruit.dao.UserDao;
 import com.lhh.seamanrecruit.entity.User;
 import com.lhh.seamanrecruit.utils.JwtUtils;
@@ -40,7 +41,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             throw new RuntimeException("token-isNull");
         }
         for (Cookie cookie : cookies) {
-            if ("token".equals(cookie.getName())) {
+            if (Constant.TOKEN.equals(cookie.getName())) {
                 token = cookie.getValue();
             }
         }

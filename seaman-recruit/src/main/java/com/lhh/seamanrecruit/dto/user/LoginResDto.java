@@ -1,5 +1,6 @@
 package com.lhh.seamanrecruit.dto.user;
 
+import com.lhh.seamanrecruit.constant.Constant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

@@ -1,5 +1,6 @@
 package com.lhh.seamanrecruit.utils;
 
+import com.lhh.seamanrecruit.constant.Constant;
 import io.jsonwebtoken.Claims;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -29,7 +30,7 @@ public class UserUtils {
             throw new RuntimeException("token-isNull");
         }
         for (Cookie cookie : cookies) {
-            if ("token".equals(cookie.getName())) {
+            if (Constant.TOKEN.equals(cookie.getName())) {
                 token = cookie.getValue();
             }
         }
@@ -60,7 +61,7 @@ public class UserUtils {
             throw new RuntimeException("token-isNull");
         }
         for (Cookie cookie : cookies) {
-            if ("token".equals(cookie.getName())) {
+            if (Constant.TOKEN.equals(cookie.getName())) {
                 token = cookie.getValue();
             }
         }

@@ -80,7 +80,7 @@ public class Constant {
     /**
      * 请先输入验证码
      */
-    public static final String VERIFICATIONCODE_NULL = "请先输入验证码";
+    public static final String VERIFICATION_CODE_NULL = "请先输入验证码";
 
     /**
      * 邮箱不能为空
@@ -146,8 +146,6 @@ public class Constant {
      * 邮箱验证信息
      */
     public static final String EMAIL_IS_CODE = "验证码为:";
-
-
 
     /**
      * 忘记密码邮箱验证码redis key

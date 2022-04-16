@@ -79,7 +79,7 @@ public class UserController {
         }
         LoginResDto res = userService.login(loginReqDto);
         // 将token存入cookies
-        Cookie tokenCookie = new Cookie("token", res.getToken());
+        Cookie tokenCookie = new Cookie(Constant.TOKEN, res.getToken());
         // 关闭浏览器就失效
         tokenCookie.setMaxAge(-1);
         response.addCookie(tokenCookie);
@@ -169,7 +169,7 @@ public class UserController {
             throw new RuntimeException(Constant.PASSWORD_NULL);
         }
         if (StringUtils.isBlank(dto.getVerificationCode())) {
-            throw new RuntimeException(Constant.VERIFICATIONCODE_NULL);
+            throw new RuntimeException(Constant.VERIFICATION_CODE_NULL);
         }
         if (!dto.getPassword().matches(Regulars.PASSWORD_REGULAR)) {
             //正则校验
