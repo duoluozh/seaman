@@ -30,6 +30,7 @@ import java.net.URLEncoder;
 @Slf4j
 @Component
 public class QiNiuUtil {
+
     /**
      * 上传本地文件
      * @param localFilePath 本地文件完整路径
@@ -120,8 +121,7 @@ public class QiNiuUtil {
     /**
      * 获取文件访问地址
      * @param fileName 文件云端存储的名称
-     * @return
-     * @throws UnsupportedEncodingException
+     * @return 文件访问地址
      */
     public String fileUrl(String fileName) throws UnsupportedEncodingException {
         String encodedFileName = URLEncoder.encode(fileName, "utf-8");
@@ -139,8 +139,7 @@ public class QiNiuUtil {
      * @param file 文件
      * @param key 文件名
      * @param override 是否覆盖同名同位置文件
-     * @return
-     * @throws IOException
+     * @return 上传结果（true：成功，false：失败）
      */
     public boolean uploadMultipartFile(MultipartFile file, String key, boolean override) {
         //构造一个带指定Zone对象的配置类
@@ -165,7 +164,8 @@ public class QiNiuUtil {
             Auth auth = getAuth();
             String upToken;
             if(override){
-                upToken = auth.uploadToken(QiNiuConfig.getInstance().getBucket(), key);//覆盖上传凭证
+                //覆盖上传凭证
+                upToken = auth.uploadToken(QiNiuConfig.getInstance().getBucket(), key);
             }else{
                 upToken = auth.uploadToken(QiNiuConfig.getInstance().getBucket());
             }
@@ -174,20 +174,18 @@ public class QiNiuUtil {
             //进行上传操作，传入文件的字节数组，文件名，上传空间，得到回复对象
             Response response = uploadManager.put(uploadBytes, key, upToken);
             putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
-            System.out.println(putRet.key);//key 文件名
-            System.out.println(putRet.hash);//hash 七牛返回的文件存储的地址，可以使用这个地址加七牛给你提供的前缀访问到这个视频。
+            //key 文件名
+            System.out.println(putRet.key);
+            //hash 七牛返回的文件存储的地址，可以使用这个地址加七牛给你提供的前缀访问到这个视频。
+            System.out.println(putRet.hash);
             return true;
-        }catch (QiniuException e){
-            e.printStackTrace();
-            return false;
-        }catch (IOException e) {
+        } catch (IOException e){
             e.printStackTrace();
             return false;
         }
     }
 
     public static Auth getAuth(){
-        Auth auth = Auth.create(QiNiuConfig.getInstance().getAccessKey(), QiNiuConfig.getInstance().getSecretKey());
-        return auth;
+        return Auth.create(QiNiuConfig.getInstance().getAccessKey(), QiNiuConfig.getInstance().getSecretKey());
     }
 }

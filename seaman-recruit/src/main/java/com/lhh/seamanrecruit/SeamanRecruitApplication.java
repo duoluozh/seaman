@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.core.env.Environment;
 
@@ -13,7 +15,7 @@ import java.net.InetAddress;
 @SpringBootApplication
 @EnableCaching
 @MapperScan(basePackages  = "com.lhh.seamanrecruit.dao")
-public class SeamanRecruitApplication {
+public class SeamanRecruitApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) throws Exception {
         //      + "health: \thttp://{}:{}/swagger-ui.html"
@@ -32,5 +34,13 @@ public class SeamanRecruitApplication {
                 actPort
         );
     }
+
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        // TODO Auto-generated method stub
+        return builder.sources(SeamanRecruitApplication.class);
+    }
+
 
 }

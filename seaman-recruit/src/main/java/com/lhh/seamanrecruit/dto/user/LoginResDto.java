@@ -5,9 +5,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * @Author: yslong
@@ -18,17 +18,9 @@ import java.util.Date;
 @ApiModel("用户登录入参")
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResDto {
+public class LoginResDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 主键ID
-     */
-
-    @Id
-    @ApiModelProperty(value = "主键ID")
-    private Long id;
 
     /**
      * 用户名
@@ -37,16 +29,11 @@ public class LoginResDto {
     private String userName;
 
     /**
-     * 密码
+     * token
      */
-    @ApiModelProperty(value = "密码")
-    private String password;
+    @ApiModelProperty(value = "token")
+    private String token;
 
-    /**
-     * 电子邮箱
-     */
-    @ApiModelProperty(value = "电子邮箱")
-    private String email;
 
     /**
      * 用户类型(0-船员,1-企业用户,2-超管用户)
@@ -58,11 +45,11 @@ public class LoginResDto {
      * 创建时间
      */
     @ApiModelProperty(value = "创建时间")
-    private String createdTime;
+    private LocalDateTime createdTime;
 
     /**
      * 更新时间
      */
     @ApiModelProperty(value = "更新时间")
-    private String updatedTime;
+    private LocalDateTime updatedTime;
 }

@@ -1,7 +1,8 @@
-package com.lhh.seamanrecruit.controller.test;
+package com.lhh.seamanrecruit.controller;
 
 import com.lhh.seamanrecruit.dto.eamil.Email;
 import com.lhh.seamanrecruit.entity.Test;
+import com.lhh.seamanrecruit.enums.ShipTypeEnum;
 import com.lhh.seamanrecruit.service.tset.TestService;
 import com.lhh.seamanrecruit.utils.*;
 import io.swagger.annotations.Api;
@@ -44,16 +45,18 @@ public class TestController {
         redisUtils.set("789789", "6666");
         String cacheObject = (String) redisUtils.get("789789");
 //        log.info(cacheObject);
+        String loginUser = UserUtils.getLoginUserName();
+        System.out.println(loginUser);
         List<Test> res = testService.queryAll();
-        return ResultUtils.success(res);
+        return Result.success(res);
     }
 
 
     @ApiOperation("文件上传-测试")
     @PostMapping("/pictureTest")
     public Result pictureTest(MultipartFile file) {
-        qiNiuUtil.uploadMultipartFile(file, file.getOriginalFilename(), true);
-        return ResultUtils.success();
+        boolean b = qiNiuUtil.uploadMultipartFile(file, file.getOriginalFilename(), true);
+        return Result.success(b);
     }
 
     @ApiOperation("获取文件地址-测试")
@@ -65,7 +68,7 @@ public class TestController {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return ResultUtils.success(s);
+        return Result.success(s);
     }
 
     @ApiOperation("发送邮件-测试")
@@ -77,7 +80,7 @@ public class TestController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResultUtils.success(s);
+        return Result.success(s);
     }
 
 }

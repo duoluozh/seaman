@@ -3,14 +3,12 @@ package com.lhh.seamanrecruit.config;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lhh.seamanrecruit.dao.UserDao;
 import com.lhh.seamanrecruit.entity.User;
-import com.lhh.seamanrecruit.service.user.UserService;
 import com.lhh.seamanrecruit.utils.JwtUtils;
-import com.lhh.seamanrecruit.utils.ResultUtils;
+import com.lhh.seamanrecruit.utils.RedisUtils;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -22,36 +20,45 @@ import javax.servlet.http.HttpServletResponse;
  * @Date: 2022/4/9 16:32
  * @Description: 请求拦截
  */
-@Component
 @Slf4j
+@Component
 public class LoginInterceptor implements HandlerInterceptor {
 
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private RedisUtils redisUtils;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         // 从请求投中获取token
         String token = request.getHeader("Access-Token");
-        if (token == null) {
-            throw new RuntimeException("toke-isNull");
+        if (StringUtils.isBlank(token)) {
+            throw new RuntimeException("token-isNull");
         }
-        Claims decode;
+        Claims decode ;
         try {
             decode = JwtUtils.decode(token);
         } catch (Exception e) {
-           throw new RuntimeException("token-error");
-
+            throw new RuntimeException("error-token");
         }
         // 根据token携带的同户名查询用户是否存在
-        User user = userDao.selectOne(new QueryWrapper<User>().eq("user_name", decode.get("username")));
+        String username = (String) decode.get("userName");
+        User user = userDao.selectOne(new QueryWrapper<User>().eq("user_name", username));
         if (user == null) {
             throw new RuntimeException("user-isNull");
         }
-        // 验证token
+        //校验是否伪造token
+        String userToken = (String) redisUtils.get(username);
+        if (!token.equals(userToken)) {
+            throw new RuntimeException("error-token");
+        }
+        // 重置缓存失效时间
+        // 验证token是否合法
         boolean verify = JwtUtils.isVerify(token);
         if (!verify) {
-            throw new RuntimeException("token-error");
+            throw new RuntimeException("error-token");
         }
         return true;
     }

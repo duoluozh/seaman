@@ -2,12 +2,9 @@ package com.lhh.seamanrecruit.utils;
 
 import org.apache.commons.codec.binary.Hex;
 
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 import java.util.Random;
-import java.util.UUID;
 
 /**
  * @Author: yslong
@@ -18,8 +15,9 @@ public class Md5Util {
 
     /**
      * MD5加密
-     * @param password
-     * @return
+     *
+     * @param password 需要加密的数据
+     * @return 加密后的数据
      */
     public static String generate(String password) {
         String salt = getSalt();
@@ -34,9 +32,10 @@ public class Md5Util {
         return new String(cs);
     }
 
-
     /**
      * 获取十六进制字符串形式的MD5摘要
+     * @param src 数据
+     * @return 十六进制字符串形式的MD5摘要
      */
     private static String md5Hex(String src) {
         try {
@@ -50,11 +49,10 @@ public class Md5Util {
 
     /**
      * 校验加盐后是否和原文一致
-     * @author daniel
-     * @time 2016-6-11 下午8:45:39
-     * @param password
-     * @param md5
-     * @return
+     *
+     * @param password 原密码
+     * @param md5 加盐后的密码
+     * @return 校验结构（true：一致，false：不一致）
      */
     public static boolean verify(String password, String md5) {
         char[] cs1 = new char[32];
@@ -65,12 +63,12 @@ public class Md5Util {
             cs2[i / 3] = md5.charAt(i + 1);
         }
         String salt = new String(cs2);
-        return md5Hex(password + salt).equals(new String(cs1));
+        return Objects.equals(md5Hex(password + salt), new String(cs1));
     }
 
     /**
-     * @return String 盐
      * @Description 随机生成盐值
+     * @return String 盐
      */
     public static String getSalt() {
         Random r = new Random();
@@ -87,9 +85,9 @@ public class Md5Util {
 
 
     public static void main(String[] args) {
-        String s = Md5Util.generate("123213");
+        String s = Md5Util.generate("zhouhui19991110");
         System.out.println(s);
-        System.out.println(Md5Util.verify("123213", s));
+        System.out.println(Md5Util.verify("zhouhui19991110", s));
 
     }
 

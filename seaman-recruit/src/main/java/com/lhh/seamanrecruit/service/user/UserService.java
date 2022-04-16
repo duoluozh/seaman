@@ -1,6 +1,8 @@
 package com.lhh.seamanrecruit.service.user;
 
 import com.lhh.seamanrecruit.dto.user.LoginReqDto;
+import com.lhh.seamanrecruit.dto.user.LoginResDto;
+import com.lhh.seamanrecruit.dto.user.UpdatePasswordReqDto;
 import com.lhh.seamanrecruit.dto.user.UserDto;
 import com.lhh.seamanrecruit.entity.User;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -22,7 +24,7 @@ public interface UserService {
          * @param userDto 实例对象
          * @return 实例对象
          */
-        Result register(UserDto userDto);
+        User register(UserDto userDto);
 
 
         /**
@@ -30,8 +32,15 @@ public interface UserService {
          * @param loginReqDto
          * @return
          */
-        Result login(LoginReqDto loginReqDto);
+        LoginResDto login(LoginReqDto loginReqDto);
 
+
+        /**
+         * 修改密码
+         * @param reqDto
+         * @return
+         */
+        Boolean updatePassword(UpdatePasswordReqDto reqDto);
 
         /**
          * 通过主键删除数据
@@ -40,14 +49,6 @@ public interface UserService {
          * @return 是否成功
          */
         boolean deleteById(List<Long> ids);
-
-        /**
-         * 根据id修改数据
-         *
-         * @param entity 实例对象
-         * @return 实例对象
-         */
-        User updateById(User  entity);
 
         /**
          * 通过ID查询单条数据
@@ -66,4 +67,17 @@ public interface UserService {
          */
         Page<User> queryByPage(User entity, BaseQueryDto pageRequest);
 
+        /**
+         * 发送邮箱验证码
+         * @param userName
+         * @return
+         */
+        String verificationCode(String userName);
+
+        /**
+         * 忘记密码-修改密码
+         * @param dto
+         * @return
+         */
+        Result forgetPassword(LoginReqDto dto);
 }

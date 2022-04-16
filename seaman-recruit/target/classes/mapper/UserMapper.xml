@@ -35,5 +35,8 @@
         and password ='${password}'
     </select>
 
+    <update id="updatePasswordByUserName">
+        update user set password = #{param.password} where user_name = #{param.userName}
+    </update>
 
 </mapper>

@@ -1,24 +1,25 @@
 package com.lhh.seamanrecruit.service.user.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.constant.Constant;
+import com.lhh.seamanrecruit.dao.UserDao;
+import com.lhh.seamanrecruit.dto.BaseQueryDto;
+import com.lhh.seamanrecruit.dto.eamil.Email;
 import com.lhh.seamanrecruit.dto.user.LoginReqDto;
+import com.lhh.seamanrecruit.dto.user.LoginResDto;
+import com.lhh.seamanrecruit.dto.user.UpdatePasswordReqDto;
 import com.lhh.seamanrecruit.dto.user.UserDto;
 import com.lhh.seamanrecruit.entity.User;
-import com.lhh.seamanrecruit.dao.UserDao;
 import com.lhh.seamanrecruit.service.user.UserService;
 import com.lhh.seamanrecruit.utils.*;
-import io.jsonwebtoken.Jwts;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.Cookie;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -50,70 +51,82 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result register(UserDto userDto) {
+    public User register(UserDto userDto) {
         String userName = userDto.getUserName();
         String password = userDto.getPassword();
         String email = userDto.getEmail();
-        Integer userType = userDto.getUserType();
-        if (StringUtils.isBlank(userName)) {
-            return ResultUtils.error("用户名不能为空！");
-        }
-        if (StringUtils.isBlank(password)) {
-            return ResultUtils.error("密码不能为空！");
-        }
-        if (StringUtils.isBlank(email)) {
-            return ResultUtils.error("邮箱不能为空！");
-        }
-        if (userType == null) {
-            return ResultUtils.error("用户类型不能为空！");
-        }
-        if (userDao.selectByName(userName)!=null){
-            return ResultUtils.error("用户名已被占用！");
+        if (userDao.selectByName(userName) != null) {
+            throw new RuntimeException(Constant.USERNAME_OCCUPY);
         }
 
-        if (userDao.selectByEmail(email)!=null){
-            return ResultUtils.error("该邮箱已经绑定其他用户！");
+        if (userDao.selectByEmail(email) != null) {
+            throw new RuntimeException(Constant.EMAIL_OCCUPY);
         }
-        // todo 后期需要将密码进行加密
         User user = new User();
-        BeanUtils.copyProperties(userDto,user);
+        BeanUtils.copyProperties(userDto, user);
         // 将用户密码进行加密后存储
         user.setPassword(Md5Util.generate(password));
         user.setCreatedTime(LocalDateTime.now());
         user.setUpdatedTime(LocalDateTime.now());
         userDao.insert(user);
         user.setPassword(null);
-        return ResultUtils.success(user);
+        return user;
     }
 
 
     @Override
-    public Result login(LoginReqDto loginReqDto) {
+    public LoginResDto login(LoginReqDto loginReqDto) {
         String userName = loginReqDto.getUserName();
         // 用户输入的密码
         String loginPassword = loginReqDto.getPassword();
-        if (StringUtils.isBlank(userName)) {
-            return ResultUtils.error("请先输入用户名！");
-        }
-        if (StringUtils.isBlank(loginPassword)) {
-            return ResultUtils.error("密码不能为空！");
-        }
         User user = userDao.selectByName(userName);
-        if (user==null){
-            return ResultUtils.error("用户名不存在！");
+        if (user == null) {
+            throw new RuntimeException(Constant.USERNAME_NOT_EXIST);
         }
         // 校验用户输入的密码和注册的密码是否正确
-        if (!Md5Util.verify(loginPassword,user.getPassword())){
-            return ResultUtils.error("密码错误！");
+        if (!Md5Util.verify(loginPassword, user.getPassword())) {
+            throw new RuntimeException(Constant.PASSWORD_ERROR);
         }
-        Map<String,Object> claims = new HashMap<>();
-        claims.put("username",userName);
-        String token = JwtUtils.getToken(userName,TOKEN_EXPIRE_TIME, claims);
-        // 将token存入cookie和redis中
-//        Cookie tokenCookie = new Cookie("token", token);
-//        redisUtils.set(userName, token,TOKEN_EXPIRE_TIME);
-        user.setPassword(token);
-        return ResultUtils.success(user);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userName", userName);
+        claims.put("userId",user.getId());
+        String token = JwtUtils.getToken(userName, TOKEN_EXPIRE_TIME, claims);
+        // 将token存入redis中
+        redisUtils.set(userName, token, TOKEN_EXPIRE_TIME);
+        LoginResDto res = new LoginResDto();
+        res.setCreatedTime(user.getCreatedTime());
+        res.setUpdatedTime(user.getUpdatedTime());
+        res.setUserName(user.getUserName());
+        res.setUserType(user.getUserType());
+        res.setToken(token);
+        return res;
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param reqDto
+     * @return
+     */
+    @Override
+    @Transactional
+    public Boolean updatePassword(UpdatePasswordReqDto reqDto) {
+        String userName = reqDto.getUserName();
+        String oldPassword = reqDto.getOldPassword();
+        String newPassword = reqDto.getNewPassword();
+        User user = userDao.selectByName(userName);
+        if (user == null) {
+            throw new RuntimeException(Constant.USERNAME_NOT_EXIST);
+        }
+        // 校验用户输入的密码和注册的密码是否正确
+        if (!Md5Util.verify(oldPassword, user.getPassword())) {
+            throw new RuntimeException(Constant.PASSWORD_ERROR);
+        }
+        //密码加密
+        user.setPassword(Md5Util.generate(newPassword));
+        user.setUpdatedTime(LocalDateTime.now());
+        userDao.updateById(user);
+        return true;
     }
 
 
@@ -129,19 +142,19 @@ public class UserServiceImpl implements UserService {
         return userDao.deleteBatchIds(ids) > 0;
     }
 
-    /**
-     * 修改数据
-     *
-     * @param entity 实例对象
-     * @return 实例对象
-     */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public User updateById(User entity) {
-        userDao.updateById(entity);
-        entity.setUpdatedTime(LocalDateTime.now());
-        return queryById(entity.getId());
-    }
+//    /**
+//     * 修改密码
+//     *
+//     * @param entity
+//     * @return 实例对象
+//     */
+//    @Override
+//    @Transactional(rollbackFor = Exception.class)
+//    public User updateById(User entity) {
+//        userDao.updateById(entity);
+//        entity.setUpdatedTime(LocalDateTime.now());
+//        return queryById(entity.getId());
+//    }
 
     /**
      * 通过ID查询单条数据
@@ -168,6 +181,47 @@ public class UserServiceImpl implements UserService {
         Page<User> page = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
         page = (Page) userDao.selectPage(page, queryWrapper);
         return page;
+    }
+
+    /**
+     * 根据用户名获取邮箱并发送邮件验证码
+     * @param userName 用户名
+     * @return
+     */
+    @Override
+    public String verificationCode(String userName) {
+        User user = userDao.selectByName(userName);
+        String status = null;
+        if (null != user){
+            //对邮箱发送验证码
+            Email email = new Email();
+            email.setSubject(Constant.EMAIL_CODE);
+            String randomCode = RandomCodeUtils.getRandomCode(6);
+            email.setContent(Constant.EMAIL_IS_CODE + randomCode);
+            status = SendMail.sendMails(email, user.getEmail());
+            redisUtils.set(Constant.EMAIL_CODE_KEY + userName,randomCode,Constant.VERIFICATION_CODE_TIME);
+        }
+        return status;
+    }
+
+    @Override
+    public Result forgetPassword(LoginReqDto dto) {
+
+        //获取验证码
+        String randomCode = (String) redisUtils.get(Constant.EMAIL_CODE_KEY + dto.getUserName());
+        if (StringUtils.isBlank(randomCode)){
+            throw new RuntimeException(Constant.VERIFICATIONCODE_ERROR);
+        }
+        if (!dto.getVerificationCode().equals(randomCode)){
+            throw new RuntimeException(Constant.VERIFICATIONCODE_ERROR);
+        }
+        //验证码正确--修改密码
+        User user = new User();
+        user.setUserName(dto.getUserName());
+        user.setPassword(Md5Util.generate(dto.getPassword()));
+
+        userDao.updatePasswordByUserName(user);
+        return Result.success();
     }
 
 }
