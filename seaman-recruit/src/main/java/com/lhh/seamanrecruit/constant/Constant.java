@@ -105,7 +105,7 @@ public class Constant {
     /**
      * 密码不符合规则
      */
-    public static final String PASSWORD_NOT_RULE = "密码不符合规则,请更改后重试";
+    public static final String PASSWORD_NOT_RULE = "密码要同时包含数字和字母，并且长度要在6-16位之间！";
 
     /**
      * 邮箱绑定其他用户
