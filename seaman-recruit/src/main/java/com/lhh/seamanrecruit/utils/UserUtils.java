@@ -43,7 +43,7 @@ public class UserUtils {
         } catch (Exception e) {
             throw new RuntimeException("error-token");
         }
-        // 将存在token中的用1户名取出
+        // 将存在token中的用户名取出
         return (String)decode.get("userName");
     }
 
