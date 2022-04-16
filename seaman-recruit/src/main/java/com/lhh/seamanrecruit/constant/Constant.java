@@ -100,7 +100,7 @@ public class Constant {
     /**
      * 验证码错误
      */
-    public static final String VERIFICATIONCODE_ERROR = "验证码错误";
+    public static final String VERIFICATION_CODE_ERROR = "验证码错误";
 
     /**
      * 密码不符合规则

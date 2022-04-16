@@ -210,10 +210,10 @@ public class UserServiceImpl implements UserService {
         //获取验证码
         String randomCode = (String) redisUtils.get(Constant.EMAIL_CODE_KEY + dto.getUserName());
         if (StringUtils.isBlank(randomCode)){
-            throw new RuntimeException(Constant.VERIFICATIONCODE_ERROR);
+            throw new RuntimeException(Constant.VERIFICATION_CODE_ERROR);
         }
         if (!dto.getVerificationCode().equals(randomCode)){
-            throw new RuntimeException(Constant.VERIFICATIONCODE_ERROR);
+            throw new RuntimeException(Constant.VERIFICATION_CODE_ERROR);
         }
         //验证码正确--修改密码
         User user = new User();
