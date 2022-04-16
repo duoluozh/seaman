@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -33,11 +34,20 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         // 从请求投中获取token
-        String token = request.getHeader("Access-Token");
+        String token = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies==null) {
+            throw new RuntimeException("token-isNull");
+        }
+        for (Cookie cookie : cookies) {
+            if ("token".equals(cookie.getName())) {
+                token = cookie.getValue();
+            }
+        }
         if (StringUtils.isBlank(token)) {
             throw new RuntimeException("token-isNull");
         }
-        Claims decode ;
+        Claims decode;
         try {
             decode = JwtUtils.decode(token);
         } catch (Exception e) {
@@ -49,7 +59,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (user == null) {
             throw new RuntimeException("user-isNull");
         }
-        //校验是否伪造token
+        //校验是否伪造token或无效token
         String userToken = (String) redisUtils.get(username);
         if (!token.equals(userToken)) {
             throw new RuntimeException("error-token");

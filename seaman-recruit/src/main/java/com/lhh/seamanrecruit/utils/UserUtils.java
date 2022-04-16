@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -22,7 +23,16 @@ public class UserUtils {
         // 获取request
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         // 从request中取出token
-        String token = request.getHeader("Access-Token");
+        String token = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies==null) {
+            throw new RuntimeException("token-isNull");
+        }
+        for (Cookie cookie : cookies) {
+            if ("token".equals(cookie.getName())) {
+                token = cookie.getValue();
+            }
+        }
         if (StringUtils.isBlank(token)) {
             throw new RuntimeException("token-isNull");
         }
@@ -44,7 +54,16 @@ public class UserUtils {
         // 获取request
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         // 从request中取出token
-        String token = request.getHeader("Access-Token");
+        String token = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies==null) {
+            throw new RuntimeException("token-isNull");
+        }
+        for (Cookie cookie : cookies) {
+            if ("token".equals(cookie.getName())) {
+                token = cookie.getValue();
+            }
+        }
         if (StringUtils.isBlank(token)) {
             throw new RuntimeException("token-isNull");
         }

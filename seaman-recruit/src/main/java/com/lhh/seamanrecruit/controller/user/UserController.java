@@ -79,7 +79,8 @@ public class UserController {
         }
         LoginResDto res = userService.login(loginReqDto);
         // 将token存入cookies
-        Cookie tokenCookie = new Cookie("token", res.getToken());
+//        Cookie tokenCookie = new Cookie("token", res.getToken());
+        Cookie tokenCookie = new Cookie("token", null);
         // 关闭浏览器就失效
         tokenCookie.setMaxAge(-1);
         response.addCookie(tokenCookie);
