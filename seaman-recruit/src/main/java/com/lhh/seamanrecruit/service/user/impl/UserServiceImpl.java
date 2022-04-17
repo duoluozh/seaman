@@ -19,7 +19,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +44,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RedisUtils redisUtils;
+
+    @Autowired
+    private QiNiuUtil qiNiuUtil;
 
     /**
      * 用户注册
@@ -222,6 +227,34 @@ public class UserServiceImpl implements UserService {
 
         userDao.updatePasswordByUserName(user);
         return Result.success();
+    }
+
+    /**
+     * 文件上传
+     * @param userId 用户id
+     * @param file 头像文件
+     * @return 头像文件的url
+     */
+    @Override
+    public Result pictureUpload(Long userId, MultipartFile file) {
+        String fileUrl = null;
+        boolean flag = qiNiuUtil.uploadMultipartFile(file, file.getOriginalFilename(), true);
+        if (flag){
+            try {
+                //如果上传成功则更新头像数据
+                fileUrl = qiNiuUtil.fileUrl(file.getOriginalFilename());
+                User user = new User();
+                user.setId(userId);
+                user.setHeadPortrait(fileUrl);
+                userDao.updateById(user);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        } else {
+            //上传失败
+            return Result.error();
+        }
+        return Result.success(fileUrl);
     }
 
 }

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import com.lhh.seamanrecruit.utils.Result;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -199,4 +200,28 @@ public class UserController {
         return Result.success(userName);
     }
 
+    /**
+     * 查询当前登录用户信息
+     *
+     * @return 单条数据
+     */
+    @GetMapping("/currentLoginUser")
+    @ApiOperation("查询当前登录用户信息")
+    public Result currentLoginUser() {
+        Long userId = UserUtils.getLoginUserId();
+        return Result.success(userService.queryById(userId));
+    }
+
+    /**
+     * 头像上传
+     *
+     * @param file 头像文件
+     * @return 单条数据
+     */
+    @GetMapping("/pictureUpload")
+    @ApiOperation("头像上传")
+    public Result pictureUpload(MultipartFile file) {
+        Long userId = UserUtils.getLoginUserId();
+        return userService.pictureUpload(userId,file);
+    }
 }

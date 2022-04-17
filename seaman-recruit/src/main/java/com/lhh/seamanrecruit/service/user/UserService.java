@@ -8,6 +8,7 @@ import com.lhh.seamanrecruit.entity.User;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import com.lhh.seamanrecruit.utils.Result;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 /**
@@ -80,4 +81,12 @@ public interface UserService {
          * @return
          */
         Result forgetPassword(LoginReqDto dto);
+
+        /**
+         * 文件上传
+         * @param userId 用户id
+         * @param file 头像文件
+         * @return
+         */
+        Result pictureUpload(Long userId, MultipartFile file);
 }

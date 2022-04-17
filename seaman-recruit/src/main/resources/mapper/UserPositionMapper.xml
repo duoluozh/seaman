@@ -5,7 +5,7 @@
 
     <select id="selectUserPosition" resultType="com.lhh.seamanrecruit.entity.UserPosition">
         select * from
-        user_poistion
+        user_position
         where user_id = #{userId}
         and position_id = #{positionId}
         and created_time >= #{dateTime}

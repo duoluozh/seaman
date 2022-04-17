@@ -59,6 +59,12 @@ public class User implements Serializable {
 	private Integer userType;
 
 	/**
+	 * 头像
+	 */
+	@ApiModelProperty(value = "头像")
+	private String headPortrait;
+
+	/**
 	 * 创建时间
 	 */
 	@ApiModelProperty(value = "创建时间")
