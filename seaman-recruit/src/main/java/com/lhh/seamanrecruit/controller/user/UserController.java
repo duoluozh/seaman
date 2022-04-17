@@ -83,7 +83,6 @@ public class UserController {
         // 关闭浏览器就失效
         tokenCookie.setPath("/");
         tokenCookie.setMaxAge(Constant.TOKEN_EXPIRE_TIME);
-        tokenCookie.setMaxAge(-1);
         response.addCookie(tokenCookie);
         return Result.success(res);
     }
