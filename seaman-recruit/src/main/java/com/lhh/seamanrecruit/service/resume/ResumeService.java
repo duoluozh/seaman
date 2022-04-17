@@ -1,5 +1,7 @@
 package com.lhh.seamanrecruit.service.resume;
 
+import com.github.pagehelper.PageInfo;
+import com.lhh.seamanrecruit.dto.resume.ResumeAddDto;
 import com.lhh.seamanrecruit.entity.Resume;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
@@ -18,7 +20,7 @@ public interface ResumeService {
          * @param entity 实例对象
          * @return 实例对象
          */
-        Resume insert(Resume entity);
+        ResumeAddDto insert(ResumeAddDto entity);
 
         /**
          * 通过主键删除数据
@@ -34,7 +36,7 @@ public interface ResumeService {
          * @param entity 实例对象
          * @return 实例对象
          */
-        Resume updateById(Resume  entity);
+        ResumeAddDto updateById(ResumeAddDto  entity);
 
         /**
          * 通过ID查询单条数据
@@ -42,7 +44,7 @@ public interface ResumeService {
          * @param id 主键
          * @return 实例对象
          */
-        Resume queryById(Long id);
+        ResumeAddDto queryById(Long id);
 
         /**
          * 分页查询
@@ -51,6 +53,6 @@ public interface ResumeService {
          * @param pageRequest      分页对象
          * @return 查询结果
          */
-        Page<Resume> queryByPage(Resume entity, BaseQueryDto pageRequest);
+        PageInfo<Resume> queryByPage(Resume entity, BaseQueryDto pageRequest);
 
 }

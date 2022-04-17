@@ -1,7 +1,6 @@
 package com.lhh.seamanrecruit.controller.position;
 
 import com.lhh.seamanrecruit.constant.Constant;
-import com.lhh.seamanrecruit.service.user.UserService;
 import com.lhh.seamanrecruit.utils.UserUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,7 +11,6 @@ import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import com.lhh.seamanrecruit.utils.Result;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 /**
  * 招聘控制层
@@ -27,9 +25,6 @@ public class PositionController {
 
     @Autowired
     private PositionService positionService;
-
-    @Autowired
-    private UserService userService;
 
     /**
      * 新增数据
@@ -95,6 +90,20 @@ public class PositionController {
     public Result queryByPage(Position position, BaseQueryDto pageRequest) {
         Long userId = UserUtils.getLoginUserId();
         return Result.success(positionService.queryByPage(position, pageRequest,userId));
+    }
+
+    /**
+     * 简历投递
+     *
+     * @param  id 职位id
+     * @return 查询结果
+     *
+     */
+    @GetMapping("/delivery")
+    @ApiOperation("简历投递")
+    public Result delivery(@RequestParam("id")Long id) {
+        Long userId = UserUtils.getLoginUserId();
+        return Result.success(positionService.insertDelivery(id, userId));
     }
 
 }

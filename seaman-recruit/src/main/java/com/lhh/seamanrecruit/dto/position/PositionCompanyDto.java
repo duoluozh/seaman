@@ -189,4 +189,10 @@ public class PositionCompanyDto implements Serializable {
 	 */
 	@ApiModelProperty(value = "地址")
 	private String address;
+
+	/**
+	 * 是否投递标记(0-未投递,1-已投递)
+	 */
+	@ApiModelProperty(value = "是否投递标记(0-未投递,1-已投递)")
+	private String deliveryFlag;
 }

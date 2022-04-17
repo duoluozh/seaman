@@ -1,5 +1,7 @@
 package com.lhh.seamanrecruit.controller.resume;
 
+import com.lhh.seamanrecruit.constant.Constant;
+import com.lhh.seamanrecruit.dto.resume.ResumeAddDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import com.lhh.seamanrecruit.entity.Resume;
@@ -26,12 +28,12 @@ public class ResumeController {
     /**
      * 新增数据
      *
-     * @param resume 简历实体
+     * @param resume 简历新增实体
      * @return 新增结果
      */
     @PostMapping("/add")
     @ApiOperation("新增简历")
-    public Result add(@RequestBody Resume resume) {
+    public Result add(@RequestBody ResumeAddDto resume) {
         return Result.success(resumeService.insert(resume));
     }
 
@@ -55,8 +57,12 @@ public class ResumeController {
      */
     @PostMapping("/updateById")
     @ApiOperation("根据id修改简历")
-    public Result updateById(@RequestBody Resume resume) {
-        return Result.success(resumeService.updateById(resume));
+    public Result updateById(@RequestBody ResumeAddDto resume) {
+        ResumeAddDto resumeAddDto = resumeService.updateById(resume);
+        if (null == resumeAddDto){
+            return Result.error(Constant.NOT_UPDATE_JURISDICTION);
+        }
+        return Result.success(resumeAddDto);
     }
 
     /**

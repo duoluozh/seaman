@@ -9,6 +9,8 @@ import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import com.lhh.seamanrecruit.utils.Result;
 
 import java.util.List;
+import java.util.Map;
+
 /**
  * 招聘服务接口
  *
@@ -59,4 +61,12 @@ public interface PositionService {
          */
         PageInfo<PositionDto> queryByPage(Position entity, BaseQueryDto pageRequest, Long userId);
 
+        /**
+         * 简历投递
+         *
+         * @param id 职位id
+         * @param userId   用户id
+         * @return 投递结果
+         */
+        Map<String,String> insertDelivery(Long id, Long userId);
 }

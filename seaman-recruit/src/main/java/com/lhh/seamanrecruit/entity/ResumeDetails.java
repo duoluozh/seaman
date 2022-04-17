@@ -75,9 +75,11 @@ public class ResumeDetails implements Serializable {
 	private String company;
 
 	/**
-	 * 用户id
+	 * 主表id
 	 */
-	@ApiModelProperty(value = "用户id")
-	private Long userId;
+	@ApiModelProperty(value = "主表id")
+	private Long masterId;
+
+
 
 }

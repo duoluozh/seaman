@@ -5,12 +5,14 @@ import com.github.pagehelper.PageInfo;
 import com.lhh.seamanrecruit.constant.Constant;
 import com.lhh.seamanrecruit.dao.CompanyDao;
 import com.lhh.seamanrecruit.dao.UserDao;
+import com.lhh.seamanrecruit.dao.UserPositionDao;
 import com.lhh.seamanrecruit.dto.position.PositionCompanyDto;
 import com.lhh.seamanrecruit.dto.position.PositionDto;
 import com.lhh.seamanrecruit.entity.Company;
 import com.lhh.seamanrecruit.entity.Position;
 import com.lhh.seamanrecruit.dao.PositionDao;
 import com.lhh.seamanrecruit.entity.User;
+import com.lhh.seamanrecruit.entity.UserPosition;
 import com.lhh.seamanrecruit.service.position.PositionService;
 import com.lhh.seamanrecruit.utils.Result;
 import com.lhh.seamanrecruit.utils.UserUtils;
@@ -24,7 +26,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 招聘服务实现类
@@ -44,6 +49,9 @@ public class PositionServiceImpl implements PositionService {
 
 	@Autowired
 	private UserDao userDao;
+
+	@Autowired
+	private UserPositionDao userPositionDao;
 
 	/**
 	 * 新增数据
@@ -110,7 +118,19 @@ public class PositionServiceImpl implements PositionService {
 	 */
 	@Override
 	public PositionCompanyDto queryById(Long id) {
-		return positionDao.selectByPositionCompany(id);
+		PositionCompanyDto positionCompanyDto = positionDao.selectByPositionCompany(id);
+
+		Long userId = UserUtils.getLoginUserId();
+		LocalDateTime now = LocalDateTime.now();
+		//查询简历是否在两个月内被投递
+		LocalDateTime dateTime = now.minus(60, ChronoUnit.DAYS);
+		UserPosition userPosition = userPositionDao.selectUserPosition(userId,id,dateTime);
+		if (null != userPosition){
+			positionCompanyDto.setDeliveryFlag("1");
+		} else {
+			positionCompanyDto.setDeliveryFlag("0");
+		}
+		return positionCompanyDto;
 	}
 
 	/**
@@ -137,6 +157,25 @@ public class PositionServiceImpl implements PositionService {
 
 		PageInfo<PositionDto> userInfoPage = new PageInfo<PositionDto>(positionDtos);
 		return userInfoPage;
+	}
+
+	/**
+	 * 简历投递
+	 *
+	 * @param id 职位id
+	 * @param userId   用户id
+	 * @return 投递结果
+	 */
+	@Override
+	public Map<String,String> insertDelivery(Long id, Long userId) {
+		UserPosition userPosition = new UserPosition();
+		userPosition.setPositionId(id);
+		userPosition.setPositionId(userId);
+		userPosition.setCreatedTime(LocalDateTime.now());
+		userPositionDao.insert(userPosition);
+		Map<String,String> map = new HashMap<>();
+		map.put("deliveryFlag","1");
+		return map;
 	}
 
 }

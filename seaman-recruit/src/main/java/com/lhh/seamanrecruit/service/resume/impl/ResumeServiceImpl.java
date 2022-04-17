@@ -1,8 +1,19 @@
 package com.lhh.seamanrecruit.service.resume.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.lhh.seamanrecruit.dao.ResumeDetailsDao;
+import com.lhh.seamanrecruit.dao.UserDao;
+import com.lhh.seamanrecruit.dto.position.PositionDto;
+import com.lhh.seamanrecruit.dto.resume.ResumeAddDto;
+import com.lhh.seamanrecruit.entity.Company;
 import com.lhh.seamanrecruit.entity.Resume;
 import com.lhh.seamanrecruit.dao.ResumeDao;
+import com.lhh.seamanrecruit.entity.ResumeDetails;
+import com.lhh.seamanrecruit.entity.User;
 import com.lhh.seamanrecruit.service.resume.ResumeService;
+import com.lhh.seamanrecruit.utils.CopyUtils;
+import com.lhh.seamanrecruit.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +36,12 @@ public class ResumeServiceImpl implements ResumeService {
 	@Autowired
 	private ResumeDao resumeDao;
 
+	@Autowired
+	private ResumeDetailsDao resumeDetailsDao;
+
+	@Autowired
+	private UserDao userDao;
+
 	/**
 	 * 新增数据
 	 *
@@ -33,8 +50,18 @@ public class ResumeServiceImpl implements ResumeService {
 	 */
 	@Override
 	@Transactional
-	public Resume insert(Resume entity) {
-		resumeDao.insert(entity);
+	public ResumeAddDto insert(ResumeAddDto entity) {
+		Long userId = UserUtils.getLoginUserId();
+		entity.setUserId(userId);
+		Resume resume = CopyUtils.copy(entity, Resume.class);
+		resumeDao.insert(resume);
+		List<ResumeDetails> resumeDetails = entity.getResumeDetails();
+		if (null != resumeDetails && resumeDetails.size() > 0){
+			for (ResumeDetails resumeDetail : resumeDetails) {
+				resumeDetail.setMasterId(resume.getId());
+				resumeDetailsDao.insert(resumeDetail);
+			}
+		}
 		return entity;
 	}
 
@@ -58,8 +85,21 @@ public class ResumeServiceImpl implements ResumeService {
 	 */
 	@Override
 	@Transactional
-	public Resume updateById(Resume entity) {
-		resumeDao.updateById(entity);
+	public ResumeAddDto updateById(ResumeAddDto entity) {
+		Long userId = UserUtils.getLoginUserId();
+		User user = userDao.selectById(userId);
+		if (user.getUserType() == 1){
+			return null;
+		}
+		Resume resume = CopyUtils.copy(entity, Resume.class);
+		resumeDao.updateById(resume);
+
+		List<ResumeDetails> resumeDetails = entity.getResumeDetails();
+		if (null != resumeDetails && resumeDetails.size() > 0){
+			for (ResumeDetails resumeDetail : resumeDetails) {
+				resumeDetailsDao.updateById(resumeDetail);
+			}
+		}
 		return queryById(entity.getId());
 	}
 
@@ -70,8 +110,14 @@ public class ResumeServiceImpl implements ResumeService {
 	 * @return 实例对象
 	 */
 	@Override
-	public Resume queryById(Long id) {
-		return resumeDao.selectById(id);
+	public ResumeAddDto queryById(Long id) {
+		//查询简历主表信息
+		Resume resume = resumeDao.selectById(id);
+		ResumeAddDto resumeAddDto = CopyUtils.copy(resume, ResumeAddDto.class);
+		//查询明细集合
+		List<ResumeDetails> resumeAddDtos = resumeDetailsDao.selectByMasterId(id);
+		resumeAddDto.setResumeDetails(resumeAddDtos);
+		return resumeAddDto;
 	}
 
 	/**
@@ -82,12 +128,13 @@ public class ResumeServiceImpl implements ResumeService {
 	 * @return 查询结果
 	 */
 	@Override
-	public Page<Resume> queryByPage(Resume entity, BaseQueryDto pageRequest) {
-		QueryWrapper<Resume> queryWrapper =  new QueryWrapper<>();
-		queryWrapper.orderByAsc("id");
-		Page<Resume> page = new Page<>(pageRequest.getPageNum(),pageRequest.getPageSize());
-		page = (Page)resumeDao.selectPage(page, queryWrapper);
-		return page;
+	public PageInfo<Resume> queryByPage(Resume entity, BaseQueryDto pageRequest) {
+
+		PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
+		List<Resume> positionDtos = resumeDao.selectPageList(entity);
+
+		PageInfo<Resume> userInfoPage = new PageInfo<Resume>(positionDtos);
+		return userInfoPage;
 	}
 
 }
