@@ -23,16 +23,18 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 // 不拦截的请求
                 .excludePathPatterns("/user/login")
+                .excludePathPatterns("/user/register")
                 .excludePathPatterns("/user/forgetPassword")
                 .excludePathPatterns("/user/sendVerificationCode")
                 .excludePathPatterns("/swagger-resources/**")
-                .excludePathPatterns("/webjars/**")
-                .excludePathPatterns("/v2/**")
                 .excludePathPatterns("/swagger-ui.html/**")
+                .excludePathPatterns("/webjars/**")
                 .excludePathPatterns("/doc.html")
-                .excludePathPatterns("/user/register")
-                .excludePathPatterns("/*")
-                .excludePathPatterns("/manager/html");
+                .excludePathPatterns("/css/**")
+                .excludePathPatterns("/js/**")
+                .excludePathPatterns("/fonts/**")
+                .excludePathPatterns("/*.html")
+                .excludePathPatterns("/");
 
     }
 
