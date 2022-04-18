@@ -38,7 +38,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         String token = null;
         Cookie[] cookies = request.getCookies();
         if (cookies==null) {
-            throw new RuntimeException("token-isNull");
+            throw new RuntimeException(Constant.TOKEN_ISNULL);
         }
         for (Cookie cookie : cookies) {
             if (Constant.TOKEN.equals(cookie.getName())) {
@@ -46,30 +46,30 @@ public class LoginInterceptor implements HandlerInterceptor {
             }
         }
         if (StringUtils.isBlank(token)) {
-            throw new RuntimeException("token-isNull");
+            throw new RuntimeException(Constant.TOKEN_ISNULL);
         }
         Claims decode;
         try {
             decode = JwtUtils.decode(token);
         } catch (Exception e) {
-            throw new RuntimeException("error-token");
+            throw new RuntimeException(Constant.ERROR_TOKEN);
         }
         // 根据token携带的同户名查询用户是否存在
         String username = (String) decode.get("userName");
         User user = userDao.selectOne(new QueryWrapper<User>().eq("user_name", username));
         if (user == null) {
-            throw new RuntimeException("user-isNull");
+            throw new RuntimeException(Constant.USER_ISNULL);
         }
         //校验是否伪造token或无效token
         String userToken = (String) redisUtils.get(username);
         if (!token.equals(userToken)) {
-            throw new RuntimeException("error-token");
+            throw new RuntimeException(Constant.ERROR_TOKEN);
         }
         // 重置缓存失效时间
         // 验证token是否合法
         boolean verify = JwtUtils.isVerify(token);
         if (!verify) {
-            throw new RuntimeException("error-token");
+            throw new RuntimeException(Constant.ERROR_TOKEN);
         }
         return true;
     }

@@ -23,6 +23,21 @@ public class Constant {
     public static final String TOKEN = "token";
 
     /**
+     * token为空
+     */
+    public static final String TOKEN_ISNULL = "toke-isnull";
+
+    /**
+     * 用户不存在
+     */
+    public static final String USER_ISNULL = "user-isnull";
+
+    /**
+     * token异常/无效token
+     */
+    public static final String ERROR_TOKEN = "error-token";
+
+    /**
      * 操作失败
      */
     public static final String RESULT_ERROR = "操作失败！";
