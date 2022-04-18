@@ -16,19 +16,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 @Slf4j
-public class BaseExceptionHandler{
-    @ExceptionHandler(value =Exception.class)
-    public Result exceptionHandler(Exception e){
-        if (Constant.TOKEN_ISNULL.equals(e.getMessage())){
+public class BaseExceptionHandler {
+    @ExceptionHandler(value = Exception.class)
+    public Result exceptionHandler(Exception e) {
+        if (Constant.TOKEN_ISNULL.equals(e.getMessage())) {
             return Result.error(Constant.LOGIN_FIRST, ResultCode.AUTHORIZE);
         }
-        if (Constant.USER_ISNULL.equals(e.getMessage())){
-            return Result.error(Constant.USERNAME_NOT_EXIST_LOGIN,ResultCode.AUTHORIZE);
+        if (Constant.USER_ISNULL.equals(e.getMessage())) {
+            return Result.error(Constant.USERNAME_NOT_EXIST_LOGIN, ResultCode.AUTHORIZE);
         }
-        if (Constant.ERROR_TOKEN.equals(e.getMessage())){
-            return Result.error(Constant.INVALID_LOGIN,ResultCode.AUTHORIZE);
+        if (Constant.ERROR_TOKEN.equals(e.getMessage())) {
+            return Result.error(Constant.INVALID_LOGIN, ResultCode.AUTHORIZE);
         }
-        log.error(e.getMessage(),e);
+        log.error(e.getMessage(), e);
         return Result.error(e.getMessage());
     }
 
