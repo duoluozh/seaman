@@ -6,6 +6,7 @@ import com.lhh.seamanrecruit.dao.ResumeDetailsDao;
 import com.lhh.seamanrecruit.dao.UserDao;
 import com.lhh.seamanrecruit.dto.position.PositionDto;
 import com.lhh.seamanrecruit.dto.resume.ResumeAddDto;
+import com.lhh.seamanrecruit.dto.resume.ResumePositionResDto;
 import com.lhh.seamanrecruit.entity.Company;
 import com.lhh.seamanrecruit.entity.Resume;
 import com.lhh.seamanrecruit.dao.ResumeDao;
@@ -134,6 +135,22 @@ public class ResumeServiceImpl implements ResumeService {
 		List<Resume> positionDtos = resumeDao.selectPageList(entity);
 
 		PageInfo<Resume> userInfoPage = new PageInfo<Resume>(positionDtos);
+		return userInfoPage;
+	}
+
+	/**
+	 * 分页查询求职者简历列表
+	 *
+	 * @param entity 筛选条件
+	 * @param pageRequest      分页对象
+	 * @return 查询结果
+	 */
+	@Override
+	public PageInfo<ResumePositionResDto> queryByResumePage(Resume entity, BaseQueryDto pageRequest) {
+		PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
+		List<ResumePositionResDto> positionDtos = resumeDao.queryByResumePage(entity);
+		//查询当前登录公司所有职位求职者简历已投递但未被处理列表
+		PageInfo<ResumePositionResDto> userInfoPage = new PageInfo<ResumePositionResDto>(positionDtos);
 		return userInfoPage;
 	}
 

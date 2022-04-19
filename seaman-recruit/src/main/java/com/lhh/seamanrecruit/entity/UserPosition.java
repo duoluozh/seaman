@@ -51,4 +51,10 @@ public class UserPosition implements Serializable {
 	@ApiModelProperty(value = "创建时间")
 	private LocalDateTime createdTime;
 
+	/**
+	 * 投递处理标记(0-投递未处理,1-拒绝,2-通过)
+	 */
+	@ApiModelProperty(value = "投递处理标记(0-投递未处理,1-拒绝,2-通过)")
+	private String deliveryFlag;
+
 }
