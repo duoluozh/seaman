@@ -1,6 +1,7 @@
 package com.lhh.seamanrecruit.controller.position;
 
 import com.lhh.seamanrecruit.constant.Constant;
+import com.lhh.seamanrecruit.enums.PositionEnum;
 import com.lhh.seamanrecruit.utils.UserUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -104,6 +105,18 @@ public class PositionController {
     public Result delivery(@RequestParam("id")Long id) {
         Long userId = UserUtils.getLoginUserId();
         return Result.success(positionService.insertDelivery(id, userId));
+    }
+
+    /**
+     * 职位下拉框
+     *
+     * @return 职位名称集合
+     *
+     */
+    @GetMapping("/positionList")
+    @ApiOperation("职位下拉框")
+    public Result positionList() {
+        return Result.success(PositionEnum.getPositionList());
     }
 
 }
