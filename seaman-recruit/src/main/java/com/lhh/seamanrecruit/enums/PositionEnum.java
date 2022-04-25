@@ -1,5 +1,8 @@
 package com.lhh.seamanrecruit.enums;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author zhh
  * @date 2022/4/11 11:22
@@ -27,6 +30,14 @@ public enum PositionEnum {
     SECOND_MACHINE("二机"),
     ENGINE_CADET("机舱实习生");
 
+    public static List<String> getPositionList(){
+        List<String> positionList = new ArrayList<>();
+        PositionEnum[] positionEnums = PositionEnum.values();
+        for (PositionEnum positionEnum : positionEnums) {
+            positionList.add(positionEnum.getName());
+        }
+        return positionList;
+    }
 
     /**
      *
