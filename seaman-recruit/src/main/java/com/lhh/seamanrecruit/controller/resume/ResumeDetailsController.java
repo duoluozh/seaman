@@ -1,5 +1,6 @@
 package com.lhh.seamanrecruit.controller.resume;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import com.lhh.seamanrecruit.entity.ResumeDetails;
 import com.lhh.seamanrecruit.service.resume.ResumeDetailsService;
@@ -33,7 +34,7 @@ public class ResumeDetailsController {
      */
     @PostMapping("/add")
     @ApiOperation("新增简历明细")
-    public Result add(@RequestBody ResumeDetails resumeDetails) {
+    public Result<ResumeDetails> add(@RequestBody ResumeDetails resumeDetails) {
         return Result.success(resumeDetailsService.insert(resumeDetails));
     }
 
@@ -57,7 +58,7 @@ public class ResumeDetailsController {
      */
     @PostMapping("/updateById")
     @ApiOperation("根据id修改简历明细")
-    public Result updateById(@RequestBody ResumeDetails resumeDetails) {
+    public Result<ResumeDetails> updateById(@RequestBody ResumeDetails resumeDetails) {
         return Result.success(resumeDetailsService.updateById(resumeDetails));
     }
 
@@ -69,7 +70,7 @@ public class ResumeDetailsController {
      */
     @GetMapping("/{id}")
     @ApiOperation("通过id查询简历明细")
-    public Result queryById(@PathVariable("id") Long id) {
+    public Result<ResumeDetails> queryById(@PathVariable("id") Long id) {
         return Result.success(resumeDetailsService.queryById(id));
     }
 
@@ -82,7 +83,7 @@ public class ResumeDetailsController {
      */
     @GetMapping("/queryByPage")
     @ApiOperation("分页查询简历明细")
-    public Result queryByPage(ResumeDetails resumeDetails, BaseQueryDto pageRequest) {
+    public Result<Page<ResumeDetails>> queryByPage(ResumeDetails resumeDetails, BaseQueryDto pageRequest) {
         return Result.success(resumeDetailsService.queryByPage(resumeDetails, pageRequest));
     }
 

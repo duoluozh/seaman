@@ -1,5 +1,6 @@
 package com.lhh.seamanrecruit.controller.company;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import com.lhh.seamanrecruit.entity.Company;
@@ -31,7 +32,7 @@ public class CompanyController {
      */
     @PostMapping("/add")
     @ApiOperation("新增公司")
-    public Result add(@RequestBody Company company) {
+    public Result<Company> add(@RequestBody Company company) {
         return Result.success(companyService.insert(company));
     }
 
@@ -55,7 +56,7 @@ public class CompanyController {
      */
     @PostMapping("/updateById")
     @ApiOperation("根据id修改公司")
-    public Result updateById(@RequestBody Company company) {
+    public Result<Company> updateById(@RequestBody Company company) {
         return Result.success(companyService.updateById(company));
     }
 
@@ -67,7 +68,7 @@ public class CompanyController {
      */
     @GetMapping("/{id}")
     @ApiOperation("通过id查询公司")
-    public Result queryById(@PathVariable("id") Long id) {
+    public Result<Company> queryById(@PathVariable("id") Long id) {
         return Result.success(companyService.queryById(id));
     }
 
@@ -80,7 +81,7 @@ public class CompanyController {
      */
     @GetMapping("/queryByPage")
     @ApiOperation("分页查询公司")
-    public Result queryByPage(Company company, BaseQueryDto pageRequest) {
+    public Result<Page<Company>> queryByPage(Company company, BaseQueryDto pageRequest) {
         return Result.success(companyService.queryByPage(company, pageRequest));
     }
 

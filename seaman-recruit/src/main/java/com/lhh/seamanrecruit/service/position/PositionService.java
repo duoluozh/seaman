@@ -4,7 +4,6 @@ import com.github.pagehelper.PageInfo;
 import com.lhh.seamanrecruit.dto.position.PositionCompanyDto;
 import com.lhh.seamanrecruit.dto.position.PositionDto;
 import com.lhh.seamanrecruit.entity.Position;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import com.lhh.seamanrecruit.utils.Result;
 
@@ -26,7 +25,7 @@ public interface PositionService {
          * @param userId 用户id
          * @return 实例对象
          */
-        Result insert(Position entity, Long userId);
+        Position insert(Position entity, Long userId);
 
         /**
          * 通过主键删除数据

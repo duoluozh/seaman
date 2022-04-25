@@ -1,11 +1,9 @@
 package com.lhh.seamanrecruit.controller.user;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.constant.Constant;
 import com.lhh.seamanrecruit.constant.Regulars;
-import com.lhh.seamanrecruit.dto.user.LoginReqDto;
-import com.lhh.seamanrecruit.dto.user.LoginResDto;
-import com.lhh.seamanrecruit.dto.user.UpdatePasswordReqDto;
-import com.lhh.seamanrecruit.dto.user.UserDto;
+import com.lhh.seamanrecruit.dto.user.*;
 import com.lhh.seamanrecruit.utils.UserUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -40,27 +39,59 @@ public class UserController {
     /**
      * 用户注册
      *
-     * @param userDto 用户实体
+     * @param registerDto 注册
      * @return 新增结果
      */
     @PostMapping("/register")
     @ApiOperation("用户注册")
-    public Result register(@RequestBody UserDto userDto) {
-        if (StringUtils.isBlank(userDto.getUserName())) {
-            return Result.error(Constant.USERNAME_NULL);
+    public Result<User> register(@RequestBody RegisterDto registerDto) {
+        Integer userType = registerDto.getUserType();
+        if (userType == null) {
+            // 用户类型不能为空
+            throw new RuntimeException(Constant.USERNAME_TYPE_NULL);
         }
-        String password = userDto.getPassword();
+        if (StringUtils.isBlank(registerDto.getUserName())) {
+            // 用户名不能为空
+            throw new RuntimeException(Constant.USERNAME_NULL);
+        }
+        String password = registerDto.getPassword();
         if (StringUtils.isBlank(password)) {
-            return Result.error(Constant.PASSWORD_NULL);
+            //密码不能为空
+            throw new RuntimeException(Constant.PASSWORD_NULL);
         }
         if (!password.matches(Regulars.PASSWORD_REGULAR)) {
             //正则校验
             throw new RuntimeException(Constant.PASSWORD_NOT_RULE);
         }
-        if (StringUtils.isBlank(userDto.getEmail())) {
-            return Result.error(Constant.EMAIL_NULL);
+        if (StringUtils.isBlank(registerDto.getEmail())) {
+            // 邮箱不能为空
+            throw new RuntimeException(Constant.EMAIL_NULL);
         }
-        return Result.success(userService.register(userDto));
+        //若用户是企业用户
+        if (userType == 1) {
+            if (StringUtils.isBlank(registerDto.getEnterpriseName())) {
+                throw new RuntimeException("企业名称不能为空!");
+            }
+            if (StringUtils.isBlank(registerDto.getSocialCreditCode())) {
+                throw new RuntimeException("社会信用码不能为空!");
+            }
+            if (StringUtils.isBlank(registerDto.getLegalRepresentative())) {
+                throw new RuntimeException("法定代表人不能为空!");
+            }
+            if (registerDto.getRegisteredCapital() == null || registerDto.getRegisteredCapital() <= 0) {
+                throw new RuntimeException("注册资金不能为空或者小于0!");
+            }
+            if (registerDto.getEstablishmentTime() == null) {
+                throw new RuntimeException("成立时间不能为空!");
+            }
+            if (StringUtils.isBlank(registerDto.getNature())) {
+                throw new RuntimeException("公司性质不能为空!");
+            }
+            if (StringUtils.isBlank(registerDto.getContact())) {
+                throw new RuntimeException("联系方式不能为空!");
+            }
+        }
+        return Result.success(userService.register(registerDto));
     }
 
     /**
@@ -71,12 +102,12 @@ public class UserController {
      */
     @PostMapping("/login")
     @ApiOperation("用户登录")
-    public Result login(@RequestBody @Valid LoginReqDto loginReqDto, HttpServletResponse response) {
+    public Result<LoginResDto> login(@RequestBody @Valid LoginReqDto loginReqDto, HttpServletResponse response) {
         if (StringUtils.isBlank(loginReqDto.getUserName())) {
-            return Result.error(Constant.USERNAME_NULL);
+            throw new RuntimeException(Constant.USERNAME_NULL);
         }
         if (StringUtils.isBlank(loginReqDto.getPassword())) {
-            return Result.error(Constant.PASSWORD_NULL);
+            throw new RuntimeException(Constant.PASSWORD_NULL);
         }
         LoginResDto res = userService.login(loginReqDto);
         // 将token存入cookies
@@ -139,7 +170,7 @@ public class UserController {
      */
     @GetMapping("/{id}")
     @ApiOperation("通过id查询用户")
-    public Result queryById(@PathVariable("id") Long id) {
+    public Result<User> queryById(@PathVariable("id") Long id) {
         return Result.success(userService.queryById(id));
     }
 
@@ -151,7 +182,7 @@ public class UserController {
      */
     @GetMapping("/queryByPage")
     @ApiOperation("分页查询用户")
-    public Result queryByPage(User user, BaseQueryDto pageRequest) {
+    public Result<Page<User>> queryByPage(User user, BaseQueryDto pageRequest) {
         return Result.success(userService.queryByPage(user, pageRequest));
     }
 
@@ -222,6 +253,6 @@ public class UserController {
     @ApiOperation("头像上传")
     public Result pictureUpload(MultipartFile file) {
         Long userId = UserUtils.getLoginUserId();
-        return userService.pictureUpload(userId,file);
+        return userService.pictureUpload(userId, file);
     }
 }

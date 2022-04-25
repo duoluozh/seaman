@@ -1,9 +1,11 @@
 package com.lhh.seamanrecruit.controller.position;
 
 import com.lhh.seamanrecruit.constant.Constant;
-import com.lhh.seamanrecruit.enums.PositionEnum;
+import com.lhh.seamanrecruit.dto.position.PositionCompanyDto;
+import com.lhh.seamanrecruit.dto.position.PositionDto;
 import com.lhh.seamanrecruit.utils.UserUtils;
 import io.swagger.annotations.Api;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import com.lhh.seamanrecruit.entity.Position;
 import com.lhh.seamanrecruit.service.position.PositionService;
@@ -13,10 +15,11 @@ import com.lhh.seamanrecruit.utils.Result;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 /**
  * 招聘控制层
  *
- * @author  yslong
+ * @author yslong
  * @date 2022-04-12 14:09:33
  */
 @Api(tags = "招聘职位")
@@ -35,8 +38,8 @@ public class PositionController {
      */
     @PostMapping("/add")
     @ApiOperation("新增招聘")
-    public Result add(@RequestBody Position position) {
-        return positionService.insert(position,UserUtils.getLoginUserId());
+    public Result<Position> add(@RequestBody Position position) {
+        return Result.success(positionService.insert(position, UserUtils.getLoginUserId()));
     }
 
     /**
@@ -59,10 +62,10 @@ public class PositionController {
      */
     @PostMapping("/updateById")
     @ApiOperation("根据id修改招聘")
-    public Result updateById(@RequestBody Position position) {
+    public Result<Position> updateById(@RequestBody Position position) {
         Position posit = positionService.updateById(position);
-        if (null == posit){
-            return Result.error(Constant.NOT_UPDATE_JURISDICTION);
+        if (null == posit) {
+            throw new RuntimeException((Constant.NOT_UPDATE_JURISDICTION));
         }
         return Result.success(posit);
     }
@@ -75,7 +78,7 @@ public class PositionController {
      */
     @GetMapping("/queryById")
     @ApiOperation("通过id查询招聘明细信息")
-    public Result queryById(@RequestParam("id") Long id) {
+    public Result<PositionCompanyDto> queryById(@RequestParam("id") Long id) {
         return Result.success(positionService.queryById(id));
     }
 
@@ -84,39 +87,25 @@ public class PositionController {
      *
      * @param pageRequest 分页对象
      * @return 查询结果
-     *
      */
     @GetMapping("/queryByPage")
     @ApiOperation("分页查询招聘")
-    public Result queryByPage(Position position, BaseQueryDto pageRequest) {
+    public Result<PageInfo<PositionDto>> queryByPage(Position position, BaseQueryDto pageRequest) {
         Long userId = UserUtils.getLoginUserId();
-        return Result.success(positionService.queryByPage(position, pageRequest,userId));
+        return Result.success(positionService.queryByPage(position, pageRequest, userId));
     }
 
     /**
      * 简历投递
      *
-     * @param  id 职位id
+     * @param id 职位id
      * @return 查询结果
-     *
      */
     @GetMapping("/delivery")
     @ApiOperation("简历投递")
-    public Result delivery(@RequestParam("id")Long id) {
+    public Result delivery(@RequestParam("id") Long id) {
         Long userId = UserUtils.getLoginUserId();
         return Result.success(positionService.insertDelivery(id, userId));
-    }
-
-    /**
-     * 职位下拉框
-     *
-     * @return 职位名称集合
-     *
-     */
-    @GetMapping("/positionList")
-    @ApiOperation("职位下拉框")
-    public Result positionList() {
-        return Result.success(PositionEnum.getPositionList());
     }
 
 }

@@ -1,8 +1,8 @@
 package com.lhh.seamanrecruit.controller.resume;
 
+import com.github.pagehelper.PageInfo;
 import com.lhh.seamanrecruit.constant.Constant;
 import com.lhh.seamanrecruit.dto.resume.ResumeAddDto;
-import com.lhh.seamanrecruit.utils.UserUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import com.lhh.seamanrecruit.entity.Resume;
@@ -34,7 +34,7 @@ public class ResumeController {
      */
     @PostMapping("/add")
     @ApiOperation("新增简历")
-    public Result add(@RequestBody ResumeAddDto resume) {
+    public Result<ResumeAddDto> add(@RequestBody ResumeAddDto resume) {
         return Result.success(resumeService.insert(resume));
     }
 
@@ -58,10 +58,10 @@ public class ResumeController {
      */
     @PostMapping("/updateById")
     @ApiOperation("根据id修改简历")
-    public Result updateById(@RequestBody ResumeAddDto resume) {
+    public Result<ResumeAddDto> updateById(@RequestBody ResumeAddDto resume) {
         ResumeAddDto resumeAddDto = resumeService.updateById(resume);
         if (null == resumeAddDto){
-            return Result.error(Constant.NOT_UPDATE_JURISDICTION);
+            throw new RuntimeException(Constant.NOT_UPDATE_JURISDICTION);
         }
         return Result.success(resumeAddDto);
     }
@@ -74,7 +74,7 @@ public class ResumeController {
      */
     @GetMapping("/{id}")
     @ApiOperation("通过id查询简历")
-    public Result queryById(@PathVariable("id") Long id) {
+    public Result<ResumeAddDto> queryById(@PathVariable("id") Long id) {
         return Result.success(resumeService.queryById(id));
     }
 
@@ -87,23 +87,8 @@ public class ResumeController {
      */
     @GetMapping("/queryByPage")
     @ApiOperation("分页查询简历")
-    public Result queryByPage(Resume resume, BaseQueryDto pageRequest) {
+    public Result<PageInfo<Resume>> queryByPage(Resume resume, BaseQueryDto pageRequest) {
         return Result.success(resumeService.queryByPage(resume, pageRequest));
-    }
-
-    /**
-     * 分页查询求职者简历列表
-     *
-     * @param pageRequest 分页对象
-     * @return 查询结果
-     *
-     */
-    @GetMapping("/queryByResumePage")
-    @ApiOperation("分页查询求职者简历列表")
-    public Result queryByResumePage(Resume resume, BaseQueryDto pageRequest) {
-        Long userId = UserUtils.getLoginUserId();
-        resume.setUserId(userId);
-        return Result.success(resumeService.queryByResumePage(resume, pageRequest));
     }
 
 }

@@ -1,9 +1,6 @@
 package com.lhh.seamanrecruit.service.user;
 
-import com.lhh.seamanrecruit.dto.user.LoginReqDto;
-import com.lhh.seamanrecruit.dto.user.LoginResDto;
-import com.lhh.seamanrecruit.dto.user.UpdatePasswordReqDto;
-import com.lhh.seamanrecruit.dto.user.UserDto;
+import com.lhh.seamanrecruit.dto.user.*;
 import com.lhh.seamanrecruit.entity.User;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
@@ -22,10 +19,10 @@ public interface UserService {
         /**
          * 用户注册
          *
-         * @param userDto 实例对象
+         * @param registerDto 实例对象
          * @return 实例对象
          */
-        User register(UserDto userDto);
+        User register(RegisterDto registerDto);
 
 
         /**

@@ -138,6 +138,11 @@ public class Constant {
     public static final String NEW_PASSWORD_NULL = "新密码不能为空！";
 
     /**
+     * 用户类型不能为空
+     */
+    public static final String USERNAME_TYPE_NULL = "用户类型不能为空！";
+
+    /**
      * 用户信息有误
      */
     public static final String USER_ERROR = "用户信息有误！";

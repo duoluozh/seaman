@@ -2,7 +2,6 @@ package com.lhh.seamanrecruit.service.resume;
 
 import com.github.pagehelper.PageInfo;
 import com.lhh.seamanrecruit.dto.resume.ResumeAddDto;
-import com.lhh.seamanrecruit.dto.resume.ResumePositionResDto;
 import com.lhh.seamanrecruit.entity.Resume;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
@@ -56,12 +55,4 @@ public interface ResumeService {
          */
         PageInfo<Resume> queryByPage(Resume entity, BaseQueryDto pageRequest);
 
-        /**
-         * 分页查询求职者简历列表
-         *
-         * @param entity 筛选条件
-         * @param pageRequest      分页对象
-         * @return 查询结果
-         */
-        PageInfo<ResumePositionResDto> queryByResumePage(Resume entity, BaseQueryDto pageRequest);
 }
