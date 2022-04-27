@@ -1,8 +1,10 @@
 package com.lhh.seamanrecruit.service.company.impl;
 
+import com.lhh.seamanrecruit.dto.company.CompanyDto;
 import com.lhh.seamanrecruit.entity.Company;
 import com.lhh.seamanrecruit.dao.CompanyDao;
 import com.lhh.seamanrecruit.service.company.CompanyService;
+import com.lhh.seamanrecruit.utils.CopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +35,10 @@ public class CompanyServiceImpl implements CompanyService {
 	 */
 	@Override
 	@Transactional
-	public Company insert(Company entity) {
-		companyDao.insert(entity);
+	public CompanyDto insert(CompanyDto entity) {
+		Company company = CopyUtils.copy(entity, Company.class);
+		companyDao.insert(company);
+		entity = CopyUtils.copy(company, CompanyDto.class);
 		return entity;
 	}
 

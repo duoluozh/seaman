@@ -39,7 +39,7 @@ public class PositionController {
      */
     @PostMapping("/add")
     @ApiOperation("新增招聘")
-    public Result<Position> add(@RequestBody Position position) {
+    public Result<PositionDto> add(@RequestBody PositionDto position) {
         return Result.success(positionService.insert(position, UserUtils.getLoginUserId()));
     }
 

@@ -119,7 +119,7 @@ public class PositionDto implements Serializable {
 	 * 职位状态
 	 */
 	@ApiModelProperty(value = "职位状态(0-未发布，1-发布)")
-	private String status_flag;
+	private String statusFlag;
 
 	/**
 	 * 更新时间

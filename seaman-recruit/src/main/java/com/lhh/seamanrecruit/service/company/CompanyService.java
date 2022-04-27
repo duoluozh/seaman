@@ -1,5 +1,6 @@
 package com.lhh.seamanrecruit.service.company;
 
+import com.lhh.seamanrecruit.dto.company.CompanyDto;
 import com.lhh.seamanrecruit.entity.Company;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
@@ -18,7 +19,7 @@ public interface CompanyService {
          * @param entity 实例对象
          * @return 实例对象
          */
-        Company insert(Company entity);
+        CompanyDto insert(CompanyDto entity);
 
         /**
          * 通过主键删除数据

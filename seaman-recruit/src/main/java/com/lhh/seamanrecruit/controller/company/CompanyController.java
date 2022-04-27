@@ -1,6 +1,7 @@
 package com.lhh.seamanrecruit.controller.company;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lhh.seamanrecruit.dto.company.CompanyDto;
 import com.lhh.seamanrecruit.enums.ShipTypeEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +34,7 @@ public class CompanyController {
      */
     @PostMapping("/add")
     @ApiOperation("新增公司")
-    public Result<Company> add(@RequestBody Company company) {
+    public Result<CompanyDto> add(@RequestBody CompanyDto company) {
         return Result.success(companyService.insert(company));
     }
 

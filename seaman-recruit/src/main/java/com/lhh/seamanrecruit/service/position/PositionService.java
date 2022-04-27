@@ -25,7 +25,7 @@ public interface PositionService {
          * @param userId 用户id
          * @return 实例对象
          */
-        Position insert(Position entity, Long userId);
+        PositionDto insert(PositionDto entity, Long userId);
 
         /**
          * 通过主键删除数据

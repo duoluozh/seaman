@@ -1,6 +1,7 @@
 package com.lhh.seamanrecruit.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -98,6 +99,7 @@ public class Position implements Serializable {
 	 * 发布时间
 	 */
 	@ApiModelProperty(value = "发布时间")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime releaseTime;
 
 	/**

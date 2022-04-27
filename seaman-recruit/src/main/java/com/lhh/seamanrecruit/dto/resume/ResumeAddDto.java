@@ -1,5 +1,6 @@
 package com.lhh.seamanrecruit.dto.resume;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lhh.seamanrecruit.entity.ResumeDetails;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -114,6 +115,7 @@ public class ResumeAddDto implements Serializable {
 	 * 毕业时间
 	 */
 	@ApiModelProperty(value = "毕业时间")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime graduationTime;
 
 	/**
@@ -186,6 +188,7 @@ public class ResumeAddDto implements Serializable {
 	 * 更新时间
 	 */
 	@ApiModelProperty(value = "更新时间")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime updateTime;
 
 	/**

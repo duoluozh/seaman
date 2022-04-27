@@ -14,8 +14,10 @@ import com.lhh.seamanrecruit.dao.PositionDao;
 import com.lhh.seamanrecruit.entity.User;
 import com.lhh.seamanrecruit.entity.UserPosition;
 import com.lhh.seamanrecruit.service.position.PositionService;
+import com.lhh.seamanrecruit.utils.CopyUtils;
 import com.lhh.seamanrecruit.utils.Result;
 import com.lhh.seamanrecruit.utils.UserUtils;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -61,7 +63,7 @@ public class PositionServiceImpl implements PositionService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Position insert(Position entity, Long userId) {
+    public PositionDto insert(PositionDto entity, Long userId) {
         //查询当前用户对应的公司id
         Company company = companyDao.selectByUserId(userId);
         if (null == company) {
@@ -71,7 +73,9 @@ public class PositionServiceImpl implements PositionService {
         entity.setCompanyName(company.getCompanyName());
         entity.setStatusFlag("0");
         entity.setUpdateTime(LocalDateTime.now());
-        positionDao.insert(entity);
+        Position po = CopyUtils.copy(entity, Position.class);
+        positionDao.insert(po);
+        entity = CopyUtils.copy(po, PositionDto.class);
         return entity;
     }
 
