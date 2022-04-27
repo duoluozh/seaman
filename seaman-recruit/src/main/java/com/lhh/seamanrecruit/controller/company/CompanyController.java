@@ -1,6 +1,7 @@
 package com.lhh.seamanrecruit.controller.company;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lhh.seamanrecruit.enums.ShipTypeEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import com.lhh.seamanrecruit.entity.Company;
@@ -83,6 +84,18 @@ public class CompanyController {
     @ApiOperation("分页查询公司")
     public Result<Page<Company>> queryByPage(Company company, BaseQueryDto pageRequest) {
         return Result.success(companyService.queryByPage(company, pageRequest));
+    }
+
+    /**
+     * 船舶类型下拉框
+     *
+     * @return 船舶类型集
+     *
+     */
+    @GetMapping("/getShipTypeList")
+    @ApiOperation("船舶类型下拉框")
+    public Result<List<String>> getShipTypeList() {
+        return Result.success(ShipTypeEnum.getShipTypeList());
     }
 
 }

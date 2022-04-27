@@ -1,5 +1,8 @@
 package com.lhh.seamanrecruit.enums;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author zhh
  * @date 2022/4/11 1:10
@@ -17,6 +20,15 @@ public enum ShipTypeEnum {
     LIQUEFIED_GAS_SHIP(8,"液化气体船"),
     DUAL_PURPOSE_SHIP(9,"兼用船"),
     OTHER_TYPES(10,"其他类型");
+
+    public static List<String> getShipTypeList(){
+        List<String> positionList = new ArrayList<>();
+        ShipTypeEnum[] shipTypeEnums = ShipTypeEnum.values();
+        for (ShipTypeEnum shipTypeEnum : shipTypeEnums) {
+            positionList.add(shipTypeEnum.getTypeName());
+        }
+        return positionList;
+    }
 
 
     private ShipTypeEnum(Integer code, String typeName) {
