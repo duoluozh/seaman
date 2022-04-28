@@ -249,7 +249,7 @@ public class UserController {
      * @param file 头像文件
      * @return 单条数据
      */
-    @GetMapping("/pictureUpload")
+    @PostMapping(value = "/pictureUpload")
     @ApiOperation("头像上传")
     public Result pictureUpload(MultipartFile file) {
         Long userId = UserUtils.getLoginUserId();
