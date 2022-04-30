@@ -13,6 +13,7 @@ import com.lhh.seamanrecruit.entity.ResumeDetails;
 import com.lhh.seamanrecruit.entity.User;
 import com.lhh.seamanrecruit.service.resume.ResumeService;
 import com.lhh.seamanrecruit.utils.CopyUtils;
+import com.lhh.seamanrecruit.utils.Result;
 import com.lhh.seamanrecruit.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
+
 import java.util.List;
 
 /**
@@ -33,108 +35,111 @@ import java.util.List;
 @Service
 public class ResumeServiceImpl implements ResumeService {
 
-	@Autowired
-	private ResumeDao resumeDao;
+    @Autowired
+    private ResumeDao resumeDao;
 
-	@Autowired
-	private ResumeDetailsDao resumeDetailsDao;
+    @Autowired
+    private ResumeDetailsDao resumeDetailsDao;
 
-	@Autowired
-	private UserDao userDao;
+    @Autowired
+    private UserDao userDao;
 
-	/**
-	 * 新增数据
-	 *
-	 * @param entity 实例对象
-	 * @return 实例对象
-	 */
-	@Override
-	@Transactional
-	public ResumeAddDto insert(ResumeAddDto entity) {
-		Long userId = UserUtils.getLoginUserId();
-		entity.setUserId(userId);
-		Resume resume = CopyUtils.copy(entity, Resume.class);
-		resumeDao.insert(resume);
-		List<ResumeDetails> resumeDetails = entity.getResumeDetails();
-		if (null != resumeDetails && resumeDetails.size() > 0){
-			for (ResumeDetails resumeDetail : resumeDetails) {
-				resumeDetail.setMasterId(resume.getId());
-				resumeDetailsDao.insert(resumeDetail);
-			}
-		}
-		return entity;
-	}
+    /**
+     * 新增数据
+     *
+     * @param entity 实例对象
+     * @return 实例对象
+     */
+    @Override
+    @Transactional
+    public ResumeAddDto insert(ResumeAddDto entity) {
+        Long userId = UserUtils.getLoginUserId();
+        entity.setUserId(userId);
+        Resume resume = CopyUtils.copy(entity, Resume.class);
+        resumeDao.insert(resume);
+        List<ResumeDetails> resumeDetails = entity.getResumeDetails();
+        if (null != resumeDetails && resumeDetails.size() > 0) {
+            for (ResumeDetails resumeDetail : resumeDetails) {
+                resumeDetail.setMasterId(resume.getId());
+                resumeDetailsDao.insert(resumeDetail);
+            }
+        }
+        return entity;
+    }
 
-	/**
-	 * 通过主键删除数据
-	 *
-	 * @param ids 主键
-	 * @return 是否成功
-	 */
-	@Override
-	@Transactional
-	public boolean deleteById(List<Long> ids) {
-		return resumeDao.deleteBatchIds(ids) > 0;
-	}
+    /**
+     * 通过主键删除数据
+     *
+     * @param ids 主键
+     * @return 是否成功
+     */
+    @Override
+    @Transactional
+    public boolean deleteById(List<Long> ids) {
+        return resumeDao.deleteBatchIds(ids) > 0;
+    }
 
-	/**
-	 * 修改数据
-	 *
-	 * @param entity 实例对象
-	 * @return 实例对象
-	 */
-	@Override
-	@Transactional
-	public ResumeAddDto updateById(ResumeAddDto entity) {
-		Long userId = UserUtils.getLoginUserId();
-		User user = userDao.selectById(userId);
-		if (user.getUserType() == 1){
-			return null;
-		}
-		Resume resume = CopyUtils.copy(entity, Resume.class);
-		resumeDao.updateById(resume);
+    /**
+     * 修改数据
+     *
+     * @param entity 实例对象
+     * @return 实例对象
+     */
+    @Override
+    @Transactional
+    public ResumeAddDto updateById(ResumeAddDto entity) {
+        Long userId = UserUtils.getLoginUserId();
+        User user = userDao.selectById(userId);
+        if (user.getUserType() == 1) {
+            return null;
+        }
+        Resume resume = CopyUtils.copy(entity, Resume.class);
+        resumeDao.updateById(resume);
 
-		List<ResumeDetails> resumeDetails = entity.getResumeDetails();
-		if (null != resumeDetails && resumeDetails.size() > 0){
-			for (ResumeDetails resumeDetail : resumeDetails) {
-				resumeDetailsDao.updateById(resumeDetail);
-			}
-		}
-		return queryById(entity.getId());
-	}
+        List<ResumeDetails> resumeDetails = entity.getResumeDetails();
+        if (null != resumeDetails && resumeDetails.size() > 0) {
+            for (ResumeDetails resumeDetail : resumeDetails) {
+                resumeDetailsDao.updateById(resumeDetail);
+            }
+        }
+        return queryById(entity.getId());
+    }
 
-	/**
-	 * 通过ID查询单条数据
-	 *
-	 * @param id 主键
-	 * @return 实例对象
-	 */
-	@Override
-	public ResumeAddDto queryById(Long id) {
-		//查询简历主表信息
-		Resume resume = resumeDao.selectById(id);
-		ResumeAddDto resumeAddDto = CopyUtils.copy(resume, ResumeAddDto.class);
-		//查询明细集合
-		List<ResumeDetails> resumeAddDtos = resumeDetailsDao.selectByMasterId(id);
-		resumeAddDto.setResumeDetails(resumeAddDtos);
-		return resumeAddDto;
-	}
+    /**
+     * 通过ID查询单条数据
+     *
+     * @param id 主键
+     * @return 实例对象
+     */
+    @Override
+    public ResumeAddDto queryById(Long id) {
+        //查询简历主表信息
+        Resume resume = resumeDao.selectById(id);
+        if (resume == null) {
+            return null;
+        }
+        ResumeAddDto resumeAddDto = CopyUtils.copy(resume, ResumeAddDto.class);
+        //查询明细集合
+        List<ResumeDetails> resumeAddDtos = resumeDetailsDao.selectByMasterId(id);
+        resumeAddDto.setResumeDetails(resumeAddDtos);
+        return resumeAddDto;
+    }
 
-	/**
-	 * 分页查询
-	 *
-	 * @param entity 筛选条件
-	 * @param pageRequest 分页对象
-	 * @return 查询结果
-	 */
-	@Override
-	public PageInfo<Resume> queryByPage(Resume entity, BaseQueryDto pageRequest) {
+    /**
+     * 分页查询
+     *
+     * @param entity      筛选条件
+     * @param pageRequest 分页对象
+     * @return 查询结果
+     */
+    @Override
+    public PageInfo<Resume> queryByPage(Resume entity, BaseQueryDto pageRequest) {
 
-		PageHelper.startPage(pageRequest.getPageNum(),pageRequest.getPageSize());
-		List<Resume> positionDtos = resumeDao.selectPageList(entity);
+        PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
+        List<Resume> positionDtos = resumeDao.selectPageList(entity);
 
-		PageInfo<Resume> userInfoPage = new PageInfo<Resume>(positionDtos);
-		return userInfoPage;
-	}
+        PageInfo<Resume> userInfoPage = new PageInfo<Resume>(positionDtos);
+        return userInfoPage;
+    }
 
 }
