@@ -180,7 +180,7 @@ public class UserController {
      * @param pageRequest 分页对象
      * @return 查询结果
      */
-    @GetMapping("/queryByPage")
+    @PostMapping("/queryByPage")
     @ApiOperation("分页查询用户")
     public Result<Page<User>> queryByPage(User user, BaseQueryDto pageRequest) {
         return Result.success(userService.queryByPage(user, pageRequest));

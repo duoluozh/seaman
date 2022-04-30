@@ -85,7 +85,7 @@ public class ResumeController {
      * @return 查询结果
      *
      */
-    @GetMapping("/queryByPage")
+    @PostMapping("/queryByPage")
     @ApiOperation("分页查询简历")
     public Result<PageInfo<Resume>> queryByPage(Resume resume, BaseQueryDto pageRequest) {
         return Result.success(resumeService.queryByPage(resume, pageRequest));
