@@ -4,7 +4,7 @@
 
 
     <select id="selectPageList" resultType="com.lhh.seamanrecruit.entity.Resume">
-        SELECT * FROM RESUME WHERE user_status in (1,2)
+        SELECT * FROM resume WHERE user_status in (1,2)
     </select>
 
 </mapper>
