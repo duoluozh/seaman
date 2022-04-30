@@ -81,7 +81,7 @@ public class CompanyController {
      * @return 查询结果
      *
      */
-    @GetMapping("/queryByPage")
+    @PostMapping("/queryByPage")
     @ApiOperation("分页查询公司")
     public Result<Page<Company>> queryByPage(Company company, BaseQueryDto pageRequest) {
         return Result.success(companyService.queryByPage(company, pageRequest));

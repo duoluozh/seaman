@@ -130,4 +130,9 @@ public class Company implements Serializable {
 	@ApiModelProperty(value = "用户id")
 	private Long userId;
 
+	/**
+	 * 公司状态(0-未审核,1-正常,2-冻结)
+	 */
+	@ApiModelProperty(value = "公司状态(0-未审核,1-正常,2-冻结)")
+	private Long statusFlag;
 }
