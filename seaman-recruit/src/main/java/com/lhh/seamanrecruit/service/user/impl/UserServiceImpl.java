@@ -188,16 +188,15 @@ public class UserServiceImpl implements UserService {
     /**
      * 分页查询
      *
-     * @param entity      筛选条件
-     * @param pageRequest 分页对象
+     * @param dto      筛选条件
      * @return 查询结果
      */
     @Override
-    public Page<User> queryByPage(User entity, BaseQueryDto pageRequest) {
+    public Page<User> queryByPage(UserDto dto) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        Integer userType = entity.getUserType();
-        String userName = entity.getUserName();
-        String email = entity.getEmail();
+        Integer userType = dto.getUserType();
+        String userName = dto.getUserName();
+        String email = dto.getEmail();
         if (userType != null) {
             Map<String, Object> params = new HashMap<>();
             params.put("user_type", userType);
@@ -210,7 +209,7 @@ public class UserServiceImpl implements UserService {
             queryWrapper.like("email",email);
         }
         queryWrapper.orderByAsc("id");
-        Page<User> page = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
+        Page<User> page = new Page<>(dto.getPageNum(), dto.getPageSize());
         page = (Page) userDao.selectPage(page, queryWrapper);
         return page;
     }

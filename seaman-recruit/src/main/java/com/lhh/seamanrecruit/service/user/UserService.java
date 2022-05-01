@@ -63,7 +63,7 @@ public interface UserService {
          * @param pageRequest      分页对象
          * @return 查询结果
          */
-        Page<User> queryByPage(User entity, BaseQueryDto pageRequest);
+        Page<User> queryByPage(UserDto dto);
 
         /**
          * 发送邮箱验证码

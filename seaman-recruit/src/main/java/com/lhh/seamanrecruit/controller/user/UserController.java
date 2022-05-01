@@ -11,7 +11,6 @@ import com.lhh.seamanrecruit.entity.User;
 import com.lhh.seamanrecruit.service.user.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import com.lhh.seamanrecruit.utils.Result;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -177,13 +175,13 @@ public class UserController {
     /**
      * 分页查询
      *
-     * @param pageRequest 分页对象
+     * @param user 查询条件
      * @return 查询结果
      */
     @PostMapping("/queryByPage")
     @ApiOperation("分页查询用户")
-    public Result<Page<User>> queryByPage(User user, BaseQueryDto pageRequest) {
-        return Result.success(userService.queryByPage(user, pageRequest));
+    public Result<Page<User>> queryByPage(@RequestBody UserDto user) {
+        return Result.success(userService.queryByPage(user));
     }
 
     /**
