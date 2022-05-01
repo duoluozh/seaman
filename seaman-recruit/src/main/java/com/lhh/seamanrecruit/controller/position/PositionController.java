@@ -89,7 +89,7 @@ public class PositionController {
      * @param pageRequest 分页对象
      * @return 查询结果
      */
-    @GetMapping("/queryByPage")
+    @PostMapping("/queryByPage")
     @ApiOperation("分页查询招聘")
     public Result<PageInfo<PositionDto>> queryByPage(Position position, BaseQueryDto pageRequest) {
         Long userId = UserUtils.getLoginUserId();

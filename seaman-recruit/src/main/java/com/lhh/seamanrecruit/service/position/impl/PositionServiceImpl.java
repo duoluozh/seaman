@@ -69,6 +69,9 @@ public class PositionServiceImpl implements PositionService {
         if (null == company) {
             throw new RuntimeException(Constant.POSITION_USER_NOT_COMPANY_USER);
         }
+        if (0== company.getStatusFlag()) {
+            throw new RuntimeException(Constant.EXAMINE);
+        }
         entity.setCompanyId(company.getId());
         entity.setCompanyName(company.getCompanyName());
         entity.setStatusFlag("0");

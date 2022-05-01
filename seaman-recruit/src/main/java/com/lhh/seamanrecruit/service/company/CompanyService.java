@@ -54,4 +54,5 @@ public interface CompanyService {
          */
         Page<Company> queryByPage(Company entity, BaseQueryDto pageRequest);
 
+        List<Company> queryByUserId(Long userId);
 }

@@ -196,12 +196,20 @@ public class UserServiceImpl implements UserService {
     public Page<User> queryByPage(User entity, BaseQueryDto pageRequest) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         Integer userType = entity.getUserType();
-        queryWrapper.orderByAsc("id");
+        String userName = entity.getUserName();
+        String email = entity.getEmail();
         if (userType != null) {
             Map<String, Object> params = new HashMap<>();
             params.put("user_type", userType);
             queryWrapper.allEq(params);
         }
+        if (StringUtils.isBlank(userName)) {
+            queryWrapper.like("user_name",userName);
+        }
+        if (StringUtils.isBlank(email)) {
+            queryWrapper.like("email",email);
+        }
+        queryWrapper.orderByAsc("id");
         Page<User> page = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
         page = (Page) userDao.selectPage(page, queryWrapper);
         return page;
