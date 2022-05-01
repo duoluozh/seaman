@@ -52,30 +52,30 @@ public class BaseQueryDto implements Serializable {
     @ApiModelProperty(value = "排序类型")
     private String sortType;
 
-    /**
-     * 多重排序
-     * 内容：key:字段,value:desc或asc
-     */
-    @ApiModelProperty(value = "多重排序", notes = "内容：key:字段,value:desc或asc")
-    private Map<String, String> sortMap = new LinkedHashMap<>();
-
-    /**
-     * 获取分页参数对象
-     *
-     * @return
-     */
-    public PageRequest getPageable() {
-        return PageRequest.of(pageNum, pageSize);
-    }
-
-    /**
-     * 填序排序
-     *
-     * @param column
-     * @param sort
-     */
-    public void putSort(String column, String sort) {
-        sortMap.put(column, sort);
-    }
+//    /**
+//     * 多重排序
+//     * 内容：key:字段,value:desc或asc
+//     */
+//    @ApiModelProperty(value = "多重排序", notes = "内容：key:字段,value:desc或asc")
+//    private Map<String, String> sortMap = new LinkedHashMap<>();
+//
+//    /**
+//     * 获取分页参数对象
+//     *
+//     * @return
+//     */
+//    public PageRequest getPageable() {
+//        return PageRequest.of(pageNum, pageSize);
+//    }
+//
+//    /**
+//     * 填序排序
+//     *
+//     * @param column
+//     * @param sort
+//     */
+//    public void putSort(String column, String sort) {
+//        sortMap.put(column, sort);
+//    }
 
 }
