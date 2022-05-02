@@ -103,7 +103,7 @@ public class PositionServiceImpl implements PositionService {
         Long userId = UserUtils.getLoginUserId();
         Company company = companyDao.selectByUserId(userId);
         //该用户对应的企业id不一致
-        if (entity.getCompanyId().equals(company.getId())) {
+        if (!entity.getCompanyId().equals(company.getId())) {
             return null;
         }
         //如果更新时更新了发布状态，则更新发布时间

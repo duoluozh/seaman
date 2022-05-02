@@ -6,6 +6,7 @@ import com.lhh.seamanrecruit.dao.ResumeDetailsDao;
 import com.lhh.seamanrecruit.dao.UserDao;
 import com.lhh.seamanrecruit.dto.position.PositionDto;
 import com.lhh.seamanrecruit.dto.resume.ResumeAddDto;
+import com.lhh.seamanrecruit.dto.resume.ResumeDto;
 import com.lhh.seamanrecruit.entity.Company;
 import com.lhh.seamanrecruit.entity.Resume;
 import com.lhh.seamanrecruit.dao.ResumeDao;
@@ -133,12 +134,22 @@ public class ResumeServiceImpl implements ResumeService {
      * @return 查询结果
      */
     @Override
-    public PageInfo<Resume> queryByPage(Resume entity, BaseQueryDto pageRequest) {
+    public PageInfo<ResumeDto> queryByPage(ResumeDto entity, BaseQueryDto pageRequest) {
 
         PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
-        List<Resume> positionDtos = resumeDao.selectPageList(entity);
+        List<ResumeDto> positionDtos = resumeDao.selectPageList(entity);
 
-        PageInfo<Resume> userInfoPage = new PageInfo<Resume>(positionDtos);
+        PageInfo<ResumeDto> userInfoPage = new PageInfo<ResumeDto>(positionDtos);
+        return userInfoPage;
+    }
+
+    @Override
+    public PageInfo<ResumeDto> queryResumePage(ResumeDto resume, BaseQueryDto pageRequest) {
+        resume.setUserId(UserUtils.getLoginUserId());
+        PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
+        List<ResumeDto> positionDtos = resumeDao.queryResumePage(resume);
+
+        PageInfo<ResumeDto> userInfoPage = new PageInfo<ResumeDto>(positionDtos);
         return userInfoPage;
     }
 

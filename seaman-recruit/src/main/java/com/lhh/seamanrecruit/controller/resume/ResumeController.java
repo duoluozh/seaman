@@ -3,6 +3,7 @@ package com.lhh.seamanrecruit.controller.resume;
 import com.github.pagehelper.PageInfo;
 import com.lhh.seamanrecruit.constant.Constant;
 import com.lhh.seamanrecruit.dto.resume.ResumeAddDto;
+import com.lhh.seamanrecruit.dto.resume.ResumeDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import com.lhh.seamanrecruit.entity.Resume;
@@ -87,8 +88,20 @@ public class ResumeController {
      */
     @PostMapping("/queryByPage")
     @ApiOperation("分页查询简历")
-    public Result<PageInfo<Resume>> queryByPage(Resume resume, BaseQueryDto pageRequest) {
+    public Result<PageInfo<ResumeDto>> queryByPage(ResumeDto resume, BaseQueryDto pageRequest) {
         return Result.success(resumeService.queryByPage(resume, pageRequest));
     }
 
+    /**
+     * 求职者列表
+     *
+     * @param pageRequest 分页对象
+     * @return 查询结果
+     *
+     */
+    @PostMapping("/queryResumePage")
+    @ApiOperation("求职者列表")
+    public Result<PageInfo<ResumeDto>> queryResumePage(ResumeDto resume, BaseQueryDto pageRequest) {
+        return Result.success(resumeService.queryResumePage(resume, pageRequest));
+    }
 }

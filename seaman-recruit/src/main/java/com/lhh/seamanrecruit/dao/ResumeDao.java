@@ -1,6 +1,8 @@
 package com.lhh.seamanrecruit.dao;
 
+import com.lhh.seamanrecruit.dto.resume.ResumeDto;
 import com.lhh.seamanrecruit.entity.Resume;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
@@ -20,5 +22,12 @@ public interface ResumeDao extends BaseMapper<Resume> {
      * @param entity
      * @return
      */
-    List<Resume> selectPageList(Resume entity);
+    List<ResumeDto> selectPageList(@Param("param") ResumeDto entity);
+
+    /**
+     * 查询简历列表
+     * @param resume
+     * @return
+     */
+    List<ResumeDto> queryResumePage(@Param("param")ResumeDto resume);
 }
