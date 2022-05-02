@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.lhh.seamanrecruit.dto.BaseQueryDto;
+import org.springframework.util.CollectionUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,108 +28,111 @@ import java.util.Map;
 @Service
 public class CompanyServiceImpl implements CompanyService {
 
-	@Autowired
-	private CompanyDao companyDao;
+    @Autowired
+    private CompanyDao companyDao;
 
-	/**
-	 * 新增数据
-	 *
-	 * @param entity 实例对象
-	 * @return 实例对象
-	 */
-	@Override
-	@Transactional
-	public CompanyDto insert(CompanyDto entity) {
-		Company company = CopyUtils.copy(entity, Company.class);
-		Long userId = company.getUserId();
-		if (userId==null){
-			throw new RuntimeException("userId不能为空");
-		}
-		if (companyDao.selectByUserId(userId)!=null){
-			throw new RuntimeException("你的名下已经有公司啦！去发布职位吧。");
-		}
-		company.setStatusFlag(0L);
-		companyDao.insert(company);
-		entity = CopyUtils.copy(company, CompanyDto.class);
-		return entity;
-	}
+    /**
+     * 新增数据
+     *
+     * @param entity 实例对象
+     * @return 实例对象
+     */
+    @Override
+    @Transactional
+    public CompanyDto insert(CompanyDto entity) {
+        Company company = CopyUtils.copy(entity, Company.class);
+        Long userId = company.getUserId();
+        if (userId == null) {
+            throw new RuntimeException("userId不能为空");
+        }
+        if (companyDao.selectByUserId(userId) != null) {
+            throw new RuntimeException("你的名下已经有公司啦！去发布职位吧。");
+        }
+        company.setStatusFlag(0L);
+        companyDao.insert(company);
+        entity = CopyUtils.copy(company, CompanyDto.class);
+        return entity;
+    }
 
-	/**
-	 * 通过主键删除数据
-	 *
-	 * @param ids 主键
-	 * @return 是否成功
-	 */
-	@Override
-	@Transactional
-	public boolean deleteById(List<Long> ids) {
-		return companyDao.deleteBatchIds(ids) > 0;
-	}
+    /**
+     * 通过主键删除数据
+     *
+     * @param ids 主键
+     * @return 是否成功
+     */
+    @Override
+    @Transactional
+    public boolean deleteById(List<Long> ids) {
+        return companyDao.deleteBatchIds(ids) > 0;
+    }
 
-	/**
-	 * 修改数据
-	 *
-	 * @param entity 实例对象
-	 * @return 实例对象
-	 */
-	@Override
-	@Transactional
-	public Company updateById(Company entity) {
-		companyDao.updateById(entity);
-		return queryById(entity.getId());
-	}
+    /**
+     * 修改数据
+     *
+     * @param entity 实例对象
+     * @return 实例对象
+     */
+    @Override
+    @Transactional
+    public Company updateById(Company entity) {
+        companyDao.updateById(entity);
+        return queryById(entity.getId());
+    }
 
-	/**
-	 * 通过ID查询单条数据
-	 *
-	 * @param id 主键
-	 * @return 实例对象
-	 */
-	@Override
-	public Company queryById(Long id) {
-		return companyDao.selectById(id);
-}
+    /**
+     * 通过ID查询单条数据
+     *
+     * @param id 主键
+     * @return 实例对象
+     */
+    @Override
+    public Company queryById(Long id) {
+        return companyDao.selectById(id);
+    }
 
-	/**
-	 * 分页查询
-	 *
-	 * @param entity 筛选条件
-	 * @param pageRequest 分页对象
-	 * @return 查询结果
-	 */
-	@Override
-	public Page<Company> queryByPage(Company entity, BaseQueryDto pageRequest) {
-		String companyName = entity.getCompanyName();
-		String representative = entity.getRepresentative();
-		String companyType = entity.getCompanyType();
-		String socialCreditCode = entity.getSocialCreditCode();
-		QueryWrapper<Company> queryWrapper =  new QueryWrapper<>();
-		if (StringUtils.isBlank(companyName)){
-			queryWrapper.like("company_name",companyName);
-		}
-		if (StringUtils.isBlank(representative)){
-			queryWrapper.like("representative",representative);
-		}
-		if (StringUtils.isBlank(socialCreditCode)){
-			queryWrapper.like("social_credit_code",socialCreditCode);
-		}
-		if (StringUtils.isBlank(companyType)){
-			queryWrapper.like("company_type",companyType);
-		}
-		queryWrapper.orderByAsc("id");
-		Page<Company> page = new Page<>(pageRequest.getPageNum(),pageRequest.getPageSize());
-		page = (Page)companyDao.selectPage(page, queryWrapper);
-		return page;
-	}
+    /**
+     * 分页查询
+     *
+     * @param dto 筛选条件
+     * @return 查询结果
+     */
+    @Override
+    public Page<Company> queryByPage(CompanyDto dto) {
+        String companyName = dto.getCompanyName();
+        String representative = dto.getRepresentative();
+        String companyType = dto.getCompanyType();
+        String socialCreditCode = dto.getSocialCreditCode();
+        List<Long> statusFlag = dto.getStatusFlag();
+        QueryWrapper<Company> queryWrapper = new QueryWrapper<>();
+        if (!CollectionUtils.isEmpty(statusFlag)) {
+            queryWrapper.in("status_flag",statusFlag);
+        }
+        if (StringUtils.isNotBlank(companyName)) {
+            queryWrapper.like("company_name", companyName);
+        }
+        if (StringUtils.isNotBlank(representative)) {
+            queryWrapper.like("representative", representative);
+        }
+        if (StringUtils.isNotBlank(socialCreditCode)) {
+            queryWrapper.like("social_credit_code", socialCreditCode);
+        }
+        if (StringUtils.isNotBlank(companyType)) {
+            queryWrapper.like("company_type", companyType);
+        }
+        queryWrapper.orderByAsc("id");
+        Page<Company> page = new Page<>(dto.getPageNum(), dto.getPageSize());
+        page = (Page) companyDao.selectPage(page, queryWrapper);
+        return page;
+    }
 
-	@Override
-	public List<Company> queryByUserId(Long userId) {
-		QueryWrapper<Company> queryWrapper =  new QueryWrapper<>();
-		Map<String,Object> params = new HashMap<>();
-		params.put("user_id",userId);
-		queryWrapper.allEq(params);
+    @Override
+    public List<Company> queryByUserId(Long userId) {
+        QueryWrapper<Company> queryWrapper = new QueryWrapper<>();
+        Map<String, Object> params = new HashMap<>();
+        params.put("user_id", userId);
+        queryWrapper.allEq(params);
 
-		return companyDao.selectList(queryWrapper);
-	}
+        return companyDao.selectList(queryWrapper);
+    }
 
 }

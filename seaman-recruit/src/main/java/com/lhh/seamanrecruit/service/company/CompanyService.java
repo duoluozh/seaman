@@ -49,10 +49,9 @@ public interface CompanyService {
          * 分页查询
          *
          * @param entity 筛选条件
-         * @param pageRequest      分页对象
          * @return 查询结果
          */
-        Page<Company> queryByPage(Company entity, BaseQueryDto pageRequest);
+        Page<Company> queryByPage(CompanyDto entity);
 
         List<Company> queryByUserId(Long userId);
 }

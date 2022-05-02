@@ -202,10 +202,10 @@ public class UserServiceImpl implements UserService {
             params.put("user_type", userType);
             queryWrapper.allEq(params);
         }
-        if (StringUtils.isBlank(userName)) {
+        if (StringUtils.isNotBlank(userName)) {
             queryWrapper.like("user_name",userName);
         }
-        if (StringUtils.isBlank(email)) {
+        if (StringUtils.isNotBlank(email)) {
             queryWrapper.like("email",email);
         }
         queryWrapper.orderByAsc("id");

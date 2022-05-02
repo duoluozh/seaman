@@ -46,12 +46,12 @@ public class BaseQueryDto implements Serializable {
     @ApiModelProperty(value = "排序规则 desc asc")
     private String sortRole;
 
-    /**
-     * 排序类型
-     */
-    @ApiModelProperty(value = "排序类型")
-    private String sortType;
-
+//    /**
+//     * 排序类型
+//     */
+//    @ApiModelProperty(value = "排序类型")
+//    private String sortType;
+//
 //    /**
 //     * 多重排序
 //     * 内容：key:字段,value:desc或asc

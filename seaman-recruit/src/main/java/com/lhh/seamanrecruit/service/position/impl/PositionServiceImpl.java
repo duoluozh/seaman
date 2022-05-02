@@ -145,14 +145,14 @@ public class PositionServiceImpl implements PositionService {
     /**
      * 分页查询
      *
-     * @param entity      筛选条件
-     * @param pageRequest 分页对象
+     * @param dto      筛选条件
      * @return 查询结果
      */
     @Override
-    public PageInfo<PositionDto> queryByPage(Position entity, BaseQueryDto pageRequest, Long userId) {
+    public PageInfo<PositionDto> queryByPage(PositionDto dto, Long userId) {
         //查询当前用户
         User user = userDao.selectById(userId);
+        Position entity = CopyUtils.copy(dto, Position.class);
         if (user.getUserType() == 0) {
             //船员
             entity.setStatusFlag("1");
@@ -161,7 +161,7 @@ public class PositionServiceImpl implements PositionService {
             Company company = companyDao.selectByUserId(userId);
             entity.setCompanyId(company.getId());
         }
-        PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
+        PageHelper.startPage(dto.getPageNum(), dto.getPageSize());
         List<PositionDto> positionDtos = positionDao.selectPageList(entity);
 
         PageInfo<PositionDto> userInfoPage = new PageInfo<PositionDto>(positionDtos);

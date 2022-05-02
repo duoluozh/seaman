@@ -89,14 +89,14 @@ public class CompanyController {
     /**
      * 分页查询
      *
-     * @param pageRequest 分页对象
+     * @param companyDto 查询条件
      * @return 查询结果
      *
      */
     @PostMapping("/queryByPage")
     @ApiOperation("分页查询公司")
-    public Result<Page<Company>> queryByPage(Company company, BaseQueryDto pageRequest) {
-        return Result.success(companyService.queryByPage(company, pageRequest));
+    public Result<Page<Company>> queryByPage(@RequestBody CompanyDto companyDto) {
+        return Result.success(companyService.queryByPage(companyDto));
     }
 
     /**
