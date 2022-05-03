@@ -72,7 +72,7 @@ public class TestController {
     }
 
     @ApiOperation("发送邮件-测试")
-    @PostMapping("/sendEamil")
+    @PostMapping("/sendEmail")
     public Result sendEamil(@RequestBody Email email) {
         String s = null;
         try {

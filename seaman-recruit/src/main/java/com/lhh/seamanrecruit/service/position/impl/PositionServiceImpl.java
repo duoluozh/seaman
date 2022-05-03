@@ -6,8 +6,10 @@ import com.lhh.seamanrecruit.constant.Constant;
 import com.lhh.seamanrecruit.dao.CompanyDao;
 import com.lhh.seamanrecruit.dao.UserDao;
 import com.lhh.seamanrecruit.dao.UserPositionDao;
+import com.lhh.seamanrecruit.dto.eamil.Email;
 import com.lhh.seamanrecruit.dto.position.PositionCompanyDto;
 import com.lhh.seamanrecruit.dto.position.PositionDto;
+import com.lhh.seamanrecruit.dto.position.PositionInterviewDto;
 import com.lhh.seamanrecruit.entity.Company;
 import com.lhh.seamanrecruit.entity.Position;
 import com.lhh.seamanrecruit.dao.PositionDao;
@@ -16,6 +18,7 @@ import com.lhh.seamanrecruit.entity.UserPosition;
 import com.lhh.seamanrecruit.service.position.PositionService;
 import com.lhh.seamanrecruit.utils.CopyUtils;
 import com.lhh.seamanrecruit.utils.Result;
+import com.lhh.seamanrecruit.utils.SendMail;
 import com.lhh.seamanrecruit.utils.UserUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -132,9 +135,9 @@ public class PositionServiceImpl implements PositionService {
         LocalDateTime dateTime = now.minus(60, ChronoUnit.DAYS);
         UserPosition userPosition = userPositionDao.selectUserPosition(userId, id, dateTime);
         if (null != userPosition) {
-            positionCompanyDto.setDeliveryFlag("1");
+            positionCompanyDto.setDeliveryFlag(userPosition.getDeliveryFlag());
         } else {
-            positionCompanyDto.setDeliveryFlag("0");
+            positionCompanyDto.setDeliveryFlag(0);
         }
         return positionCompanyDto;
     }
@@ -182,6 +185,38 @@ public class PositionServiceImpl implements PositionService {
         Map<String, String> map = new HashMap<>();
         map.put("deliveryFlag", "1");
         return map;
+    }
+
+    /**
+     * 发送面试邀请
+     *
+     * @param positionInterviewDto 面试邀请接口入参实体类
+     * @return 结果返回
+     */
+    @Override
+    public String interview(PositionInterviewDto positionInterviewDto) {
+        //查询用户信息
+        User user = userDao.selectById(positionInterviewDto.getUserId());
+        String emailName = user.getEmail();
+        //查询职位信息
+        Position position = positionDao.selectById(positionInterviewDto.getPositionId());
+        String companyName = position.getCompanyName();
+        String positionName = position.getPositionName();
+        //查询公司用户信息
+        User companyUser = userDao.selectById(positionInterviewDto.getCompanyUserId());
+        //发送邮件
+        Email email = new Email();
+        email.setEmail(emailName);
+        String sub = user.getUserName() + ",您好:" + companyName + "的" + positionName + "职位向您发出了面试邀请。" +
+                "了解具体情况请回复邮件至" +  companyUser.getEmail();
+        email.setContent(sub);
+        email.setSubject(Constant.EMAIL_INTERVIEW_HEAD);
+
+        String message = SendMail.sendMails(email, emailName);
+
+        userPositionDao.updateFlagByUserIdAndPositionId(user.getId(),position.getId());
+
+        return message;
     }
 
 }

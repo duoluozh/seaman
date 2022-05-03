@@ -3,6 +3,7 @@ package com.lhh.seamanrecruit.service.position;
 import com.github.pagehelper.PageInfo;
 import com.lhh.seamanrecruit.dto.position.PositionCompanyDto;
 import com.lhh.seamanrecruit.dto.position.PositionDto;
+import com.lhh.seamanrecruit.dto.position.PositionInterviewDto;
 import com.lhh.seamanrecruit.entity.Position;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import com.lhh.seamanrecruit.utils.Result;
@@ -68,4 +69,12 @@ public interface PositionService {
          * @return 投递结果
          */
         Map<String,String> insertDelivery(Long id, Long userId);
+
+        /**
+         * 发送面试邀请
+         *
+         * @param positionInterviewDto 面试邀请接口入参实体类
+         * @return 结果返回
+         */
+        String interview(PositionInterviewDto positionInterviewDto);
 }

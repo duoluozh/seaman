@@ -17,10 +17,18 @@ import java.time.LocalDateTime;
 public interface UserPositionDao extends BaseMapper<UserPosition> {
 
     /**
-     * 根据用户id与简历id查询是否存在
+     * 根据用户id与职位id查询是否存在
      * @param userId
      * @param id
      * @return
      */
     UserPosition selectUserPosition(@Param("userId") Long userId,@Param("positionId") Long id,@Param("dateTime") LocalDateTime dateTime);
+
+    /**
+     * 根据用户id与职位id更新投递标记
+     * @param userId 用户id
+     * @param positionId 职位id
+     * @return
+     */
+    void updateFlagByUserIdAndPositionId(@Param("userId") Long userId,@Param("positionId") Long positionId);
 }

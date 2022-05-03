@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.lhh.seamanrecruit.dao.UserPositionDao">
 
-
     <select id="selectUserPosition" resultType="com.lhh.seamanrecruit.entity.UserPosition">
         select * from
         user_position
@@ -10,4 +9,9 @@
         and position_id = #{positionId}
         and created_time >= #{dateTime}
     </select>
+
+    <update id="updateFlagByUserIdAndPositionId">
+        update user_position set delivery_flag = 2 where user_id = #{userId} and position_id = #{positionId}
+    </update>
+
 </mapper>

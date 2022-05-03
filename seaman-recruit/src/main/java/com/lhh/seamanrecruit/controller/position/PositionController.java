@@ -3,6 +3,7 @@ package com.lhh.seamanrecruit.controller.position;
 import com.lhh.seamanrecruit.constant.Constant;
 import com.lhh.seamanrecruit.dto.position.PositionCompanyDto;
 import com.lhh.seamanrecruit.dto.position.PositionDto;
+import com.lhh.seamanrecruit.dto.position.PositionInterviewDto;
 import com.lhh.seamanrecruit.enums.PositionEnum;
 import com.lhh.seamanrecruit.utils.UserUtils;
 import io.swagger.annotations.Api;
@@ -107,6 +108,19 @@ public class PositionController {
     public Result delivery(@RequestParam("id") Long id) {
         Long userId = UserUtils.getLoginUserId();
         return Result.success(positionService.insertDelivery(id, userId));
+    }
+
+    /**
+     * 发送面试邀请
+     *
+     * @param positionInterviewDto 面试邀请接口入参实体类
+     * @return 结果返回
+     */
+    @PostMapping("/interview")
+    @ApiOperation("发送面试邀请")
+    public Result interview(@RequestBody PositionInterviewDto positionInterviewDto) {
+        positionInterviewDto.setCompanyUserId(UserUtils.getLoginUserId());
+        return Result.success(positionService.interview(positionInterviewDto));
     }
 
     /**
