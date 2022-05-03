@@ -2,6 +2,7 @@ package com.lhh.seamanrecruit.entity;
 
 import java.time.LocalDateTime;
 
+import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import java.io.Serializable;

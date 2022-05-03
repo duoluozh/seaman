@@ -1,6 +1,7 @@
 package com.lhh.seamanrecruit.dto.position;
 
 
+import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,7 @@ import java.time.LocalDateTime;
 @ApiModel("职位列表")
 @AllArgsConstructor
 @NoArgsConstructor
-public class PositionDto implements Serializable {
+public class PositionDto extends BaseQueryDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

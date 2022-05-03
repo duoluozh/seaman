@@ -134,22 +134,11 @@ public class ResumeServiceImpl implements ResumeService {
      * @return 查询结果
      */
     @Override
-    public PageInfo<ResumeDto> queryByPage(ResumeDto entity, BaseQueryDto pageRequest) {
-
-        PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
-        List<ResumeDto> positionDtos = resumeDao.selectPageList(entity);
-
-        PageInfo<ResumeDto> userInfoPage = new PageInfo<ResumeDto>(positionDtos);
-        return userInfoPage;
-    }
-
-    @Override
-    public PageInfo<ResumeDto> queryResumePage(ResumeDto resume, BaseQueryDto pageRequest) {
-        resume.setUserId(UserUtils.getLoginUserId());
-        PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
-        List<ResumeDto> positionDtos = resumeDao.queryResumePage(resume);
-
-        PageInfo<ResumeDto> userInfoPage = new PageInfo<ResumeDto>(positionDtos);
+    public PageInfo<Resume> queryByPage(ResumeDto dto) {
+        Resume resume = CopyUtils.copy(dto, Resume.class);
+        PageHelper.startPage(dto.getPageNum(), dto.getPageSize());
+        List<Resume> positionDtos = resumeDao.selectPageList(resume);
+        PageInfo<Resume> userInfoPage = new PageInfo<Resume>(positionDtos);
         return userInfoPage;
     }
 

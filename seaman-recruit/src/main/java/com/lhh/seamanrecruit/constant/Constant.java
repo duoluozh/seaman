@@ -173,6 +173,11 @@ public class Constant {
     public static final String EMAIL_CODE_KEY = "EMAIL.CODE.";
 
     /**
+     * 公司还在审核中！
+     */
+    public static final String EXAMINE = "公司还在审核中！";
+
+    /**
      * 面试邀请邮件主题
      */
     public static final String EMAIL_INTERVIEW_HEAD = "面试邀请通知:";

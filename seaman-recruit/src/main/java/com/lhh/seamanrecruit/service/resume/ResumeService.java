@@ -50,11 +50,10 @@ public interface ResumeService {
         /**
          * 分页查询
          *
-         * @param entity 筛选条件
-         * @param pageRequest      分页对象
+         * @param resumeDto 筛选条件
          * @return 查询结果
          */
-        PageInfo<ResumeDto> queryByPage(ResumeDto entity, BaseQueryDto pageRequest);
+        PageInfo<Resume> queryByPage(ResumeDto resumeDto);
 
         /**
          * 分页查询

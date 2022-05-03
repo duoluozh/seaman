@@ -1,6 +1,7 @@
 package com.lhh.seamanrecruit.dto.company;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * @author zhh
@@ -20,7 +22,7 @@ import java.time.LocalDate;
 @ApiModel("公司对象")
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanyDto  implements Serializable {
+public class CompanyDto extends BaseQueryDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -132,7 +134,7 @@ public class CompanyDto  implements Serializable {
      * 公司状态(0-未审核,1-正常,2-冻结)
      */
     @ApiModelProperty(value = "公司状态(0-未审核,1-正常,2-冻结)")
-    private Long statusFlag;
+    private List<Long> statusFlag;
 
 
 }

@@ -55,11 +55,10 @@ public interface PositionService {
         /**
          * 分页查询
          *
-         * @param entity 筛选条件
-         * @param pageRequest      分页对象
+         * @param positionDto 筛选条件
          * @return 查询结果
          */
-        PageInfo<PositionDto> queryByPage(Position entity, BaseQueryDto pageRequest, Long userId);
+        PageInfo<PositionDto> queryByPage(PositionDto positionDto, Long userId);
 
         /**
          * 简历投递

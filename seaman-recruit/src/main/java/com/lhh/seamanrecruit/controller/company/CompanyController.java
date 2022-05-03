@@ -62,8 +62,8 @@ public class CompanyController {
         return Result.success(companyService.updateById(company));
     }
 
-    /**
-     * 通过主键查询单条数据
+    /**通过用户id查询
+     *
      *
      * @param id 主键
      * @return 单条数据
@@ -74,17 +74,29 @@ public class CompanyController {
         return Result.success(companyService.queryById(id));
     }
 
+    /**通过主键查询单条数据
+     *
+     *
+     * @param userId 用户id
+     * @return 单条数据
+     */
+    @GetMapping("/queryByUserId/{userId}")
+    @ApiOperation("通过用户id查询公司")
+    public Result<List<Company>> queryByUserId(@PathVariable("userId") Long userId) {
+        return Result.success(companyService.queryByUserId(userId));
+    }
+
     /**
      * 分页查询
      *
-     * @param pageRequest 分页对象
+     * @param companyDto 查询条件
      * @return 查询结果
      *
      */
     @PostMapping("/queryByPage")
     @ApiOperation("分页查询公司")
-    public Result<Page<Company>> queryByPage(Company company, BaseQueryDto pageRequest) {
-        return Result.success(companyService.queryByPage(company, pageRequest));
+    public Result<Page<Company>> queryByPage(@RequestBody CompanyDto companyDto) {
+        return Result.success(companyService.queryByPage(companyDto));
     }
 
     /**
