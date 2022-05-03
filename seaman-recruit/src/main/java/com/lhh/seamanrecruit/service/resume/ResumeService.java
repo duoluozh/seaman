@@ -53,14 +53,13 @@ public interface ResumeService {
          * @param resumeDto 筛选条件
          * @return 查询结果
          */
-        PageInfo<Resume> queryByPage(ResumeDto resumeDto);
+        PageInfo<ResumeDto> queryByPage(ResumeDto resumeDto);
 
         /**
          * 分页查询
          *
          * @param resume 筛选条件
-         * @param pageRequest      分页对象
          * @return 查询结果
          */
-        PageInfo<ResumeDto> queryResumePage(ResumeDto resume, BaseQueryDto pageRequest);
+        PageInfo<ResumeDto> queryResumePage(ResumeDto resume);
 }

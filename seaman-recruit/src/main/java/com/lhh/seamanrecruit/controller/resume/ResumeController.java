@@ -88,7 +88,7 @@ public class ResumeController {
      */
     @PostMapping("/queryByPage")
     @ApiOperation("分页查询简历")
-    public Result<PageInfo<Resume>> queryByPage(@RequestBody ResumeDto resumeDto) {
+    public Result<PageInfo<ResumeDto>> queryByPage(@RequestBody ResumeDto resumeDto) {
         return Result.success(resumeService.queryByPage(resumeDto));
     }
 
@@ -101,7 +101,7 @@ public class ResumeController {
      */
     @PostMapping("/queryResumePage")
     @ApiOperation("求职者列表")
-    public Result<PageInfo<ResumeDto>> queryResumePage(ResumeDto resume, BaseQueryDto pageRequest) {
-        return Result.success(resumeService.queryResumePage(resume, pageRequest));
+    public Result<PageInfo<ResumeDto>> queryResumePage(ResumeDto resume) {
+        return Result.success(resumeService.queryResumePage(resume));
     }
 }

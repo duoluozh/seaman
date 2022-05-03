@@ -1,5 +1,6 @@
 package com.lhh.seamanrecruit.dto.resume;
 
+import com.lhh.seamanrecruit.dto.BaseQueryDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel("简历")
-public class ResumeDto implements Serializable {
+public class ResumeDto extends BaseQueryDto {
 
 	private static final long serialVersionUID = 1L;
 
