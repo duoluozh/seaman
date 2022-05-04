@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds" debug="false">
+    <contextName>seaman-recruit</contextName>
+    <!-- 控制台日志输出，供本机联调使用 -->
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <property name="LOGGER_HOME_IN_R13" value="/tmp/logs/"/>
+    <property name="ROOT_LEVEL_IN_R13" value="INFO"/>
+
+    <appender name="CATALINA_LOG"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <prudent>false</prudent>
+        <append>true</append>
+        <File>${LOGGER_HOME_IN_R13}/catalina.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <FileNamePattern>${LOGGER_HOME_IN_R13}/catalina.log.%i.zip
+            </FileNamePattern>
+            <MinIndex>1</MinIndex>
+            <MaxIndex>20</MaxIndex>
+        </rollingPolicy>
+        <triggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>20MB</MaxFileSize>
+        </triggeringPolicy>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss:SSS} [%p] [%C{1}.java:%L] ->[%t] %m%n</Pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.apache.catalina" level="${CATALINA_LEVEL_IN_R13}" additivity="false">
+        <appender-ref ref="CATALINA_LOG"/>
+    </logger>
+
+    <logger name="org.apache.tomcat" level="${CATALINA_LEVEL_IN_R13}" additivity="false">
+        <appender-ref ref="CATALINA_LOG"/>
+    </logger>
+
+    <root level="${ROOT_LEVEL_IN_R13}">
+        <appender-ref ref="CATALINA_LOG"/>
+    </root>
+
+</configuration>
