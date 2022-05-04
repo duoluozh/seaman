@@ -230,10 +230,24 @@ public class PositionServiceImpl implements PositionService {
         email.setSubject(Constant.EMAIL_INTERVIEW_HEAD);
 
         String message = SendMail.sendMails(email, emailName);
-
-        userPositionDao.updateFlagByUserIdAndPositionId(user.getId(),position.getId());
+        UserPosition userPosition = new UserPosition();
+        userPosition.setPositionId(position.getId());
+        userPosition.setUserId(user.getId());
+        userPosition.setDeliveryFlag(2);
+        userPositionDao.updateFlagByUserIdAndPositionId(userPosition);
 
         return message;
+    }
+
+    @Override
+    public String updateDelivery(Long positionId, Long userId) {
+        UserPosition userPosition = new UserPosition();
+        userPosition.setPositionId(positionId);
+        userPosition.setUserId(userId);
+        userPosition.setDeliveryFlag(3);
+        userPositionDao.updateFlagByUserIdAndPositionId(userPosition);
+
+        return Constant.RESULT_SUCCESS;
     }
 
 }

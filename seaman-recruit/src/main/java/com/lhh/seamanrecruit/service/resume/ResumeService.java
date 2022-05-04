@@ -62,4 +62,11 @@ public interface ResumeService {
          * @return 查询结果
          */
         PageInfo<ResumeDto> queryResumePage(ResumeDto resume);
+
+        /**
+         * 查询当前用户简历
+         * @param loginUserId 当前登录用户id
+         * @return
+         */
+        ResumeAddDto queryByUserId(Long loginUserId);
 }

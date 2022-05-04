@@ -26,9 +26,8 @@ public interface UserPositionDao extends BaseMapper<UserPosition> {
 
     /**
      * 根据用户id与职位id更新投递标记
-     * @param userId 用户id
-     * @param positionId 职位id
+     * @param userPosition 实体类
      * @return
      */
-    void updateFlagByUserIdAndPositionId(@Param("userId") Long userId,@Param("positionId") Long positionId);
+    void updateFlagByUserIdAndPositionId(@Param("param") UserPosition userPosition);
 }

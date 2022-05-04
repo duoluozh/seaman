@@ -151,4 +151,18 @@ public class ResumeServiceImpl implements ResumeService {
         return userInfoPage;
     }
 
+    @Override
+    public ResumeAddDto queryByUserId(Long loginUserId) {
+        //查询简历主表信息
+        Resume resume = resumeDao.selectByUserId(loginUserId);
+        if (resume == null) {
+            return null;
+        }
+        ResumeAddDto resumeAddDto = CopyUtils.copy(resume, ResumeAddDto.class);
+        //查询明细集合
+        List<ResumeDetails> resumeAddDtos = resumeDetailsDao.selectByMasterId(resume.getId());
+        resumeAddDto.setResumeDetails(resumeAddDtos);
+        return resumeAddDto;
+    }
+
 }

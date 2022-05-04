@@ -11,7 +11,7 @@
     </select>
 
     <update id="updateFlagByUserIdAndPositionId">
-        update user_position set delivery_flag = 2 where user_id = #{userId} and position_id = #{positionId}
+        update user_position set delivery_flag = #{param.deliveryFlag} where user_id = #{param.userId} and position_id = #{param.positionId}
     </update>
 
 </mapper>

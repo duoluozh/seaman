@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.lhh.seamanrecruit.constant.Constant;
 import com.lhh.seamanrecruit.dto.resume.ResumeAddDto;
 import com.lhh.seamanrecruit.dto.resume.ResumeDto;
+import com.lhh.seamanrecruit.utils.UserUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import com.lhh.seamanrecruit.entity.Resume;
@@ -80,6 +81,17 @@ public class ResumeController {
     }
 
     /**
+     * 查询当前用户简历
+     *
+     * @return
+     */
+    @GetMapping("/queryByUserId")
+    @ApiOperation("查询当前用户简历")
+    public Result<ResumeAddDto> queryByUserId() {
+        return Result.success(resumeService.queryByUserId(UserUtils.getLoginUserId()));
+    }
+
+    /**
      * 分页查询
      *
      * @param resumeDto 查询条件
@@ -95,7 +107,7 @@ public class ResumeController {
     /**
      * 求职者列表
      *
-     * @param pageRequest 分页对象
+     * @param resume 分页对象
      * @return 查询结果
      *
      */

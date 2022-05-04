@@ -111,6 +111,19 @@ public class PositionController {
     }
 
     /**
+     * 职位拒绝接口
+     *
+     * @param positionId 职位id
+     * @param userId 用户id
+     * @return 查询结果
+     */
+    @GetMapping("/refuse")
+    @ApiOperation("职位拒绝接口")
+    public Result refuse(@RequestParam("positionId") Long positionId,@RequestParam("userId")Long userId) {
+        return Result.success(positionService.updateDelivery(positionId, userId));
+    }
+
+    /**
      * 发送面试邀请
      *
      * @param positionInterviewDto 面试邀请接口入参实体类

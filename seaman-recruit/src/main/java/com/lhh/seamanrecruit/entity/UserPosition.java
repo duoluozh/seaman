@@ -48,7 +48,7 @@ public class UserPosition implements Serializable {
 	/**
 	 * 投递标识
 	 */
-	@ApiModelProperty(value = "投递标识(0-未投递,1-已投递,2-通过,3-拒绝)")
+	@ApiModelProperty(value = "投递标识(1-已投递,2-通过,3-拒绝)")
 	private Integer deliveryFlag;
 
 	/**
