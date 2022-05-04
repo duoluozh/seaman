@@ -130,7 +130,7 @@ public class PositionServiceImpl implements PositionService {
     public PositionCompanyDto queryById(Long id) {
         PositionCompanyDto positionCompanyDto = positionDao.selectByPositionCompany(id);
         if (positionCompanyDto == null) {
-            return null;
+            throw new RuntimeException(Constant.NOT_QUERY_POSITION);
         }
         Long userId = UserUtils.getLoginUserId();
         LocalDateTime now = LocalDateTime.now();
@@ -182,7 +182,7 @@ public class PositionServiceImpl implements PositionService {
     public Map<String, String> insertDelivery(Long id, Long userId) {
         UserPosition userPosition = new UserPosition();
         userPosition.setPositionId(id);
-        userPosition.setPositionId(userId);
+        userPosition.setUserId(userId);
         userPosition.setCreatedTime(LocalDateTime.now());
         userPositionDao.insert(userPosition);
         Map<String, String> map = new HashMap<>();

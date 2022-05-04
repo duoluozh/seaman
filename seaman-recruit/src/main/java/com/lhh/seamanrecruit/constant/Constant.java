@@ -158,6 +158,11 @@ public class Constant {
     public static final String NOT_UPDATE_JURISDICTION = "没有修改权限";
 
     /**
+     * 查询的职位不存在
+     */
+    public static final String NOT_QUERY_POSITION = "查询的职位不存在";
+
+    /**
      * 验证码
      */
     public static final String EMAIL_CODE = "邮箱验证";
