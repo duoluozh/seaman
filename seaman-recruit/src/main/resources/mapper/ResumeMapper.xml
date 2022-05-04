@@ -20,7 +20,8 @@
         SELECT r.*,ur.position_id FROM resume r,user_position ur WHERE r.user_id IN
         (SELECT user_id FROM user_position WHERE position_id IN
         (SELECT id FROM position WHERE company_id =
-        (SELECT id FROM company WHERE user_id = #{resume.userId})))
+        (SELECT id FROM company WHERE user_id = #{param.userId})))
+        AND r.`user_id` = ur.`user_id`
     </select>
 
 </mapper>
