@@ -3,7 +3,7 @@
 <mapper namespace="com.lhh.seamanrecruit.dao.PositionDao">
 
     <select id="selectPageList" resultType="com.lhh.seamanrecruit.dto.position.PositionDto">
-        select * from position,user_position
+        select * from position
         where 1=1
         <if test="param != null and param.statusFlag != null">
             AND status_flag in (#{param.statusFlag})

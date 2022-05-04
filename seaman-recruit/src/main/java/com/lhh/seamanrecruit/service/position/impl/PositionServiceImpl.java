@@ -184,6 +184,7 @@ public class PositionServiceImpl implements PositionService {
         userPosition.setPositionId(id);
         userPosition.setUserId(userId);
         userPosition.setCreatedTime(LocalDateTime.now());
+        userPosition.setDeliveryFlag(1);
         userPositionDao.insert(userPosition);
         Map<String, String> map = new HashMap<>();
         map.put("deliveryFlag", "1");
