@@ -177,6 +177,12 @@ public class ResumeDto extends BaseQueryDto {
 	private Long requiredGross;
 
 	/**
+	 * 职位id
+	 */
+	@ApiModelProperty(value = "职位id")
+	private Long positionId;
+
+	/**
 	 * 上船地点
 	 */
 	@ApiModelProperty(value = "用户状态(0-在职不考虑机会，1-在职考虑机会，2-离职状态)")
