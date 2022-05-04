@@ -3,6 +3,7 @@ package com.lhh.seamanrecruit.controller.company;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.dto.company.CompanyDto;
 import com.lhh.seamanrecruit.enums.ShipTypeEnum;
+import com.lhh.seamanrecruit.utils.UserUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import com.lhh.seamanrecruit.entity.Company;

@@ -30,4 +30,11 @@ public interface ResumeDao extends BaseMapper<Resume> {
      * @return
      */
     List<ResumeDto> queryResumePage(@Param("param")ResumeDto resume);
+
+    /**
+     * 查询登录用户对应的简历信息
+     * @param loginUserId
+     * @return
+     */
+    Resume selectByUserId(Long loginUserId);
 }
