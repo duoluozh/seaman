@@ -22,6 +22,7 @@
         (SELECT id FROM position WHERE company_id =
         (SELECT id FROM company WHERE user_id = #{param.userId})))
         AND r.`user_id` = ur.`user_id`
+        AND ur.`delivery_flag` = 1
     </select>
     <select id="selectByUserId" resultType="com.lhh.seamanrecruit.entity.Resume">
         select * from resume where user_id = #{loginUserId}

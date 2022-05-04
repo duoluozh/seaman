@@ -76,4 +76,13 @@ public interface PositionService {
          * @return 结果返回
          */
         String interview(PositionInterviewDto positionInterviewDto);
+
+        /**
+         * 职位拒绝接口
+         *
+         * @param positionId 职位id
+         * @param userId 用户id
+         * @return 查询结果
+         */
+        String updateDelivery(Long positionId, Long userId);
 }
