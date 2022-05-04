@@ -1,5 +1,6 @@
 package com.lhh.seamanrecruit.service.position.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lhh.seamanrecruit.constant.Constant;
@@ -72,7 +73,7 @@ public class PositionServiceImpl implements PositionService {
         if (null == company) {
             throw new RuntimeException(Constant.POSITION_USER_NOT_COMPANY_USER);
         }
-        if (0== company.getStatusFlag()) {
+        if (0 == company.getStatusFlag()) {
             throw new RuntimeException(Constant.EXAMINE);
         }
         entity.setCompanyId(company.getId());
@@ -148,7 +149,7 @@ public class PositionServiceImpl implements PositionService {
     /**
      * 分页查询
      *
-     * @param dto      筛选条件
+     * @param dto 筛选条件
      * @return 查询结果
      */
     @Override
@@ -185,6 +186,18 @@ public class PositionServiceImpl implements PositionService {
         userPosition.setUserId(userId);
         userPosition.setCreatedTime(LocalDateTime.now());
         userPosition.setDeliveryFlag(1);
+        QueryWrapper<UserPosition> wrapper = new QueryWrapper<>();
+        Map<String, Object> params = new HashMap<>();
+        params.put("position_id", id);
+        params.put("user_id", userId);
+        wrapper.allEq(params);
+        List<UserPosition> userPositions = userPositionDao.selectList(wrapper);
+        if (!CollectionUtils.isEmpty(userPositions)) {
+            UserPosition userPosition1 = userPositions.get(0);
+            if (userPosition1.getDeliveryFlag() != null && userPosition1.getDeliveryFlag() == 1) {
+                throw new RuntimeException("你已经投递过该公司了！");
+            }
+        }
         userPositionDao.insert(userPosition);
         Map<String, String> map = new HashMap<>();
         map.put("deliveryFlag", "1");
