@@ -152,21 +152,20 @@ public class PositionServiceImpl implements PositionService {
     @Override
     public Page<Position> queryByPage(PositionDto dto, Long userId) {
         //查询当前用户
+        QueryWrapper<Position> queryWrapper = new QueryWrapper<>();
+        Map<String, Object> params = new HashMap<>();
         User user = userDao.selectById(userId);
-        Position entity = CopyUtils.copy(dto, Position.class);
         if (user.getUserType() == 0) {
             //船员
-            entity.setStatusFlag("1");
+            params.put("status_flag","1");
         } else if (user.getUserType() == 1) {
             //企业
             Company company = companyDao.selectByUserId(userId);
             if (company == null) {
                 return null;
             }
-            entity.setCompanyId(company.getId());
+            params.put("company_id", company.getId());
         }
-        QueryWrapper<Position> queryWrapper = new QueryWrapper<>();
-        Map<String, Object> params = new HashMap<>();
         String positionName = dto.getPositionName();
         String shipType = dto.getShipType();
         String statusFlag = dto.getStatusFlag();
