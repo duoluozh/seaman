@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.dto.BaseQueryDto;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -225,7 +226,7 @@ public class PositionServiceImpl implements PositionService {
         Email email = new Email();
         email.setEmail(emailName);
         String sub = user.getUserName() + ",您好:" + companyName + "的" + positionName + "职位向您发出了面试邀请。" +
-                "了解具体情况请回复邮件至" +  companyUser.getEmail();
+                "了解具体情况请回复邮件至" + companyUser.getEmail();
         email.setContent(sub);
         email.setSubject(Constant.EMAIL_INTERVIEW_HEAD);
 
@@ -235,6 +236,8 @@ public class PositionServiceImpl implements PositionService {
         userPosition.setUserId(user.getId());
         userPosition.setDeliveryFlag(2);
         userPositionDao.updateFlagByUserIdAndPositionId(userPosition);
+
+        userPositionDao.updateFlagByUserIdAndPositionId(user.getId(), position.getId());
 
         return message;
     }
