@@ -5,13 +5,13 @@
 
     <select id="selectPageList" resultType="com.lhh.seamanrecruit.dto.resume.ResumeDto">
         SELECT * FROM resume WHERE user_status in (1,2)
-        <if test="param != null and param.education != null">
+        <if test="param != null and param.education != null and param.education != ''">
             AND education in (#{param.education})
         </if>
-        <if test="param != null and param.certificateLevel != null">
+        <if test="param != null and param.certificateLevel != null and param.certificateLevel != null">
             AND certificate_level = #{param.certificateLevel}
         </if>
-        <if test="param != null and param.monthlySalary != null">
+        <if test="param != null and param.monthlySalary != null and param.monthlySalary != null">
             AND monthly_salary = #{param.monthlySalary}
         </if>
     </select>

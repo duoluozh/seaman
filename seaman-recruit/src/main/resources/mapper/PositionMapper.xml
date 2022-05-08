@@ -5,26 +5,23 @@
     <select id="selectPageList" resultType="com.lhh.seamanrecruit.dto.position.PositionDto">
         select * from position
         where 1=1
-        <if test="param != null and param.statusFlag != null">
+        <if test="param != null and param.statusFlag != null and param.statusFlag != ‘’">
             AND status_flag in (#{param.statusFlag})
         </if>
-        <if test="param != null and param.companyId != null">
+        <if test="param != null and param.companyId != null and param.companyId != ‘’">
             AND company_id = #{param.companyId}
             AND status_flag in ('0','1')
         </if>
-        <if test="param != null and param.positionName != null">
+        <if test="param != null and param.positionName != null and param.positionName != ‘’">
             AND position_name like '%#{param.positionName}%'
         </if>
-        <if test="param != null and param.shipType != null">
+        <if test="param != null and param.shipType != null and param.shipType != ‘’">
             AND ship_type = #{param.shipType}
         </if>
-        <if test="param != null and param.statusFlag != null">
-            AND status_flag = #{param.statusFlag}
-        </if>
-        <if test="param != null and param.companyName != null">
+        <if test="param != null and param.companyName != null and param.companyName != ‘’">
             AND company_name = #{param.companyName}
         </if>
-        <if test="param != null and param.education != null">
+        <if test="param != null and param.education != null and param.education != ‘’">
             AND education = #{param.education}
         </if>
         order by update_time DESC
