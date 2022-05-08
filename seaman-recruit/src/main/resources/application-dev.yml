@@ -57,9 +57,9 @@ mybatis-plus:
 
 
 # 七牛云配置
-qiniu.access-key: M8sFrz2YGzuqMoLNuG4i7oYfuvVl9_y-GtuAvmUc
-qiniu.secret-key: soWDryK19oFsiglgSJFHQyQDNOfWn1YkGZjnV6XV
-qiniu.bucket: proj-haiyuan
+qiniu.access-key: gGWJbvsLtzkd2j19uVK6UvYe5OftY3j1E3iOK2FZ
+qiniu.secret-key: umrhG9wGYTA-4VX6Fxec36VBhO4rmC8vNlwjXsds
+qiniu.bucket: haiyuanzhaop
  # [{'zone0':'华东'}, {'zone1':'华北'},{'zone2':'华南'},{'zoneNa0':'北美'},{'zoneAs0':''}]
 qiniu.zone: zone2
 qiniu.domain-of-bucket: r9wgzpaah.hn-bkt.clouddn.com
