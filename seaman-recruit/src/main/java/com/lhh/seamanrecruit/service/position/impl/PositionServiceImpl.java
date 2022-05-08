@@ -1,6 +1,7 @@
 package com.lhh.seamanrecruit.service.position.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lhh.seamanrecruit.constant.Constant;
@@ -18,19 +19,14 @@ import com.lhh.seamanrecruit.entity.User;
 import com.lhh.seamanrecruit.entity.UserPosition;
 import com.lhh.seamanrecruit.service.position.PositionService;
 import com.lhh.seamanrecruit.utils.CopyUtils;
-import com.lhh.seamanrecruit.utils.Result;
 import com.lhh.seamanrecruit.utils.SendMail;
 import com.lhh.seamanrecruit.utils.UserUtils;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.lhh.seamanrecruit.dto.BaseQueryDto;
-import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -154,7 +150,7 @@ public class PositionServiceImpl implements PositionService {
      * @return 查询结果
      */
     @Override
-    public PageInfo<PositionDto> queryByPage(PositionDto dto, Long userId) {
+    public Page<Position> queryByPage(PositionDto dto, Long userId) {
         //查询当前用户
         User user = userDao.selectById(userId);
         Position entity = CopyUtils.copy(dto, Position.class);
@@ -164,13 +160,29 @@ public class PositionServiceImpl implements PositionService {
         } else if (user.getUserType() == 1) {
             //企业
             Company company = companyDao.selectByUserId(userId);
+            if (company == null) {
+                return null;
+            }
             entity.setCompanyId(company.getId());
         }
-        PageHelper.startPage(dto.getPageNum(), dto.getPageSize());
-        List<PositionDto> positionDtos = positionDao.selectPageList(entity);
+        QueryWrapper<Position> queryWrapper = new QueryWrapper<>();
+        Map<String, Object> params = new HashMap<>();
+        String positionName = dto.getPositionName();
+        String shipType = dto.getShipType();
+        String statusFlag = dto.getStatusFlag();
+        if (StringUtils.isNotBlank(positionName)) {
+            queryWrapper.like("position_name", positionName);
+        }
+        if (StringUtils.isNotBlank(shipType)) {
+            params.put("ship_type", shipType);
+        }
+        if (StringUtils.isNotBlank(statusFlag)) {
+            params.put("status_flag", statusFlag);
+        }
+        queryWrapper.allEq(params);
 
-        PageInfo<PositionDto> userInfoPage = new PageInfo<PositionDto>(positionDtos);
-        return userInfoPage;
+        Page<Position> page = new Page<>(dto.getPageNum(), dto.getPageSize());
+        return (Page)positionDao.selectPage(page,queryWrapper);
     }
 
     /**
@@ -236,8 +248,6 @@ public class PositionServiceImpl implements PositionService {
         userPosition.setUserId(user.getId());
         userPosition.setDeliveryFlag(2);
         userPositionDao.updateFlagByUserIdAndPositionId(userPosition);
-
-        userPositionDao.updateFlagByUserIdAndPositionId(user.getId(), position.getId());
 
         return message;
     }

@@ -1,5 +1,6 @@
 package com.lhh.seamanrecruit.controller.position;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lhh.seamanrecruit.constant.Constant;
 import com.lhh.seamanrecruit.dto.position.PositionCompanyDto;
 import com.lhh.seamanrecruit.dto.position.PositionDto;
@@ -92,7 +93,7 @@ public class PositionController {
      */
     @PostMapping("/queryByPage")
     @ApiOperation("分页查询招聘")
-    public Result<PageInfo<PositionDto>> queryByPage(@RequestBody PositionDto positionDto) {
+    public Result<Page<Position>> queryByPage(@RequestBody PositionDto positionDto) {
         Long userId = UserUtils.getLoginUserId();
         return Result.success(positionService.queryByPage(positionDto, userId));
     }

@@ -150,7 +150,7 @@ public class Constant {
     /**
      * 用户不为企业用户，无法新建职位
      */
-    public static final String POSITION_USER_NOT_COMPANY_USER = "用户不为企业用户，无法新建职位";
+    public static final String POSITION_USER_NOT_COMPANY_USER = "请先编辑你的企业！";
 
     /**
      * 没有修改权限

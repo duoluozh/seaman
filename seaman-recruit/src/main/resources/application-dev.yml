@@ -6,7 +6,7 @@ server:
 spring:
   datasource:
     name: seafarer_recruitment
-    url: jdbc:mysql://172.81.209.8:3306/seafarer_recruitment?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://172.81.209.8:3306/seafarer_recruitment?useSSL=false&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
     username: root
     password: Tx20220311!
     # 使用druid数据源

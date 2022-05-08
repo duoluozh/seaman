@@ -1,5 +1,6 @@
 package com.lhh.seamanrecruit.service.position;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageInfo;
 import com.lhh.seamanrecruit.dto.position.PositionCompanyDto;
 import com.lhh.seamanrecruit.dto.position.PositionDto;
@@ -58,7 +59,7 @@ public interface PositionService {
          * @param positionDto 筛选条件
          * @return 查询结果
          */
-        PageInfo<PositionDto> queryByPage(PositionDto positionDto, Long userId);
+        Page<Position> queryByPage(PositionDto positionDto, Long userId);
 
         /**
          * 简历投递

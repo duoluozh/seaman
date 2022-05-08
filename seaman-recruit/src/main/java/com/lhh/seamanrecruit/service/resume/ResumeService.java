@@ -53,7 +53,7 @@ public interface ResumeService {
          * @param resumeDto 筛选条件
          * @return 查询结果
          */
-        PageInfo<ResumeDto> queryByPage(ResumeDto resumeDto);
+        Page<Resume> queryByPage(ResumeDto resumeDto);
 
         /**
          * 分页查询
@@ -61,7 +61,7 @@ public interface ResumeService {
          * @param resume 筛选条件
          * @return 查询结果
          */
-        PageInfo<ResumeDto> queryResumePage(ResumeDto resume);
+        Page<Resume> queryResumePage(ResumeDto resume);
 
         /**
          * 查询当前用户简历
