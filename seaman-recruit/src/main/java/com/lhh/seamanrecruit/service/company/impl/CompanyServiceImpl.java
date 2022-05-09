@@ -1,5 +1,6 @@
 package com.lhh.seamanrecruit.service.company.impl;
 
+import com.lhh.seamanrecruit.dao.PositionDao;
 import com.lhh.seamanrecruit.dto.company.CompanyDto;
 import com.lhh.seamanrecruit.entity.Company;
 import com.lhh.seamanrecruit.dao.CompanyDao;
@@ -30,6 +31,8 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
     private CompanyDao companyDao;
+    @Autowired
+    private PositionDao positionDao;
 
     /**
      * 新增数据
@@ -63,6 +66,11 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @Transactional
     public boolean deleteById(List<Long> ids) {
+        Map<String, Object> params = new HashMap<>();
+        for (Long id : ids) {
+            params.put("company_id", id);
+            positionDao.deleteByMap(params);
+        }
         return companyDao.deleteBatchIds(ids) > 0;
     }
 
@@ -105,7 +113,7 @@ public class CompanyServiceImpl implements CompanyService {
         List<Long> statusFlag = dto.getStatusFlag();
         QueryWrapper<Company> queryWrapper = new QueryWrapper<>();
         if (!CollectionUtils.isEmpty(statusFlag)) {
-            queryWrapper.in("status_flag",statusFlag);
+            queryWrapper.in("status_flag", statusFlag);
         }
         if (StringUtils.isNotBlank(companyName)) {
             queryWrapper.like("company_name", companyName);

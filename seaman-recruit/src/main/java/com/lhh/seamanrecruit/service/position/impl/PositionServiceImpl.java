@@ -2,8 +2,6 @@ package com.lhh.seamanrecruit.service.position.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.lhh.seamanrecruit.constant.Constant;
 import com.lhh.seamanrecruit.dao.CompanyDao;
 import com.lhh.seamanrecruit.dao.UserDao;

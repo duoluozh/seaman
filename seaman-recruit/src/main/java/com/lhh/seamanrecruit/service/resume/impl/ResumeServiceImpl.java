@@ -1,15 +1,18 @@
 package com.lhh.seamanrecruit.service.resume.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lhh.seamanrecruit.dao.ResumeDetailsDao;
 import com.lhh.seamanrecruit.dao.UserDao;
+import com.lhh.seamanrecruit.dao.UserPositionDao;
 import com.lhh.seamanrecruit.dto.resume.ResumeAddDto;
 import com.lhh.seamanrecruit.dto.resume.ResumeDto;
 import com.lhh.seamanrecruit.entity.Resume;
 import com.lhh.seamanrecruit.dao.ResumeDao;
 import com.lhh.seamanrecruit.entity.ResumeDetails;
 import com.lhh.seamanrecruit.entity.User;
+import com.lhh.seamanrecruit.entity.UserPosition;
 import com.lhh.seamanrecruit.service.resume.ResumeService;
 import com.lhh.seamanrecruit.utils.CopyUtils;
 import com.lhh.seamanrecruit.utils.UserUtils;
@@ -40,6 +43,9 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Autowired
     private ResumeDetailsDao resumeDetailsDao;
+
+    @Autowired
+    private UserPositionDao userPositionDao;
 
     @Autowired
     private UserDao userDao;
@@ -128,7 +134,7 @@ public class ResumeServiceImpl implements ResumeService {
     /**
      * 分页查询
      *
-     * @param dto      筛选条件
+     * @param dto 筛选条件
      * @return 查询结果
      */
     @Override
@@ -137,53 +143,58 @@ public class ResumeServiceImpl implements ResumeService {
         String education = dto.getEducation();
         String certificateLevel = dto.getCertificateLevel();
         String monthlySalary = dto.getMonthlySalary();
-        if (StringUtils.isNotBlank(education)){
-            queryWrapper.like("education",education);
+        if (StringUtils.isNotBlank(education)) {
+            queryWrapper.like("education", education);
         }
-        if (StringUtils.isNotBlank(certificateLevel)){
-            queryWrapper.like("certificate_level",certificateLevel);
+        if (StringUtils.isNotBlank(certificateLevel)) {
+            queryWrapper.like("certificate_level", certificateLevel);
         }
-        if (StringUtils.isNotBlank(monthlySalary)){
-            Map<String,Object> params = new HashMap<>();
-            params.put("certificate_level",monthlySalary);
+        if (StringUtils.isNotBlank(monthlySalary)) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("certificate_level", monthlySalary);
             queryWrapper.allEq(params);
         }
-        if (StringUtils.isNotBlank(monthlySalary)){
-            Map<String,Object> params = new HashMap<>();
-            params.put("certificate_level",monthlySalary);
+        if (StringUtils.isNotBlank(monthlySalary)) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("certificate_level", monthlySalary);
             queryWrapper.allEq(params);
         }
         Page<Resume> page = new Page<>(dto.getPageNum(), dto.getPageSize());
-        return (Page)resumeDao.selectPage(page,queryWrapper);
+        return (Page) resumeDao.selectPage(page, queryWrapper);
     }
 
     @Override
     public Page<Resume> queryResumePage(ResumeDto resume) {
-        resume.setUserId(UserUtils.getLoginUserId());
-//        PageHelper.startPage(resume.getPageNum(), resume.getPageSize());
-//        List<ResumeDto> positionDtos = resumeDao.queryResumePage(resume);
+        // todo 全删了吧 按照你的思路重新写
+        Long userId = UserUtils.getLoginUserId();
+        resume.setUserId(userId);
         QueryWrapper<Resume> queryWrapper = new QueryWrapper<>();
         String education = resume.getEducation();
         String certificateLevel = resume.getCertificateLevel();
         String monthlySalary = resume.getMonthlySalary();
-        if (StringUtils.isNotBlank(education)){
-            queryWrapper.like("education",education);
+        if (StringUtils.isNotBlank(education)) {
+            queryWrapper.like("education", education);
         }
-        if (StringUtils.isNotBlank(certificateLevel)){
-            queryWrapper.like("certificate_level",certificateLevel);
+        if (StringUtils.isNotBlank(certificateLevel)) {
+            queryWrapper.like("certificate_level", certificateLevel);
         }
-        if (StringUtils.isNotBlank(monthlySalary)){
-            Map<String,Object> params = new HashMap<>();
-            params.put("certificate_level",monthlySalary);
+        if (StringUtils.isNotBlank(monthlySalary)) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("certificate_level", monthlySalary);
             queryWrapper.allEq(params);
         }
-        if (StringUtils.isNotBlank(monthlySalary)){
-            Map<String,Object> params = new HashMap<>();
-            params.put("certificate_level",monthlySalary);
+        if (StringUtils.isNotBlank(monthlySalary)) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("certificate_level", monthlySalary);
             queryWrapper.allEq(params);
         }
-        Page<Resume> page = new Page<>(resume.getPageNum(), resume.getPageSize());
-        return (Page)resumeDao.selectPage(page,queryWrapper);
+        Map<String, Object> params = new HashMap<>();
+        params.put("user_id", userId);
+        QueryWrapper<UserPosition> mapQueryWrapper = new QueryWrapper<>();
+        mapQueryWrapper.allEq(params);
+        List<UserPosition> list = userPositionDao.selectList(mapQueryWrapper);
+        List<Resume> resumes = resumeDao.selectList(queryWrapper);
+        return null;
     }
 
     @Override

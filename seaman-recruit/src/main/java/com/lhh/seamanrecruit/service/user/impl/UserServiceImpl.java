@@ -76,12 +76,8 @@ public class UserServiceImpl implements UserService {
         user.setCreatedTime(LocalDateTime.now());
         user.setUpdatedTime(LocalDateTime.now());
         userDao.insert(user);
-        if (userType == 1) {
-
-        }
         user.setPassword(null);
         return user;
-
     }
 
 
@@ -159,20 +155,6 @@ public class UserServiceImpl implements UserService {
         return userDao.deleteBatchIds(ids) > 0;
     }
 
-//    /**
-//     * 修改密码
-//     *
-//     * @param entity
-//     * @return 实例对象
-//     */
-//    @Override
-//    @Transactional(rollbackFor = Exception.class)
-//    public User updateById(User entity) {
-//        userDao.updateById(entity);
-//        entity.setUpdatedTime(LocalDateTime.now());
-//        return queryById(entity.getId());
-//    }
-
 
     /**
      * 通过ID查询单条数据
@@ -208,7 +190,7 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isNotBlank(email)) {
             queryWrapper.like("email",email);
         }
-        queryWrapper.orderByAsc("id");
+        queryWrapper.orderByDesc("created_time");
         Page<User> page = new Page<>(dto.getPageNum(), dto.getPageSize());
         page = (Page) userDao.selectPage(page, queryWrapper);
         return page;

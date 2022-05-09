@@ -65,30 +65,6 @@ public class UserController {
             // 邮箱不能为空
             throw new RuntimeException(Constant.EMAIL_NULL);
         }
-        //若用户是企业用户
-        if (userType == 1) {
-            if (StringUtils.isBlank(registerDto.getEnterpriseName())) {
-                throw new RuntimeException("企业名称不能为空!");
-            }
-            if (StringUtils.isBlank(registerDto.getSocialCreditCode())) {
-                throw new RuntimeException("社会信用码不能为空!");
-            }
-            if (StringUtils.isBlank(registerDto.getLegalRepresentative())) {
-                throw new RuntimeException("法定代表人不能为空!");
-            }
-            if (registerDto.getRegisteredCapital() == null || registerDto.getRegisteredCapital() <= 0) {
-                throw new RuntimeException("注册资金不能为空或者小于0!");
-            }
-            if (registerDto.getEstablishmentTime() == null) {
-                throw new RuntimeException("成立时间不能为空!");
-            }
-            if (StringUtils.isBlank(registerDto.getNature())) {
-                throw new RuntimeException("公司性质不能为空!");
-            }
-            if (StringUtils.isBlank(registerDto.getContact())) {
-                throw new RuntimeException("联系方式不能为空!");
-            }
-        }
         return Result.success(userService.register(registerDto));
     }
 
